@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:dt="http://www.thymeleaf.org/dandelion/datatables"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="body">
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#flashcardTable').DataTable();
+            $('#addFlashcard').on('click', function () {
+                $('#newFlashcardTable').css('display', 'table');
+            });
+
+            $('#refreshFlashcards').on('click', function () {
+                $('#newFlashcardTable').css('display', 'none');
+            });
+
+        });
+
+        function showConfirm(slideId) {
+            $('#delete-confirm-' + slideId).css('display', 'inline-block');
+            return false;
+        }
+
+        function closeConfirm(slideId) {
+            $('#delete-confirm-' + slideId).css('display', 'none');
+            return false;
+        }
+
+    </script>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2 th:text="#{admin.flashcards.title}">[Flashcard Administration]
+                    </h2>
+                    <small th:text="#{admin.flashcards.subtitle}" class="h2_subtitle">[Manage Flashcards and Categories]</small>
+                    <div class="form-actions col-md-offset-3 col-sm-offset-2 pull-right">
+                        <a th:href="@{'/admin/addons/flashcards/add'}" th:text="#{admin.flashcards.button.add}"
+                           class="btn btn-primary">[Add Flashcards]</a>
+                        <a th:href="@{'/admin/addons/flashcards/categories'}" th:text="#{admin.flashcards.categories}"
+                           class="btn btn-success">[Manage Categories]</a>
+                        <a id="refreshFlashcards" th:text="#{admin.flashcards.button.refresh}"
+                           class="btn btn-primary">[Refresh]</a>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content  fill-body-table">
+                    <div id="message-holder">
+                        <div th:if="${feedbackMessage}"
+                             th:class="'messageblock hidden'"
+                             th:text="${feedbackMessage}"></div>
+                    </div>
+
+                    <table id="flashcardTable" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Image</th>
+                            <th class="flashcard-button-column">Select Answer Post and Category</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--/*@thymesVar id="flashcard" type="com.nixmash.blog.jpa.dto.addons.FlashcardDTO"*/-->
+
+                        <!--/*@thymesVar id="category" type="com.nixmash.blog.jpa.model.addons.FlashcardCategory"*/-->
+                        <!--/*@thymesVar id="flashcardCategories" type="List<com.nixmash.blog.jpa.model.addons.FlashcardCategory>"*/-->
+                        <!--/*@thymesVar id="flashcardPosts" type="List<com.nixmash.blog.jpa.model.Post>"*/-->
+                        <!--/*@thymesVar id="flashcardPost" type="com.nixmash.blog.jpa.model.Post"*/-->
+
+                        <tr th:each="flashcard : ${flashcards}">
+
+                            <td th:text="${flashcard.slideId}">1</td>
+                            <td><img th:src="${flashcard.thumbnailUrl}" th:alt="${flashcard.content}" th:title="${flashcard.content}" class="flash-thumbnail" /></td>
+                            <td>
+                                <form th:object="${flashcard}" method="post"
+                                      th:action="@{|/admin/addons/flashcards/update/${flashcard.slideId}|}"
+                                      class="form-inline" id="flashcard-form">
+                                    <input type="hidden" th:value="${flashcard.content}" id="content" name="content" />
+                                    <select th:value="${flashcard.postId}" name="postId" id="postId" class="btn dropdown-toggle"
+                                            th:classappend="${flashcard.postId > 0} ? 'btn-primary' : 'btn-warning'" data-style="btn-primary">
+                                        <option th:each="flashcardPost : ${flashcardPosts}" th:text="${flashcardPost.postTitle}"
+                                                th:value="${flashcardPost.postId}" th:selected="${flashcardPost.postId == flashcard.postId}"></option>
+                                    </select>
+                                    <select th:value="${flashcard.categoryId}" name="categoryId" id="categoryId" class="btn dropdown-toggle btn-primary"
+                                            data-style="btn-primary">
+                                        <option th:each="category : ${flashcardCategories}" th:text="${category.category}"
+                                                th:value="${category.categoryId}" th:selected="${category.categoryId == flashcard.categoryId}"></option>
+                                    </select>
+                                    <input type="submit" class="btn btn-primary" th:value="Update"/>
+                                    <button class="btn btn-primary" th:onclick="|showConfirm(${flashcard.slideId}); return false;|">Delete</button>
+                                    <div style="display:none;" th:id="|delete-confirm-${flashcard.slideId}|">
+                                    <input th:type="submit" class="btn btn-danger"
+                                           name="deleteFlashcard"
+                                           th:value="Confirm"/>
+                                        <button class="btn btn-default" th:onclick="|closeConfirm(${flashcard.slideId}); return false;|">Cancel</button>
+                                    </div>
+                                </form>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

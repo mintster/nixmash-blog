@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:dt="http://www.thymeleaf.org/dandelion/datatables"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="body">
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#rolesTable').DataTable();
+
+            $('#addRole').on('click', function () {
+                $('#newRoleTable').css('display', 'table');
+            });
+
+            $('#refreshRoles').on('click', function () {
+                $('#newRoleTable').css('display', 'none');
+            });
+
+        });
+    </script>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2 th:text="#{admin.roles.title}">[Role Administration]
+                    </h2>
+                    <div class="form-actions col-md-offset-3 col-sm-offset-2 pull-right">
+                        <a id="addRole" th:text="#{admin.roles.button.new}"
+                           class="btn btn-primary">[Add Role]</a>
+                        <a id="refreshRoles" th:text="#{admin.roles.button.refresh}"
+                           class="btn btn-primary">[Refresh]</a>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content  fill-body-table">
+                    <div id="message-holder">
+                        <div th:if="${feedbackMessage}"
+                             th:class="'messageblock hidden'"
+                             th:text="${feedbackMessage}"></div>
+                    </div>
+
+                    <table id="newRoleTable" style="display: none;" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th width="100px"></th>
+                            <th>Role</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                <form th:object="${newRole}" method="post" th:action="@{/admin/roles/new}"
+                                      class="form-inline" id="new-role-form">
+                                    <input type="text" class="form-control align-top" th:field="*{authority}"/>
+                                    <input type="submit" class="btn btn-primary" th:value="Add"/>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <!--/*@thymesVar id="role" type="com.nixmash.blog.jpa.model.Authority"*/-->
+                    <!--/*@thymesVar id="roles" type="List<com.nixmash.blog.jpa.model.Authority>"*/-->
+
+                    <table id="rolesTable" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th width="100px">Id</th>
+                            <th>Role</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--/*@thymesVar id="role" type="com.nixmash.blog.jpa.model.Authority"*/-->
+                        <!--/*@thymesVar id="roles" type="List<com.nixmash.blog.jpa.model.Authority>"*/-->
+                        <tr th:each="role : ${roles}">
+                            <td th:text="${role.id}">1</td>
+                            <td th:text="${role.authority}">SOME_ROLE</td>
+                            <td>
+                                <form th:object="${role}" method="post"
+                                      th:action="@{|/admin/roles/update/${role.id}|}"
+                                      class="form-inline" id="role-form">
+                                    <input type="text" class="form-control" th:name="authority" id="authority"
+                                           th:value="${role.authority}"/>
+                                    <input type="submit" class="btn btn-primary" th:value="Update"/>
+                                    <input th:type="submit" class="btn btn-success"
+                                           name="deleteRole"
+                                           th:value="Remove"/>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

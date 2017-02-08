@@ -1,0 +1,301 @@
+/*/<editor-fold> desc="GENERAL ----------------------------/ "*/
+
+div.left_col.scroll-view div.profile {
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.site_title i {
+    border: none;
+}
+
+span.pad-right {
+    padding-right: 5px;
+}
+
+.x_title small.h2_subtitle {
+    margin-left: 10px;
+    vertical-align: -webkit-baseline-middle;
+}
+
+.alert-danger .close, .alert-error .close {
+    opacity: 1;
+}
+.alert-danger label.control-label, .alert-error label.control-label{
+    color: #fff;
+}
+
+
+/*</editor-fold>*/
+/*/<editor-fold> desc="SIDEBAR ----------------------------/ "*/
+
+li.current-page {
+    background: rgba(236, 214, 214, 0.26)
+}
+
+.sidebar-footer-text {
+    margin-left: 5px;
+}
+
+.sidebar-footer a {
+    text-align: left;
+    width: 100%;
+}
+
+/*</editor-fold>*/
+/*/<editor-fold> desc="BODY AREA ----------------------------/ "*/
+
+.fill-body, .fill-body-table {
+    min-height: 600px;
+}
+
+.fill-body-table {
+    font-size: 14px;
+}
+
+.fill-body-message {
+    font-size: 20px;
+    font-style: italic;
+}
+
+/*</editor-fold>*/
+/*/<editor-fold> desc="FORMS ----------------------------/ "*/
+
+ul.roleList {
+    padding-left: 0px;
+}
+
+ul.roleList li {
+    list-style: none;
+    display: inline-block;
+    padding-right: 8px;
+}
+
+input#authority {
+    vertical-align: top;
+    margin-right: 8px;
+}
+
+#role-form input.btn.btn-primary {
+    margin-right: 0px;
+}
+
+tr.border-bottom-row {
+    border-bottom: solid #ddd 1px;
+}
+
+/*</editor-fold>*/
+/*/<editor-fold> desc="FLASHCARD ADMINISTRATION----------------------------/ "*/
+
+.form-inline .form-control.flashcard-content {
+    min-width: 220px;
+}
+
+img.flash-thumbnail {
+    border: 2px #000000 solid;
+}
+
+#flashcard-form button.btn.dropdown-toggle.btn-primary {
+    padding: 0;
+}
+
+#flashcard-form .btn-group.bootstrap-select.btn.dropdown-toggle.btn-primary,
+#flatd.new-flashcard-form .btn-group.bootstrap-select.btn.dropdown-toggle.btn-primary {
+    padding: 0px 5px 0px 8px;
+    margin-bottom: 4px;
+}
+
+td.new-flashcard-form button.btn.dropdown-toggle.btn-primary {
+    padding: 0;
+}
+
+td.new-flashcard-form span {
+    line-height: 18px;
+}
+
+input#category {
+    vertical-align: top;
+}
+
+
+td.new-flashcard-form input {
+    display: inline;
+    float: none;
+    margin-left: 15px;
+}
+
+td.new-flashcard-form input[type="file"] {
+    margin-top: 7px;
+    font-size: 16px;
+    max-width: 256px;
+    margin-top: 7px;
+    font-size: 16px;
+}
+
+td.new-flashcard-form select#categoryId {
+    margin-left: 15px;
+    margin-top: 4px;
+}
+
+td.new-flashcard-form input#description {
+    min-width: 300px;
+}
+/*</editor-fold>*/
+/*/<editor-fold> desc="LINK PAGE PREVIEW----------------------------/ "*/
+.page-preview img.thumbnail {
+    max-height: 120px;
+    float: right;
+    margin-left: 20px;
+}
+
+.page-preview h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.table tbody tr td.td-carousel {
+    padding: 20px;
+}
+
+#pagepreview-carousel .carousel-inner .item img {
+    display: inline-block;
+    max-width: 600px;
+    max-height: 400px;
+}
+
+.pagepreview-images {
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    position: relative;
+}
+
+.carousel-control.left, .carousel-control.right {
+    background-image: none;
+    background-color: transparent;
+}
+
+/*</editor-fold>*/
+/*/<editor-fold> desc="TAGS AND POST FORMS----------------------------/ "*/
+.inline-tag {
+    font-size: smaller;
+    /* font-weight: bold; */
+    background-color: hsl(219, 14%, 94%);
+    display: inline;
+    color: #34495e;
+    padding: 5px 4px 7px 4px;
+    margin-right: 0;
+    white-space: nowrap;
+    border-radius: 3px;
+}
+
+.bootstrap-tagsinput {
+    width: 100%;
+}
+
+div#post-select .btn.dropdown-toggle.btn-primary {
+    padding-bottom: 2px;
+    padding-top: 2px;
+    margin-bottom: 4px;
+}
+
+div#post-select .buttons, button, .btn {
+    margin-right: 0;
+}
+
+.bootstrap-select.btn-group .dropdown-menu li a span.text {
+    display: inline-block;
+    font-weight: bold;
+    font-size: small;
+}
+
+span.tag.label {
+    padding: 2px 5px;
+    font-size: inherit;
+    margin-right: 6px;
+    color: #f2f2f2;
+    margin-bottom: 0px;
+}
+
+input#postTitle {
+    font-size: larger;
+    padding-left: 8px;
+}
+
+input#tagValue {
+    vertical-align: top;
+}
+
+.link-image {
+    float: right;
+}
+
+.link-image img {
+    border: 2px #0e285f solid;
+    margin: 3px;
+    max-width: 220px;
+}
+
+.link-image-text {
+    text-align: right;
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+td.post-check-col {
+}
+
+td.post-check-col input {
+    margin-left: 25px;
+}
+
+td.post-displaytype-col {
+    text-transform: capitalize;
+}
+
+td.draft-title a {
+    color: #bbb;
+}
+
+td.published-title a {
+    color: #403b63;
+}
+
+.error-dialog .modal-content {
+    background-color: rgb(249, 246, 183);
+}
+
+tr.ispublished-tr {
+
+}
+td.ispublished-td {
+
+}
+.post-status-label {
+    float: left;
+    margin-right: 4px;
+    font-weight: bold;
+    margin-top: 6px;
+}
+td.ispublished-td button.btn.dropdown-toggle.btn-primary {
+    padding: 0 12px;
+    max-width: 150px;
+}
+td.ispublished-td .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+    width: 150px;
+}
+
+a.password-glyph {
+    margin-left: 4px;
+}
+
+/*</editor-fold>*/
+/*/<editor-fold> desc="SOLR FORMS----------------------------/ "*/
+
+td.reindex-msg-td {
+
+}
+
+/*</editor-fold>*/

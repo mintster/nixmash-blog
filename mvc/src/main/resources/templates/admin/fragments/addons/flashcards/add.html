@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="body">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2 th:text="#{admin.flashcards.add.slide.title}">[Add Flashcard Slide]
+                    </h2>
+                    <div class="form-actions col-md-offset-3 col-sm-offset-2 pull-right">
+                        <a th:href="@{'/admin/addons/flashcards'}" th:text="#{admin.flashcards.button}"
+                           class="btn btn-primary">[All Flashcards]</a>
+                        <a th:href="@{'/admin/addons/flashcards/categories'}" th:text="#{admin.flashcards.categories}"
+                           class="btn btn-success">[Manage Categories]</a>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content  fill-body-table">
+                    <div id="message-holder">
+                        <div th:if="${feedbackMessage}"
+                             th:class="'messageblock hidden'"
+                             th:text="${feedbackMessage}"></div>
+                    </div>
+
+                    <table id="newFlashcardTable" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th width="100px"></th>
+                            <th>Enter Description, Category and upload Flashcard Image</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr>
+                            <!--/*@thymesVar id="newFlashcard" type="com.nixmash.blog.jpa.dto.addons.FlashcardImageDTO"*/-->
+                            <!--/*@thymesVar id="category" type="com.nixmash.blog.jpa.model.addons.FlashcardCategory"*/-->
+
+                            <td>&nbsp;</td>
+                            <td class="new-flashcard-form">
+                                <form th:object="${newFlashcard}" method="post" th:action="@{/admin/addons/flashcards/add}"
+                                      enctype="multipart/form-data" class="form-inline" id="new-flashcard-form">
+                                    <input type="text" class="form-control align-top" th:field="*{description}"/>
+                                    <select th:field="*{categoryId}" name="categoryId" class="btn dropdown-toggle btn-primary"
+                                            data-style="btn-primary">
+                                        <option th:each="category : ${flashcardCategories}" th:text="${category.category}"
+                                                th:value="${category.categoryId}"></option>
+                                    </select>
+                                    <input type="file" name="file" size="60" multiple="multiple"/>
+                                    <input type="submit" class="btn btn-primary" th:value="Add"/>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

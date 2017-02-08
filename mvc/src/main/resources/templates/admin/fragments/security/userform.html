@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="body">
+    <!--/*@thymesVar id="userDTO" type="com.nixmash.blog.jpa.dto.UserDTO"*/-->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>
+                    <span th:if="${userDTO['new']}" th:remove="tag" th:text="#{admin.userform.add.title}">
+                    [New User]
+                </span>
+                    <span th:unless="${userDTO['new']}" th:remove="tag"
+                          th:text="|#{admin.userform.update.title} ${userDTO.firstName} ${userDTO.lastName}|">
+                     [Update User Bob Schmoe]
+             </span>
+                    </h2>
+                    <div class="form-actions col-md-offset-3 col-sm-offset-2 pull-right">
+                        <a th:href="@{'/admin/users'}" th:text="#{admin.users.button.return}"
+                           class="btn btn-primary">[Return All Users]</a>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content  fill-body">
+                    <div class="fill-body-table">
+
+                        <div class="row row-centered">
+                            <div class="bs-section col-lg-9 col-centered">
+                                <form th:object="${userDTO}" method="post"
+                                      th:action="@{${#httpServletRequest.getRequestURI()}}"
+                                      class="form-horizontal" id="user-form">
+
+                                    <div th:if="${#fields.hasGlobalErrors()}"
+                                         class="has-error col-lg-offset-3 alert alert-dismissible alert-danger">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        <label class="control-label" th:each="err : ${#fields.globalErrors()}"
+                                               th:text="${err}">...</label>
+                                    </div>
+                                    <table class="table table-striped">
+                                        <tr th:classappend="${#fields.hasErrors('username')} ? 'has-error'">
+                                            <td>
+                                                <div class="control-group"
+                                                     th:classappend="${#fields.hasErrors('username')} ? 'error'">
+                                                    <label class="control-label">Username</label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="controls">
+                                                    <input type="text" class="form-control" th:field="*{username}"/>
+                                                    <label class="control-label"
+                                                           th:errors="*{username}">[error]</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr th:classappend="${#fields.hasErrors('firstName')} ? 'has-error'">
+                                            <td>
+                                                <div class="control-group"
+                                                     th:classappend="${#fields.hasErrors('firstName')} ? 'error'">
+                                                    <label class="control-label">First Name</label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="controls">
+                                                    <input type="text" class="form-control" th:field="*{firstName}"/>
+                                                    <label class="control-label"
+                                                           th:errors="*{firstName}">[error]</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr th:classappend="${#fields.hasErrors('lastName')} ? 'has-error'">
+                                            <td>
+                                                <div class="control-group"
+                                                     th:classappend="${#fields.hasErrors('lastName')} ? 'error'">
+                                                    <label class="control-label">Last Name</label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="controls">
+                                                    <input type="text" class="form-control" th:field="*{lastName}"/>
+                                                    <label class="control-label"
+                                                           th:errors="*{lastName}">[error]</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr th:classappend="${#fields.hasErrors('email')} ? 'has-error'">
+                                            <td>
+                                                <div class="control-group"
+                                                     th:classappend="${#fields.hasErrors('email')} ? 'error'">
+                                                    <label class="control-label">Email</label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="controls">
+                                                    <input type="text" class="form-control" th:field="*{email}"/>
+                                                    <label class="control-label" th:errors="*{email}">[error]</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${userDTO['new']}" th:classappend="${#fields.hasErrors('password')} ? 'has-error'">
+                                            <td>
+                                                <div class="control-group"
+                                                     th:classappend="${#fields.hasErrors('password')} ? 'error'">
+                                                    <label class="control-label">Password</label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="controls">
+                                                    <input type="password" class="form-control" th:field="*{password}"/>
+                                                    <label class="control-label"
+                                                           th:errors="*{password}">[error]</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${userDTO['new']}" th:classappend="${#fields.hasErrors('repeatedPassword')} ? 'has-error'">
+                                            <td>
+                                                <div class="control-group"
+                                                     th:classappend="${#fields.hasErrors('repeatedPassword')} ? 'error'">
+                                                    <label class="control-label">Repeat Password</label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="controls">
+                                                    <input type="password"  class="form-control" th:field="*{repeatedPassword}"/>
+                                                    <label class="control-label"
+                                                           th:errors="*{repeatedPassword}">[error]</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table class="table table-striped">
+                                        <tr class="border-bottom-row">
+                                            <td class="col-sm-1">
+                                                <label th:text="#{admin.userform.roles.label}">[Roles]</label>
+                                            </td>
+                                            <td class="col-sm-2">
+                                                <ul class="roleList">
+                                                    <li th:each="authority : ${authorities}">
+                                                        <input type="checkbox" th:field="*{authorities}" th:value="${authority.id}"/>
+                                                        <label th:for="${#ids.prev('authorities')}" th:text="#{${authority.authority}}">[Role]</label>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                    <input th:if="!${userDTO['new']}" type="hidden" name="password" id="password" value="dummypassword" />
+                                    <div class="col-lg-12 button-col-align-right">
+                                        <input type="submit" class="btn btn-primary"
+                                               th:value="(${userDTO['new']} ? 'Add' : 'Update') + ' '"/>
+                                        <input type="button"
+                                               th:onclick="'window.location.href=\'' + @{|/admin/users/|} + '\''"
+                                               class="btn btn-success" value="Cancel"/>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

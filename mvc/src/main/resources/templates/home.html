@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:include="fragments/head :: head" th:remove="tag">Global Header</div>
+    <title>NixMash Spring Home Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/github.css}"/>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: navbar('home')">Navbar</nav>
+<div th:replace="fragments/jumbotron :: .jumbotron">Home Page Jumbotron</div>
+
+<div th:if="${currentUser == null}" class="container">
+    <div class="row social-button-row">
+        <div class="col-lg-7">
+            <form name="fb_signin" id="fb_signin" th:action="@{/signin/facebook}" method="POST">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                <input type="hidden" name="scope" value="email,user_posts,user_photos,user_friends"/>
+                <button type="submit" class="btn btn-facebook">
+                    <i class="fa fa-facebook"></i><span> | </span><span th:text="#{label.facebook.sign.in.button}">[Sign In with Facebook]</span>
+                </button>
+            </form>
+            <form id="tw_signin" th:action="@{/signin/twitter}" method="POST">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn btn-twitter">
+                    <i class="fa fa-twitter"></i><span> | </span><span th:text="#{label.twitter.sign.in.button}">[Sign In with Twitter]</span>
+                </button>
+            </form>
+            <form id="gl_signin" th:action="@{/signin/google}" method="POST">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                <input type="hidden" name="scope"
+                       value="https://www.googleapis.com/auth/plus.login
+						   					https://www.googleapis.com/auth/plus.me"/>
+                <button type="submit" class="btn btn-google">
+                    <i class="fa fa-google"></i><span> | </span><span th:text="#{label.google.sign.in.button}">[Sign In with Google]</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:if="${connectionWelcomeMessage}" class="container">
+    <div th:with="provider=${currentUserConnection.providerId},
+				capProvider=${#strings.capitalize(currentUserConnection.providerId)}">
+        <div class="row welcome-row">
+            <div class="col-lg-12">
+                Thank you for creating a Site Account with <span th:text="${capProvider}">[provider]</span>.
+                In the future, please use the <span th:class="|btn-sm btn-${provider}|">
+					<i th:class="|fa fa-${provider}|"></i> |
+					<span th:text="#{|label.${provider}.sign.in.button|}">[Sign In with Provider]</span>
+					</span> &nbsp;buttons for one-click Sign In!
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--/*@thymesVar id="post" type="com.nixmash.blog.jpa.model.Post"*/-->
+<!--/*@thymesVar id="posts" type="List<com.nixmash.blog.jpa.model.Post>"*/-->
+
+<div th:if="${posts}" th:remove="tag">
+    <div class="container home-posts">
+        <div class="row">
+            <blockquote>
+                <p>
+                    Most recent NixMash Spring Posts and Links
+                </p>
+                <small th:each="post : ${posts}">
+                    <a th:href="@{|/posts/post/${post.postName}|}" th:text="${post.postTitle}">[post]</a>
+                </small>
+                <div class="home-posts-link">
+                    <a href="/posts" class="btn btn-primary">View NixMash Spring Posts</a>
+                </div>
+            </blockquote>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <blockquote>
+            <p>
+                Some of the technologies featured on this site and detailed on <a
+                    href="http://nixmash.com">NixMash</a>
+            </p>
+            <small>Spring Batch -- <em>Retrieves the GitHub Repo stats hourly shown above</em></small>
+            <small>Spring.IO -- <em>Used for dependency version control in v0.4.0 and higher</em></small>
+            <small>Bootstrap Carousel demos -- <em>Flashcards and Add New Link form</em></small>
+            <small>Password Reset and Forgot Password Email Services -- <em>User Profile and Login page</em></small>
+            <small>GitHub Stats with Spring RestTemplate and Thymeleaf</small>
+            <small>Multifile uploads with Spring MVC, Thymeleaf and Blueimp jQuery-File-Upload plugin integration</small>
+            <small>Like Button for Multiple Content Types -- <em>Posts</em></small>
+            <small>Social Network Buttons with Thymeleaf and Velocity -- <em>Posts</em></small>
+            <small>Tag Cloud -- <em>Posts</em></small>
+            <small>RSS Subscriptions -- <em>Posts Feed</em></small>
+            <small>Google Single- and Multi-location Maps -- <em>Product display and Product Map</em></small>
+            <small>Content Tagging with Typeahead -- <em>Post add and update forms</em></small>
+            <small>WordPress-like Posts Module -- <em>Posts (in progress)</em></small>
+            <small>Jsoup Annotations Framework -- <em>Posts module links entry</em></small>
+            <small>Google Analytics with Administration form to enable and key entry</small>
+            <small>JSON Data Retrieval with Spring RestTemplates, MVC and Thymeleaf -- <em>Home Page GitHub Buttons and elsewhere</em></small>
+            <small>Email Services with Freemarker Templating-- <em>Contact Form</em></small>
+            <small>File Upload -- <em>User Profile Image Uploading</em></small>
+            <small>Site Bootstrap Dashboard -- <em>Administration Module based on <a href="https://github.com/puikinsh/gentelella">Gentelella
+                Bootstrap 3 Admin Template</a></em></small>
+            <small>Spring Social -- <em>Twitter, Facebook and Google OAuth Login</em></small>
+            <small>Hibernate and Spring JPA -- <em>Contacts and throughout application</em></small>
+            <small>Spring Security -- <em>An example is the Contact Details page restricted to Logged-in Users Only</em></small>
+            <small>Spring Solr -- <em>Products list, Product categories (Solr facets), Product Maps (Solr Geo-Search)</em></small>
+            <small>Javascript with Spring MVC -- <em>Buttons below, Solr Search Autocomplete and elsewhere</em></small>
+            <small>Thymeleaf and Bootstrap 3 with Spring</small>
+        </blockquote>
+    </div>
+
+    <div class="js-buttons">
+        <button id="codButton" class="btn btn-default btn-xs" name="codButton" onclick="codDialog()" type="button"
+                th:text="#{js.cod.button}">[CLICK]
+        </button>
+        <button id="secretButton" class="btn btn-default btn-xs" name="secretButton" onclick="secretDialog()"
+                type="button" th:text="#{js.secret.button}">[CLICK]
+        </button>
+        <select id="multiselect-badgeboy" multiple="multiple">
+        </select>
+        <a href="http://goo.gl/0hhnZg" target="_blank" id="keyvalue" class="btn btn-default btn-xs"></a>
+    </div>
+
+    <div id="badges"></div>
+
+    <nav th:replace="fragments/secinfo :: [id='secInfo']">User Info</nav>
+</div>
+<div th:include="fragments/scripts :: [id='scripts']" th:remove="tag">Scripts</div>
+<div th:include="fragments/js :: homepage" th:remove="tag">Functions</div>
+</body>
+</html>

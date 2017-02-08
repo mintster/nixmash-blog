@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<div id="alerts">
+    <script th:src="@{/js/handlebars-v3.0.3.js}"></script>
+    <script th:src="@{/js/contact.js}"></script>
+
+    <script id="template-alert-message" type="text/x-handlebars-template">
+        <div id="alert-message" class="alert alert-success fade in">
+            <a class="close" data-dismiss="alert">&times;</a>
+            {{message}}
+        </div>
+    </script>
+</div>
+
+<div id="feedback">
+    <div id="message-holder">
+        <div th:if="${feedbackMessage}" th:class="'messageblock hidden'"
+             th:utext="${feedbackMessage}"></div>
+    </div>
+</div>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

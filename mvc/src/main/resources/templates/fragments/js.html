@@ -1,0 +1,220 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<div th:fragment="contactOfTheDay">
+    <div th:text="#{js.cod.message(|${cod.firstName} ${cod.lastName}|)}" class="cod-name">[CONTACT NAME]</div>
+    <div th:text="#{js.cod.hobbies(|${cod.firstName}|)}" class="cod-hobbies"></div>
+    <ul class="cod-hobbylist">
+        <li th:each="hobby : ${cod.hobbies}" th:text="${hobby.hobbyTitle}">[HOBBIES]</li>
+    </ul>
+</div>
+
+<div th:fragment="homepage">
+
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        function codDialog() {
+            var url = '/json/cod';
+            $.get(url, function (result) {
+                showDialog([[#{js.cod.title}]], result);
+            });
+        }
+
+        function secretDialog() {
+
+            var currentUser = [[${currentUser}]];
+
+            if (currentUser) {
+                $.getJSON('/json/secret', function (result) {
+                    var message = result.message;
+                    showDialog([[#{js.secret.title}]], message);
+                });
+            }
+            else
+                showDialog([[#{js.secret.notlogged.title}]],
+                        [[#{js.secret.notlogged.message}]])
+        }
+
+
+        $(document).ready(function () {
+
+            var badgeBoy = [[#{js.badgeboy.button}]];
+
+            $.getJSON('/json/badges', null, function (data) {
+
+                $('#multiselect-badgeboy')
+                        .multiselect({
+                            includeSelectAllOption: true,
+                            buttonClass: 'btn btn-default btn-xs btn-badgeboy',
+                            enableHTML: true,
+                            checkboxName: 'badgeboxes[]',
+                            buttonText: function (options, select) {
+                                if (options.length === 0) {
+                                    return badgeBoy;
+                                }
+                                else {
+                                    if (options.length > 0)
+                                        return badgeBoy + "<span class=\'badge\'>" + options.length + "</span>";
+                                }
+                            },
+                            onDropdownHidden: function (event) {
+                                var selectedBadgeValues = $('select#multiselect-badgeboy').val();
+                                updateBadges(selectedBadgeValues);
+                            }
+
+                        })
+                        .multiselect('dataprovider', data);
+
+            });
+
+            function updateBadges(selectedBadgeValues) {
+
+                $.ajax({
+                    dataType: "json",
+                    url: "/json/badges/update",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    data: JSON.stringify(selectedBadgeValues),
+                    type: 'POST',
+                    success: function (data) {
+                        $("#badges").html(data);
+                    },
+                    error: function (data, status, er) {
+                        alert("error: " + data + " | " + status + " | " + er);
+                    }
+                });
+            }
+
+            $.getJSON('/json/posts/map', null, function (data) {
+                $("#keyvalue").html(data["key"]);
+            });
+
+        });
+
+        /*]]>*/
+    </script>
+
+</div>
+
+<div th:fragment="summernote">
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        $(document).ready(function () {
+
+            if (!String.format) {
+                String.format = function(format) {
+                    var args = Array.prototype.slice.call(arguments, 1);
+                    return format.replace(/{(\d+)}/g, function(match, number) {
+                        return typeof args[number] != 'undefined'
+                                ? args[number]
+                                : match
+                                ;
+                    });
+                };
+            }
+
+
+            var JavaButton = function (context) { return makeButton("java", "j"); };
+            var JavaScriptButton= function (context) { return makeButton("javascript", "js"); };
+            var HtmlButton = function (context) { return makeButton("html", "html"); };
+            var CssButton = function (context) { return makeButton("css", "css"); };
+            var BashButton = function (context) { return makeButton("bash", "sh"); };
+            var ImageButton = function (context) { return makeImageButton(); };
+
+            function makeButton(language, abbrev) {
+                var ui = $.summernote.ui;
+                var button = ui.button({
+                    contents: String.format('<i class="fa fa-{0}"/>', abbrev),
+                    tooltip: 'add code block',
+                    click: function () {
+                        addCodeBlock(language)
+                    }
+                });
+
+                return button.render();
+            }
+
+            function makeImageButton() {
+                var ui = $.summernote.ui;
+                var button = ui.button({
+                    contents: '<i class="fa fa-image"/>',
+                    tooltip: 'add image',
+                    click: function () {
+                        addImageHtml()
+                    }
+                });
+
+                return button.render();
+            }
+
+            function addCodeBlock(language) {
+                var node = document.createElement('pre');
+                var $editor = $('#summernote');
+                $editor.summernote('insertNode', node);
+
+                var code = document.createElement('code');
+                document.body.appendChild(code);
+                code.className = language;
+                code.textContent = language.toUpperCase();
+                $editor.summernote('insertNode', code);
+
+            }
+
+
+            function addImageHtml() {
+                var node = document.createElement('img');
+                document.body.appendChild(node);
+                node.setAttribute("src",  [[${appSettings.getEditorImagePlacemarker()}]]);
+                node.setAttribute("alt", "");
+                var $editor = $('#summernote');
+                $editor.summernote('insertNode', node);
+            }
+
+            $('#summernote').summernote({
+                minHeight: 200,
+                toolbar: [
+                    ['first', ['style']],
+                    ['style', ['bold', 'italic', 'underline', 'clear', 'strikethrough', 'samp']],
+                    ['insert', ['link']],
+                    ['para', ['paragraph', 'ul', 'ol']],
+                    ['misc', ['codeview', 'undo']],
+                    ['codebuttons', ['java', 'js', 'html', 'css', 'sh', 'image']]
+                ],
+                buttons: {
+                    java: JavaButton,
+                    js: JavaScriptButton,
+                    html: HtmlButton,
+                    css: CssButton,
+                    sh: BashButton,
+                    image: ImageButton
+                }
+            });
+
+
+        });
+
+        /*]]>*/
+    </script>
+
+</div>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

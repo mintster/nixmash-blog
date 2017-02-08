@@ -1,6 +1,6 @@
 /nixmash-spring.iws
 /nixmash-spring.ipr
-
+dev
 *.class
 .mtj.tmp/
 
@@ -33,10 +33,3 @@ bin
 /.nb-gradle/private/
 testdb.*
 *.log
-batch/src/main/webapp/
-jpa/src/main/webapp/
-jsoup/src/main/webapp/
-mail/src/main/webapp/
-mvc/src/main/webapp/
-solr/src/main/webapp/
-src/
