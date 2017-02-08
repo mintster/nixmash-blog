@@ -1,0 +1,57 @@
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.nixmash.blog.jpa.JpaLauncher'
+    }
+}
+
+sourceSets {
+    main {
+        java.srcDirs = ['src/main/java', 'src/main/resources']
+        resources.srcDir('src/main/resources')
+    }
+    test {
+        java.srcDir('src/test/java')
+    }
+}
+
+configurations {
+    compile.exclude module: 'org.slf4j'
+}
+
+springBoot {
+    mainClass = 'com.nixmash.blog.jpa.JpaLauncher'
+}
+
+dependencies {
+    compile 'com.github.slugify:slugify:2.1.5'
+    compile 'javax.cache:cache-api'
+	compile("org.springframework.boot:spring-boot-starter-social-twitter")
+	compile("org.springframework.boot:spring-boot-starter-cache")
+	compile("org.springframework.boot:spring-boot-starter-social-facebook")
+	compile("org.springframework.social:spring-social-security:1.1.4.RELEASE")
+    compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
+    compile 'org.ehcache:ehcache'
+}
+
+task serviceTests(type: Test, dependsOn: testClasses) {
+    include '**/*Service*'
+}
+
+task showHome << {
+    println "${rootDir}"
+}
+
+task production << {
+    bootRun.systemProperty 'spring.profiles.active', 'mysql'
+}
+
+bootRun {
+    addResources = false
+    systemProperty 'spring.profiles.active', 'whadda'
+    main = 'com.nixmash.blog.jpa.JpaLauncher'
+}
+
+task linkjBuild(type: Exec) {
+    commandLine "bash", "${rootDir}/install/sh/linkjBuild.sh", "--rm"
+}
+

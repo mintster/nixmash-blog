@@ -1,0 +1,116 @@
+
+
+buildscript {
+	ext { springBootVersion = '1.5.1.RELEASE' }
+	repositories {
+		mavenCentral()
+//		maven { url 'http://repo.spring.io/snapshot' }
+//		maven { url 'http://repo.spring.io/milestone' }
+		maven { url "http://maven.restlet.org" }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath 'org.springframework:springloaded:1.2.6.RELEASE'
+	}
+}
+
+allprojects {
+
+	apply plugin: 'application'
+	apply plugin: 'idea'
+	apply plugin: 'eclipse'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'java'
+	apply plugin: 'war'
+
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+
+	ext['hibernate.version']="5.1.4.Final"
+//	ext['jetty.version']="9.3.14.v20161028"
+
+	dependencyManagement {
+		applyMavenExclusions false
+	}
+
+	repositories {
+		mavenCentral()
+		maven { url "http://repo.spring.io/snapshot" }
+		maven { url "http://repo.spring.io/milestone" }
+		maven { url "http://maven.restlet.org" }
+	}
+
+	configurations {
+		all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+
+		//	comment if not using Solr-Core with Jetty
+		all*.exclude module: 'spring-boot-starter-tomcat'
+
+//		all*.resolutionStrategy {
+//			eachDependency { DependencyResolveDetails details ->
+//				if (details.requested.name == "solr-solrj" ) {
+//					details.useVersion "5.5.2"
+//				}
+//			}
+//		}
+	}
+
+	dependencies {
+		compile 'org.springframework.boot:spring-boot-devtools'
+		compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+		compile 'org.springframework.boot:spring-boot-starter-security'
+		compile 'org.springframework.security:spring-security-test'
+		compile 'javax.servlet:javax.servlet-api:3.1.0'
+		compile 'org.javassist:javassist'
+
+		compile 'commons-dbcp:commons-dbcp:1.4'
+		compile 'org.apache.tomcat:tomcat-dbcp:8.5.4'
+		compile 'com.google.guava:guava-gwt:18.0'
+		compile 'org.apache.commons:commons-lang3:3.4'
+		compile 'commons-beanutils:commons-beanutils:1.9.2'
+		compile 'org.jadira.usertype:usertype.extended:5.0.0.GA'
+		compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.1'
+		compile 'net.coobird:thumbnailator:0.4.8'
+		compile 'joda-time:joda-time:2.9.4'
+        compile group: 'commons-io', name: 'commons-io', version: '2.4'
+
+		compile 'javax.el:javax.el-api:2.2.4'
+		compile 'org.glassfish.web:javax.el:2.2.4'
+
+		runtime('com.h2database:h2')
+		runtime('mysql:mysql-connector-java')
+
+		testCompile 'org.springframework.boot:spring-boot-starter-test'
+		testCompile 'junit:junit:4.12'
+		testCompile "org.mockito:mockito-core"
+		testCompile "org.hamcrest:hamcrest-library"
+
+		compile ('ch.qos.logback:logback-classic:1.1.7') { exclude(module:'slf4j-api') }
+	}
+
+	springBoot {
+		mainClass = 'com.nixmash.blog.mvc.Application'
+	}
+
+	task getHomeDir << {
+		println gradle.gradleHomeDir
+	}
+
+	idea {
+		module {
+			inheritOutputDirs = false
+			outputDir = file("$buildDir/classes/main/")
+		}
+	}
+
+	task wrapper(type: Wrapper) { gradleVersion = '2.12' }
+
+	eclipse {
+		classpath {
+			containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+			containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
+		}
+	}
+
+}
+

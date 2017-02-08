@@ -1,0 +1,1 @@
+rm: cannot remove '/ubuntuland/projects/nixmash-spring/mvc/build/classes/main/static/files': No such file or directory

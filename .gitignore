@@ -1,0 +1,42 @@
+/nixmash-spring.iws
+/nixmash-spring.ipr
+
+*.class
+.mtj.tmp/
+
+# Package Files
+*.jar
+*.war
+*.ear
+
+!install/solr/post.jar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# IDE Generated Files
+.idea
+*.iml
+.settings
+.project
+.classpath
+.gradle
+.springBeans
+build
+classes
+target
+out
+bin
+.externalToolBuilders
+
+
+/.nb-gradle/private/
+testdb.*
+*.log
+batch/src/main/webapp/
+jpa/src/main/webapp/
+jsoup/src/main/webapp/
+mail/src/main/webapp/
+mvc/src/main/webapp/
+solr/src/main/webapp/
+src/

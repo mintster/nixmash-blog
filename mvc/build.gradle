@@ -1,0 +1,64 @@
+war { baseName = 'nixmashSpring' }
+
+sourceSets {
+	main {
+		java.srcDirs = ['src/main/java', 'src/main/resources']
+		resources.srcDir 'src/main/resources'
+	}
+	test { java.srcDir 'src/test/java' }
+}
+
+//	uncomment if not using Solr-Core w/ Jetty
+//	configurations { providedRuntime }
+
+dependencies {
+	compile project(':jpa')
+	compile project(':solr')
+	compile project(':mail')
+	compile project(':jsoup')
+	compile 'org.springframework.boot:spring-boot-starter-web'
+
+//	uncomment if not using Solr-Core w/ Jetty
+//	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+	compile 'org.springframework.boot:spring-boot-starter-social-twitter'
+	compile 'org.springframework.boot:spring-boot-starter-social-facebook'
+	compile 'org.springframework.social:spring-social-security:1.1.4.RELEASE'
+	compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	compile 'org.springframework.social:spring-social-google:1.0.0.RELEASE'
+	
+	compile 'com.jayway.restassured:json-path:2.4.1'
+	compile 'com.jayway.jsonpath:json-path-assert:2.0.0'
+
+	compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE'
+
+	compile 'org.webjars:webjars-locator:0.32'
+	compile 'org.webjars:webjars-locator-core:0.31'
+	compile 'org.webjars:jquery:2.1.4'
+	compile 'org.webjars:bootstrap:3.3.4'
+	compile 'org.webjars:bootswatch:3.3.4+1'
+	compile 'org.webjars:jquery-ui:1.11.4'
+	compile 'org.webjars:jquery-ui-themes:1.11.4'
+
+	compile 'com.rometools:rome:1.6.1'
+	compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
+	compile 'com.fasterxml.jackson.core:jackson-core:2.6.0'
+	compile 'com.fasterxml.jackson.core:jackson-databind:2.6.0'
+	compile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
+	compile 'org.imgscalr:imgscalr-lib:4.2'
+
+	//noinspection GroovyAssignabilityCheck
+	testCompile project(':jpa').sourceSets.test.output
+	testCompile project(':mail').sourceSets.test.output
+}
+
+bootRun {
+	systemProperty 'server.port', '9000'
+	systemProperty 'spring.profiles.active', 'mysql,prod'
+	args "--appurl=http://localhost:9000"
+	main = 'com.nixmash.blog.mvc.Application'
+}
+
+clean.dependsOn ':jpa:linkjBuild'
+
+

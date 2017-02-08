@@ -1,0 +1,2 @@
+include "jpa", "mail", "jsoup", "solr", "mvc", "batch"
+

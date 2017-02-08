@@ -1,0 +1,31 @@
+	configurations {
+		all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+
+		//	comment if not using Solr-Core with Jetty
+		all*.exclude module: 'spring-boot-starter-tomcat'
+
+		all*.resolutionStrategy {
+			eachDependency { DependencyResolveDetails details ->
+				if (details.requested.name == "spring-boot-starter-data-solr" ||
+						details.requested.name == "spring-boot-starter-data-jpa" ) {
+					details.useVersion "1.4.3.RELEASE"
+				}
+			}
+		}
+	}
+
+all*.resolutionStrategy {
+			eachDependency { DependencyResolveDetails details ->
+				if (details.requested.name == "spring-boot-starter-web" ) {
+					details.useVersion "1.4.3.RELEASE"
+				}
+			}
+		}
+
+all*.resolutionStrategy {
+			eachDependency { DependencyResolveDetails details ->
+				if (details.requested.name == "solr-solrj" ) {
+					details.useVersion "5.1.0"
+				}
+			}
+		}
