@@ -1,0 +1,3 @@
+In PUBLIC development Branch
+
+PUBLIC: tracking UPSTREAM/master at https://github.com/mintster/nixmash-blog.git
