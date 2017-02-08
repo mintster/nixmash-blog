@@ -1,2 +1,0 @@
-
-Message Generated from: ${applicationPropertyUrl}
