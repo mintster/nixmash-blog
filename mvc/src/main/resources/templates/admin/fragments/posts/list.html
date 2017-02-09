@@ -11,17 +11,18 @@
                 "aoColumns": [
                     null,
                     null,
-                    null,
+                    { "orderable": false },
+                    { "orderable": false },
                     { "sType": "date" },
                     null,
-                    null
+                    { "orderable": false }
                 ],
+                "autoWidth": false,
                 "pageLength": 50,
-                "order": [4, "desc"]]
+                "order": [[ 0, "desc" ]]
             });
         });
     </script>
-
     <!--/*@thymesVar id="post" type="com.nixmash.blog.jpa.model.Post"*/-->
     <!--/*@thymesVar id="posts" type="List<com.nixmash.blog.jpa.model.Post>"*/-->
     <div class="row">
@@ -48,17 +49,19 @@
                     <table id="postsTable" class="table table-striped">
                         <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Title</th>
-                            <th>Tags</th>
+                            <th class="th-tags">Tags</th>
                             <th>Post Type</th>
                             <th>Date</th>
-                            <th>Published</th>
+                            <th style="width: 36px;"></th>
                             <th style="width: 36px;"></th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="post : ${posts}" th:with="creationDate=${post.postDate},
                                             displayType=|${#strings.replace(post.displayType,'_', ' ')}|">
+                            <td th:text="${post.postId}"></td>
                             <td th:classappend="${post.isPublished} ? 'published-title' :  'draft-title'">
                                 <a th:href="|@{/posts/post/}${post.postName}|" th:text="${post.postTitle}" target="_blank">title</a>
                             </td>
@@ -67,7 +70,7 @@
                             </td>
                             <td class="post-displaytype-col" th:text="|${#strings.toLowerCase(displayType)}|">post display type</td>
                             <td th:text="|${#dates.format(creationDate.toInstant(), 'MMM dd, yyyy')}|">post date</td>
-                            <td class="post-check-col"><input type="checkbox" th:checked="${post.isPublished}" disabled="true"/></td>
+                            <td class="post-check-col"><input type="checkbox" th:checked="${post.isPublished}" disabled="true" title="Checked if Post is Published"/></td>
                             <td><a th:href="@{|/admin/posts/update/${post.postId}|}"><span
                                     class="glyphicon glyphicon-pencil"></span></a></td>
                         </tr>
