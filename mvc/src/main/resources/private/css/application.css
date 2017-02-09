@@ -4,7 +4,6 @@
 }
 
 .jumbotron p {
-    max-width: 550px;
 }
 
 @media screen and (min-width: 768px) {
@@ -181,7 +180,7 @@ td.hobbies span {
 }
 
 img.navbar-profilepic {
-    margin-top: 4px;
+    margin-top: 9px;
     border: #ddd 1px solid;
 }
 
@@ -200,7 +199,7 @@ a.navbar-text.pull-right.navbar-welcome.dropdown-toggle {
 }
 
 .navbar-form .btn-sm {
-    margin-top: 3px;
+    margin-top: 6px;
 }
 /*</editor-fold>*/
 /*/<editor-fold> desc="SECUSER USER AND GITHUB PROJECT INFO ----------------------------/ "*/
@@ -699,6 +698,10 @@ span.tag.label {
     float: right;
 }
 
+.taglink a.label-default {
+    background-color: #acc7c1;
+}
+
 /*</editor-fold>*/
 /*/<editor-fold> desc="POST DISPLAY IN STREAM----------------------------/ "*/
 #more-posts-button-row {
@@ -763,8 +766,13 @@ span.tag.label {
     margin: 20px auto 10px auto;
 }
 
+#posts .title .post-tags {
+    float: left;
+    margin-right: 6px;
+}
+
 #posts .post-date {
-    font-size: smaller;
+    font-size: small;
     font-style: italic;
     float: none;
     display: inline-block;
@@ -843,6 +851,7 @@ pre code {
 
 #posts .title h3 {
     margin-bottom: 3px;
+    font-size: 24px;
 }
 
 #posts .alert.alert-dismissible.alert-danger {
@@ -1036,11 +1045,11 @@ h1.post-title {
     }
 
     #tagcloud.affix  {
-        top: 366px;
+        top: 330px;
     }
 
     #secInfo.affix  {
-        top: 700px;
+        top: 900px;
     }
 
     #sidebar a i.glyphicon.glyphicon-chevron-right {
