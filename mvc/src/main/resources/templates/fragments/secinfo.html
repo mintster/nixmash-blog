@@ -29,9 +29,13 @@
 				<div th:remove="tag" th:text="#{secinfo.anonymous}">[ANONYMOUS]</div>
 			</div>
 		</div>
+		<div class="nixmash-footer-img">
+			<a href="http://nixmash.com">
+				<img src="/images/nixmash.png" th:src="@{/images/nixmash.png}" alt="Visit NixMash.com"/> </a>
+		</div>
 		<div class="github-footer">
-			<a href="https://github.com/mintster/spring-data"><img src="/images/github.png" alt="Download NixMash Spring on GitHub"></img></a> <a
-				href="https://github.com/mintster/spring-data" class="github-version"> <span th:text="${@environment.getProperty('web.site.version')}" th:remove="tag">[SITE NAME AND VERSION]</span></a>
+			<a href="https://github.com/mintster/nixmash-blog"><img src="/images/github.png" alt="Download NixMash Blog on GitHub"></img></a> <a
+				href="https://github.com/mintster/nixmash-blog" class="github-version"> <span th:text="${@environment.getProperty('web.site.version')}" th:remove="tag">[SITE NAME AND VERSION]</span></a>
 		</div>
 	</div>
 </body>

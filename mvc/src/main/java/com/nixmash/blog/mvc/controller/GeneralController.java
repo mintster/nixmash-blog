@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootVersion;
-import org.springframework.core.SpringVersion;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Controller;
@@ -56,8 +55,7 @@ public class GeneralController {
 
     @RequestMapping(value = "/", method = GET)
     public String home(Model model) {
-        String springVersion = webUI.parameterizedMessage("home.spring.version",
-                SpringBootVersion.getVersion(), SpringVersion.getVersion());
+        String springVersion = webUI.parameterizedMessage("home.spring.version", SpringBootVersion.getVersion());
         model.addAttribute("springVersion", springVersion);
 
         GitHubStats gitHubStats = webUI.getCurrentGitHubStats();
@@ -66,7 +64,7 @@ public class GeneralController {
             model.addAttribute("gitHubStats", gitHubStats);
         }
 
-        Slice<Post> posts = postService.getPublishedPosts(0, 10);
+        Slice<Post> posts = postService.getPublishedPosts(0, 20);
         if (posts.getContent().size() > 0)
             model.addAttribute("posts", posts);
 

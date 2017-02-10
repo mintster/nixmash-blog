@@ -1,6 +1,9 @@
 /*/<editor-fold> desc="HOME PAGE ----------------------------/ "*/
 .jumbotron {
-    padding: 40px 0 30px 0;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    color: inherit;
 }
 
 .jumbotron p {
@@ -699,14 +702,15 @@ span.tag.label {
 }
 
 .taglink a.label-default {
-    background-color: #acc7c1;
+    background-color: #89a29d;
 }
 
 /*</editor-fold>*/
 /*/<editor-fold> desc="POST DISPLAY IN STREAM----------------------------/ "*/
 #more-posts-button-row {
     display: inline-block;
-    padding: 0 15px 60px 15px;
+    padding: 0 15px 80px 15px;
+    margin-top: -80px;
 }
 
 @media (max-width: 1200px) {
@@ -725,7 +729,7 @@ span.tag.label {
 }
 
 #posts {
-    margin-bottom: 25px;
+    margin-bottom: 125px;
 }
 
 #posts .post {

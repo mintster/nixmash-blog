@@ -25,7 +25,7 @@ public class SpringDataTests {
 
 	@Test
 	public void contextLoads() {
-		assertNotNull(applicationSettings.getIsDemoSite());
+		assertNotNull(applicationSettings.getIsNixmashSite());
 	}
 
 }

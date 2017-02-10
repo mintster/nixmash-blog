@@ -13,7 +13,7 @@ table.dataTable tfoot th {
 
 table.dataTable thead th,
 table.dataTable thead td {
-    padding: 10px 18px;
+    padding: 10px 15px 10px 8px;
     border-bottom: 1px solid #111
 }
 

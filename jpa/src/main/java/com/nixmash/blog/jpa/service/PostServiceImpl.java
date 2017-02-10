@@ -37,6 +37,8 @@ import javax.persistence.PersistenceContext;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Comparator.comparing;
+
 /**
  * Created by daveburke on 6/1/16.
  */
@@ -398,6 +400,7 @@ public class PostServiceImpl implements PostService {
     }
 
 
+    @SuppressWarnings("JpaQueryApiInspection")
     @Transactional(readOnly = true)
     @Override
     public List<TagDTO> getTagCloud(int tagCount) {
@@ -408,6 +411,7 @@ public class PostServiceImpl implements PostService {
                 .filter(t -> t.getPosts().size() > 0)
                 .limit(tagCount)
                 .map(TagDTO::new)
+                .sorted(comparing(TagDTO::getTagValue))
                 .collect(Collectors.toList());
         return tagDTOs;
     }

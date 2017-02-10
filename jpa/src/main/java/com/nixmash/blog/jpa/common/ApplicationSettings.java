@@ -13,9 +13,13 @@ public class ApplicationSettings  implements Serializable {
 
 	private static final long serialVersionUID = 7939595017750704755L;
 
-	private Boolean isDemoSite;
+	// region Site
+
+	private Boolean isNixmashSite;
 	private String baseUrl;
 	private String siteName;
+
+	// endregion
 
 	//region Social Properties
 
@@ -37,8 +41,6 @@ public class ApplicationSettings  implements Serializable {
 	private String profileIconPath;
 	private String profileIconUrlRoot;
 
-	private String editorImagePlacemarker;
-
 	// endregion
 
 	//region RSS Properties
@@ -48,27 +50,23 @@ public class ApplicationSettings  implements Serializable {
 
 	//endregion
 
-	// region post Uploads
+	// region Posts Stream and Display
 
 	private String postImagePath;
 	private String postDemoImagePath;
 	private String postImageUrlRoot;
 	private String postDemoImageUrlRoot;
-
-	// endregion
-
-	// region Posts
-
-	private int sidebarTagCloudCount;
 	private String postAtoZFilePath;
 
-	// endregion
+	private int sidebarTagCloudCount;
+	private int postStreamPageCount;
+	private int postTitleStreamPageCount;
 
+	// endregion
 
 	public String getPostAtoZFilePath() {
 		return postAtoZFilePath;
 	}
-
 	public void setPostAtoZFilePath(String postAtoZFilePath) {
 		this.postAtoZFilePath = postAtoZFilePath;
 	}
@@ -76,7 +74,6 @@ public class ApplicationSettings  implements Serializable {
 	public int getSidebarTagCloudCount() {
 		return sidebarTagCloudCount;
 	}
-
 	public void setSidebarTagCloudCount(int sidebarTagCloudCount) {
 		this.sidebarTagCloudCount = sidebarTagCloudCount;
 	}
@@ -84,7 +81,6 @@ public class ApplicationSettings  implements Serializable {
 	public String getPostDemoImagePath() {
 		return postDemoImagePath;
 	}
-
 	public void setPostDemoImagePath(String postDemoImagePath) {
 		this.postDemoImagePath = postDemoImagePath;
 	}
@@ -92,7 +88,6 @@ public class ApplicationSettings  implements Serializable {
 	public String getPostDemoImageUrlRoot() {
 		return postDemoImageUrlRoot;
 	}
-
 	public void setPostDemoImageUrlRoot(String postDemoImageUrlRoot) {
 		this.postDemoImageUrlRoot = postDemoImageUrlRoot;
 	}
@@ -100,7 +95,6 @@ public class ApplicationSettings  implements Serializable {
 	public String getPostImagePath() {
 		return postImagePath;
 	}
-
 	public void setPostImagePath(String postImagePath) {
 		this.postImagePath = postImagePath;
 	}
@@ -108,23 +102,13 @@ public class ApplicationSettings  implements Serializable {
 	public String getPostImageUrlRoot() {
 		return postImageUrlRoot;
 	}
-
 	public void setPostImageUrlRoot(String postImageUrlRoot) {
 		this.postImageUrlRoot = postImageUrlRoot;
-	}
-
-	public String getEditorImagePlacemarker() {
-		return editorImagePlacemarker;
-	}
-
-	public void setEditorImagePlacemarker(String editorImagePlacemarker) {
-		this.editorImagePlacemarker = editorImagePlacemarker;
 	}
 
 	public String getGoogleMapKey() {
 		return googleMapKey;
 	}
-
 	public void setGoogleMapKey(String googleMapKey) {
 		this.googleMapKey = googleMapKey;
 	}
@@ -132,7 +116,6 @@ public class ApplicationSettings  implements Serializable {
 	public String getGoogleAppId() {
 		return googleAppId;
 	}
-
 	public void setGoogleAppId(String googleAppId) {
 		this.googleAppId = googleAppId;
 	}
@@ -140,7 +123,6 @@ public class ApplicationSettings  implements Serializable {
 	public String getGoogleAppSecret() {
 		return googleAppSecret;
 	}
-
 	public void setGoogleAppSecret(String googleAppSecret) {
 		this.googleAppSecret = googleAppSecret;
 	}
@@ -148,7 +130,6 @@ public class ApplicationSettings  implements Serializable {
 	public String getTwitterAppId() {
 		return twitterAppId;
 	}
-
 	public void setTwitterAppId(String twitterAppId) {
 		this.twitterAppId = twitterAppId;
 	}
@@ -156,7 +137,6 @@ public class ApplicationSettings  implements Serializable {
 	public String getTwitterAppSecret() {
 		return twitterAppSecret;
 	}
-
 	public void setTwitterAppSecret(String twitterAppSecret) {
 		this.twitterAppSecret = twitterAppSecret;
 	}
@@ -164,7 +144,6 @@ public class ApplicationSettings  implements Serializable {
 	public String getFacebookAppId() {
 		return facebookAppId;
 	}
-
 	public void setFacebookAppId(String facebookAppId) {
 		this.facebookAppId = facebookAppId;
 	}
@@ -172,23 +151,20 @@ public class ApplicationSettings  implements Serializable {
 	public String getFacebookAppSecret() {
 		return facebookAppSecret;
 	}
-
 	public void setFacebookAppSecret(String facebookAppSecret) {
 		this.facebookAppSecret = facebookAppSecret;
 	}
 
-	public Boolean getIsDemoSite() {
-		return isDemoSite;
+	public Boolean getIsNixmashSite() {
+		return isNixmashSite;
 	}
-
-	public void setIsDemoSite(Boolean isDemoSite) {
-		this.isDemoSite = isDemoSite;
+	public void setIsNixmashSite(Boolean isNixmashSite) {
+		this.isNixmashSite = isNixmashSite;
 	}
 
 	public String getProfileImagePath() {
 		return profileImagePath;
 	}
-
 	public void setProfileImagePath(String profileImagePath) {
 		this.profileImagePath = profileImagePath;
 	}
@@ -196,7 +172,6 @@ public class ApplicationSettings  implements Serializable {
 	public String getProfileImageUrlRoot() {
 		return profileImageUrlRoot;
 	}
-
 	public void setProfileImageUrlRoot(String profileImageUrlRoot) {
 		this.profileImageUrlRoot = profileImageUrlRoot;
 	}
@@ -204,7 +179,6 @@ public class ApplicationSettings  implements Serializable {
 	public String getProfileIconUrlRoot() {
 		return profileIconUrlRoot;
 	}
-
 	public void setProfileIconUrlRoot(String profileIconUrlRoot) {
 		this.profileIconUrlRoot = profileIconUrlRoot;
 	}
@@ -212,7 +186,6 @@ public class ApplicationSettings  implements Serializable {
 	public String getProfileIconPath() {
 		return profileIconPath;
 	}
-
 	public void setProfileIconPath(String profileIconPath) {
 		this.profileIconPath = profileIconPath;
 	}
@@ -220,7 +193,6 @@ public class ApplicationSettings  implements Serializable {
 	public String getBaseUrl() {
 		return baseUrl;
 	}
-
 	public void setBaseUrl(String baseUrl) {
 		this.baseUrl = baseUrl;
 	}
@@ -228,7 +200,6 @@ public class ApplicationSettings  implements Serializable {
 	public String getRssChannelTitle() {
 		return rssChannelTitle;
 	}
-
 	public void setRssChannelTitle(String rssChannelTitle) {
 		this.rssChannelTitle = rssChannelTitle;
 	}
@@ -236,7 +207,6 @@ public class ApplicationSettings  implements Serializable {
 	public String getRssChannelDescription() {
 		return rssChannelDescription;
 	}
-
 	public void setRssChannelDescription(String rssChannelDescription) {
 		this.rssChannelDescription = rssChannelDescription;
 	}
@@ -244,8 +214,22 @@ public class ApplicationSettings  implements Serializable {
 	public String getSiteName() {
 		return siteName;
 	}
-
 	public void setSiteName(String siteName) {
 		this.siteName = siteName;
 	}
+
+	public int getPostStreamPageCount() {
+		return postStreamPageCount;
+	}
+	public void setPostStreamPageCount(int postStreamPageCount) {
+		this.postStreamPageCount = postStreamPageCount;
+	}
+
+	public int getPostTitleStreamPageCount() {
+		return postTitleStreamPageCount;
+	}
+	public void setPostTitleStreamPageCount(int postTitleStreamPageCount) {
+		this.postTitleStreamPageCount = postTitleStreamPageCount;
+	}
+
 }

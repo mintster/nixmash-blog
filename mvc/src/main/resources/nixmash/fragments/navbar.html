@@ -94,9 +94,6 @@
                     </div>
                     <div th:if="${currentUser == null}" class="navbar-right">
                         <a th:href="@{'/signin/'}" th:text="#{web.site.login}" class="navbar-text margin-5">[Login]</a>
-                        <span class="navbar-text margin-5">|</span> <a th:href="@{'/register/'}"
-                                                                       th:text="#{web.site.signup}"
-                                                                       class="navbar-text margin-5">[Signup]</a>
                     </div>
                 </div>
             </div>

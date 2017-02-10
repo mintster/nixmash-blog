@@ -148,8 +148,9 @@ public class PostsRestController {
                                   @PathVariable int pageNumber,
                                   HttpServletRequest request,
                                   CurrentUser currentUser) {
+        String template = applicationSettings.getIsNixmashSite() ? "title" : null;
         Slice<Post> posts = postService.getPostsByTagId(tagid, pageNumber, POST_PAGING_SIZE);
-        String result = populatePostStream(posts.getContent(), currentUser);
+        String result = populatePostStream(posts.getContent(), currentUser, template);
         WebUtils.setSessionAttribute(request, SESSION_ATTRIBUTE_TAGGEDPOSTS, posts.getContent());
         return result;
     }
@@ -286,7 +287,8 @@ public class PostsRestController {
                 logger.info("Could not convert PostDoc {} to Post with title \"{}\"", postDoc.getPostId(), postDoc.getPostTitle());
             }
         }
-        return populatePostStream(posts, currentUser, null);
+        String format = applicationSettings.getIsNixmashSite() ? "title" : null;
+        return populatePostStream(posts, currentUser, format);
     }
 
     private String populatePostStream(List<Post> posts, CurrentUser currentUser, String format) {

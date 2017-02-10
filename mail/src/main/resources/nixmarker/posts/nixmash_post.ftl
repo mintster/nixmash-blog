@@ -7,6 +7,6 @@
     <div class="post-footer">
     <#include "includes/footer.ftl">
     </div>
-    <div class="nixmash-tag"><a href="http://nixmash.com" target="_blank">
+    <div class="nixmash-tag"><a href="http://nixmash.com">
         <img src="/images/posts/nixmashtag.png" alt=""/></a></div>
 </div>
