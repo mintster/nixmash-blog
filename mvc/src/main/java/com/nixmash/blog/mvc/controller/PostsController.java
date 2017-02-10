@@ -76,9 +76,10 @@ public class PostsController {
 
     public static final String POST_PUBLISH = "publish";
     public static final String POST_DRAFT = "draft";
-    public static final int POST_PAGING_SIZE = 10;
 
-    public static final int TITLE_PAGING_SIZE = 10;
+    public static int POST_PAGING_SIZE;
+    public static int TITLE_PAGING_SIZE;
+
     private static final String SESSION_ATTRIBUTE_NEWPOST = "activepostdto";
     public static final String SESSION_QUICKSEARCH_QUERY = "quicksearch";
     public static final String SESSION_POSTQUERYDTO = "postquerydto";
@@ -106,6 +107,9 @@ public class PostsController {
         this.applicationSettings = applicationSettings;
         this.fmService = fmService;
         this.postDocService = postDocService;
+
+        POST_PAGING_SIZE = applicationSettings.getPostStreamPageCount();
+        TITLE_PAGING_SIZE = applicationSettings.getPostTitleStreamPageCount();
     }
 
     // endregion
@@ -197,8 +201,6 @@ public class PostsController {
 
     @RequestMapping(value = "/az", method = GET)
     public String postsAtoZ(Model model) {
-        model.addAttribute("alphaPosts", postService.getAlphaPosts());
-        model.addAttribute("alphaLinks", postService.getAlphaLInks());
         return POSTS_AZ_VIEW;
     }
 
