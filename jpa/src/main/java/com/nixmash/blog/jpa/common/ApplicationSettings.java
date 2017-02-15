@@ -52,6 +52,9 @@ public class ApplicationSettings  implements Serializable {
 
 	// region Posts Stream and Display
 
+	private Boolean titleStreamDisplay;
+	private Boolean titleSearchResultsDisplay;
+
 	private String postImagePath;
 	private String postDemoImagePath;
 	private String postImageUrlRoot;
@@ -63,6 +66,23 @@ public class ApplicationSettings  implements Serializable {
 	private int postTitleStreamPageCount;
 
 	// endregion
+
+
+	public Boolean getTitleStreamDisplay() {
+		return titleStreamDisplay;
+	}
+
+	public void setTitleStreamDisplay(Boolean titleStreamDisplay) {
+		this.titleStreamDisplay = titleStreamDisplay;
+	}
+
+	public Boolean getTitleSearchResultsDisplay() {
+		return titleSearchResultsDisplay;
+	}
+
+	public void setTitleSearchResultsDisplay(Boolean titleSearchResultsDisplay) {
+		this.titleSearchResultsDisplay = titleSearchResultsDisplay;
+	}
 
 	public String getPostAtoZFilePath() {
 		return postAtoZFilePath;

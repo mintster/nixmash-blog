@@ -107,6 +107,14 @@ body {
 }
 
 /*</editor-fold>*/
+/*<editor-fold desc="PAGE FOOTER -------------------------------------------- /">*/
+.nixmash-footer-img {
+    margin: 40px 0 5px 0;
+}
+.nixmash-footer-img a img {
+    max-width: 200px;
+}
+/*</editor-fold>*/
 /*/<editor-fold> desc="TABLE-FORMS ----------------------------/ "*/
 #form-table, #grid-table {
     font-size: 125%;
@@ -1381,7 +1389,6 @@ button.btn.btn-success.btn-flashcard-category {
 }
 
 /*</editor-fold>*/
-
 /*/<editor-fold> desc="SEARCH PAGE----------------------------/ "*/
 
 .post-search-form {

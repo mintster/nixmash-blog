@@ -29,7 +29,7 @@
         <ul class="list-group" id="sidebar">
 
             <a th:href="@{/posts}" class="list-group-item"
-               th:classappend="${activeTab == 'titles'} ? 'active'"><span  th:text="#{posts.sidebar.menu.recent}" th:remove="tag">[Recent Posts]</span>
+               th:classappend="${activeTab == 'posts'} ? 'active'"><span  th:text="#{posts.sidebar.menu.recent}" th:remove="tag">[Recent Posts]</span>
                 <i class="glyphicon glyphicon-chevron-right"></i></a>
 
             <!--<a th:href="@{/posts/titles}" class="list-group-item"-->

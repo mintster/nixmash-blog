@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -27,11 +28,15 @@ import java.util.List;
 @PropertySource("classpath:mvc.properties")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-    private static final String MESSAGESOURCE_BASENAME = "message.source.basename";
-    private static final String MESSAGESOURCE_USE_CODE_AS_DEFAULT_MESSAGE = "message.source.use.code.as.default.message";
+    private static final String MSGSOURCE = "message.source.basename";
+    private static final String MSGSOURCE_NIXMASH_BASENAME = "message.source.nixmash.basename";
+    private static final String USE_CODE_AS_DEFAULT_MESSAGE = "use.code.as.default.message";
 
     @Autowired
     private Environment environment;
+
+    @Value("${nixmash.mode.enabled}")
+    private Boolean nixmashModeEnabled;
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -48,11 +53,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public MessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename(environment.getRequiredProperty(MESSAGESOURCE_BASENAME));
-        messageSource.setUseCodeAsDefaultMessage(
-                Boolean.parseBoolean(environment.getRequiredProperty(MESSAGESOURCE_USE_CODE_AS_DEFAULT_MESSAGE)));
-        return messageSource;
+        ResourceBundleMessageSource msgsource = new ResourceBundleMessageSource();
+        if (nixmashModeEnabled)
+            msgsource.setBasename(environment.getRequiredProperty(MSGSOURCE_NIXMASH_BASENAME));
+        else
+            msgsource.setBasename(environment.getRequiredProperty(MSGSOURCE));
+
+        msgsource.setUseCodeAsDefaultMessage(
+                Boolean.parseBoolean(environment.getRequiredProperty(USE_CODE_AS_DEFAULT_MESSAGE)));
+        return msgsource;
     }
 
     @Bean(name = "validator")
