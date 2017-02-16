@@ -17,6 +17,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
@@ -28,8 +29,6 @@ import java.util.List;
 @PropertySource("classpath:mvc.properties")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-    private static final String MSGSOURCE = "message.source.basename";
-    private static final String MSGSOURCE_NIXMASH_BASENAME = "message.source.nixmash.basename";
     private static final String USE_CODE_AS_DEFAULT_MESSAGE = "use.code.as.default.message";
 
     @Autowired
@@ -37,6 +36,53 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Value("${nixmash.mode.enabled}")
     private Boolean nixmashModeEnabled;
+
+    // region Template Resolvers
+
+    @Bean
+    public ITemplateResolver templateResolver() {
+        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+        if (nixmashModeEnabled)
+            resolver.setPrefix("classpath:/nixmash/");
+        else
+            resolver.setPrefix("classpath:/templates/");
+
+        resolver.setSuffix(".html");
+        resolver.setTemplateMode("HTML5");
+        resolver.setCacheable(false);
+        resolver.setOrder(0);
+        return resolver;
+    }
+
+    @Bean
+    public ITemplateResolver adminTemplateResolver() {
+        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+        resolver.setPrefix("classpath:/admin/");
+        resolver.setSuffix(".html");
+        resolver.setTemplateMode("HTML5");
+        resolver.setCacheable(false);
+        resolver.setOrder(1);
+        return resolver;
+    }
+
+    // endregion
+
+    // region Resources
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        if (nixmashModeEnabled) {
+            registry.addResourceHandler("/**")
+                    .addResourceLocations("classpath:/common/", "classpath:/private/");
+        } else {
+            registry.addResourceHandler("/**")
+                    .addResourceLocations("classpath:/common/", "classpath:/static/");
+        }
+    }
+
+    // endregion
+
+    // region Messages
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -55,9 +101,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public MessageSource messageSource() {
         ResourceBundleMessageSource msgsource = new ResourceBundleMessageSource();
         if (nixmashModeEnabled)
-            msgsource.setBasename(environment.getRequiredProperty(MSGSOURCE_NIXMASH_BASENAME));
+            msgsource.setBasename("nixmash");
         else
-            msgsource.setBasename(environment.getRequiredProperty(MSGSOURCE));
+            msgsource.setBasename("messages");
 
         msgsource.setUseCodeAsDefaultMessage(
                 Boolean.parseBoolean(environment.getRequiredProperty(USE_CODE_AS_DEFAULT_MESSAGE)));
@@ -76,14 +122,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return validator();
     }
 
-    @Bean(name = "adminTemplateResolver")
-    public ITemplateResolver templateResolver() {
-        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        resolver.setPrefix("classpath:/admin/");
-        resolver.setSuffix(".html");
-        resolver.setTemplateMode("HTML5");
-        resolver.setCacheable(false);
-        return resolver;
-    }
+    // endregion
 
 }
