@@ -275,7 +275,7 @@ public class PostsRestController {
     }
 
     private String populatePostStream(List<Post> posts, CurrentUser currentUser) {
-        return populatePostStream(posts, currentUser);
+        return populatePostStream(posts, currentUser, null);
     }
 
     private String populatePostDocStream(List<PostDoc> postDocs, CurrentUser currentUser) {
