@@ -14,7 +14,8 @@
     </appender>
 
     <logger name="com.nixmash.blog" level="info"/>
-    <logger name="org.freemarker" level="off" />
+    <logger name="org.springframework.ui.freemarker" level="off" />
+    <logger name="org.springframework" level="off" />
 
     <!--<include resource="logJpaToFile.xml" />-->
 

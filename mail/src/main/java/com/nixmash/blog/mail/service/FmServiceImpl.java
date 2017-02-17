@@ -4,6 +4,7 @@ import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.model.User;
 import com.nixmash.blog.jpa.service.PostService;
+import com.nixmash.blog.mail.components.MailUI;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -33,13 +34,15 @@ public class FmServiceImpl implements FmService {
     private final Configuration fm;
     private final Environment environment;
     private final PostService postService;
+    private final MailUI mailUI;
 
     @Autowired
-    public FmServiceImpl(ApplicationSettings applicationSettings, Configuration fm, Environment environment, PostService postService) {
+    public FmServiceImpl(ApplicationSettings applicationSettings, Configuration fm, Environment environment, PostService postService, MailUI mailUI) {
         this.applicationSettings = applicationSettings;
         this.fm = fm;
         this.environment = environment;
         this.postService = postService;
+        this.mailUI = mailUI;
     }
 
     // region Test Template
@@ -48,7 +51,7 @@ public class FmServiceImpl implements FmService {
     public String displayTestTemplate(User user) {
 
         String applicationPropertyUrl = environment.getProperty("spring.application.url");
-        String siteName = environment.getProperty("mail.site.name");
+        String siteName = mailUI.getMessage("mail.site.name");
         String greeting = "YOUSA!";
 
         Map<String, Object> model = new Hashtable<>();
@@ -133,8 +136,8 @@ public class FmServiceImpl implements FmService {
     public String createPostAtoZs() {
         String html = null;
 
-        String backToTop = environment.getProperty("posts.az.page.backtotop");
-        String azFileName = environment.getProperty("posts.az.file.name");
+        String backToTop = mailUI.getMessage("posts.az.page.backtotop");
+        String azFileName = mailUI.getMessage("posts.az.file.name");
         String azFilePath = applicationSettings.getPostAtoZFilePath();
 
         Map<String, Object> model = new Hashtable<>();

@@ -5,6 +5,7 @@ import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.model.User;
 import com.nixmash.blog.jpa.service.PostService;
 import com.nixmash.blog.jpa.service.UserService;
+import com.nixmash.blog.mail.components.MailUI;
 import com.nixmash.blog.mail.service.FmService;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,17 +39,17 @@ public class FmServiceTests extends MailContext {
     @Autowired
     PostService postService;
 
+    @Autowired
+    MailUI mailUI;
+
     @Before
     public void setup() throws PostNotFoundException {
         user = userService.getUserByUsername("erwin");                            // User:  Erwin Lapote
-
         post = postService.getPostById(1L);                                                         // Post Title: Freestanding Note Post
         postTitle = post.getPostTitle();
-
         link = postService.getPostById(3L);                                                           // Link Post Type (no image): Jsoup Parsing and Traversing Document and URL - JAVATIPS.INFO
         linkTitle = link.getPostTitle();
-
-        siteName = environment.getProperty("mail.site.name");           // NixMash Spring
+        siteName = mailUI.getMessage("mail.site.name");                         // NixMash Spring
     }
 
     // region Test Template
@@ -106,7 +107,7 @@ public class FmServiceTests extends MailContext {
     @Test
     public void postAZTemplatePopulated() throws Exception {
         String result = fmService.createPostAtoZs();
-        assertThat(result, containsString("toppie!"));
+        assertThat(result, containsString("back-to-top"));
     }
 
     // endregion

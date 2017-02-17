@@ -5,6 +5,7 @@ import com.nixmash.blog.jpa.model.User;
 import com.nixmash.blog.jpa.service.UserService;
 import com.nixmash.blog.mail.common.MailSettings;
 import com.nixmash.blog.mail.components.MailSender;
+import com.nixmash.blog.mail.components.MailUI;
 import com.nixmash.blog.mail.dto.MailDTO;
 import com.nixmash.blog.mail.service.FmMailService;
 import com.nixmash.blog.mail.service.FmMailServiceImpl;
@@ -35,6 +36,7 @@ public class FmMailTests extends MailContext {
     private ApplicationSettings applicationSettings;
     private Configuration fm;
     private Environment environment;
+    private MailUI mailUI;
 
     @Autowired
     UserService userService;
@@ -43,7 +45,7 @@ public class FmMailTests extends MailContext {
     public void setUp() {
         mockMailSender = mock(MailSender.class);
         mockFmMailService =
-                new FmMailServiceImpl(mockMailSender, mailSettings,applicationSettings, fm, environment );
+                new FmMailServiceImpl(mockMailSender, mailSettings,applicationSettings, fm, environment, mailUI);
         mailDTO = MailTestUtils.testMailDTO();
     }
 

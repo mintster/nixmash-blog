@@ -25,6 +25,8 @@ springBoot {
 
 dependencies {
 	compile project(':jpa')
+
+	compile 'org.springframework:spring-context-support:4.3.6.RELEASE'
 	compile 'org.springframework.boot:spring-boot-starter-mail'
 	compile 'org.springframework.boot:spring-boot-starter-freemarker'
 	compile group: 'commons-io', name: 'commons-io', version: '2.4'

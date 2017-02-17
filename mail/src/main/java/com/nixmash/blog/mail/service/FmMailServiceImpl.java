@@ -4,6 +4,7 @@ import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.jpa.model.User;
 import com.nixmash.blog.mail.common.MailSettings;
 import com.nixmash.blog.mail.components.MailSender;
+import com.nixmash.blog.mail.components.MailUI;
 import com.nixmash.blog.mail.dto.MailDTO;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -11,7 +12,6 @@ import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -41,18 +41,20 @@ public class FmMailServiceImpl implements FmMailService {
     private final ApplicationSettings applicationSettings;
     private final Configuration fm;
     private final Environment environment;
+    private final MailUI mailUI;
 
-    @Value("${mail.contact.body.type}")
-    private MailDTO.Type mailType;
+//    @Value("${mail.contact.body.type}")
+//    private MailDTO.Type mailType;
 
     @Autowired
     public FmMailServiceImpl(MailSender mailSender,
-                             MailSettings mailSettings, ApplicationSettings applicationSettings, Configuration fm, Environment environment) {
+                             MailSettings mailSettings, ApplicationSettings applicationSettings, Configuration fm, Environment environment, MailUI mailUI) {
         this.mailSender = mailSender;
         this.mailSettings = mailSettings;
         this.applicationSettings = applicationSettings;
         this.fm = fm;
         this.environment = environment;
+        this.mailUI = mailUI;
     }
 
 
@@ -70,20 +72,20 @@ public class FmMailServiceImpl implements FmMailService {
                     // region build mimeMessage
 
                     MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
-                    message.setFrom(environment.getProperty(PASSWORD_RESET_EMAIL_FROM));
+                    message.setFrom(mailUI.getMessage(PASSWORD_RESET_EMAIL_FROM));
                     String sendTo = user.getEmail();
                     if (applicationSettings.getBaseUrl().indexOf("localhost") > 0) {
                         sendTo = mailSettings.getDeveloperTo();
                     }
                     message.addTo(sendTo);
 
-                    message.setSubject(environment.getProperty(PASSWORD_RESET_EMAIL_SUBJECT));
+                    message.setSubject(mailUI.getMessage(PASSWORD_RESET_EMAIL_SUBJECT));
 
-                    String greeting = environment.getProperty(PASSWORD_RESET_EMAIL_GREETING);
+                    String greeting = mailUI.getMessage(PASSWORD_RESET_EMAIL_GREETING);
                     greeting = MessageFormat.format(greeting, String.format("%s %s", user.getFirstName(), user.getLastName()));
 
                     String applicationPropertyUrl = environment.getProperty("spring.application.url");
-                    String siteName = environment.getProperty("mail.site.name");
+                    String siteName = mailUI.getMessage("mail.site.name");
 
                     String resetLink = applicationSettings.getBaseUrl() + "/users/resetpassword/" + token;
 
@@ -91,7 +93,7 @@ public class FmMailServiceImpl implements FmMailService {
 
                     Map<String, Object> model = new Hashtable<>();
                     model.put("greeting", greeting);
-                    model.put("memberServices",  environment.getProperty(EMAIL_SITE_USER_SERVICES));
+                    model.put("memberServices",  mailUI.getMessage(EMAIL_SITE_USER_SERVICES));
                     model.put("siteName", siteName);
                     model.put("applicationPropertyUrl", applicationPropertyUrl);
                     model.put("resetLink", resetLink);
@@ -130,15 +132,18 @@ public class FmMailServiceImpl implements FmMailService {
                     message.addCc(mailSettings.getContactCC());
                 }
 
-                String subject = environment.getProperty(CONTACT_EMAIL_SUBJECT);
+                String subject = mailUI.getMessage(CONTACT_EMAIL_SUBJECT);
                 message.setSubject(MessageFormat.format(subject, mailDTO.getFromName()));
 
                 String body = mailDTO.getBody();
-                String greeting = environment.getProperty(CONTACT_EMAIL_GREETING);
+                String greeting = mailUI.getMessage(CONTACT_EMAIL_GREETING);
                 String applicationPropertyUrl = environment.getProperty("spring.application.url");
-                String siteName = environment.getProperty("mail.site.name");
+                String siteName = mailUI.getMessage("mail.site.name");
 
                 // endregion
+
+                MailDTO.Type mailType =
+                        Enum.valueOf(MailDTO.Type.class, mailUI.getMessage("mail.contact.body.type"));
 
                 switch (mailType) {
                     case HTML:
@@ -184,20 +189,20 @@ public class FmMailServiceImpl implements FmMailService {
                     // region build mimeMessage
 
                     MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
-                    message.setFrom(environment.getProperty(USER_VERIFICATION_EMAIL_FROM));
+                    message.setFrom(mailUI.getMessage(USER_VERIFICATION_EMAIL_FROM));
                     String sendTo = user.getEmail();
                     if (applicationSettings.getBaseUrl().indexOf("localhost") > 0) {
                         sendTo = mailSettings.getDeveloperTo();
                     }
                     message.addTo(sendTo);
 
-                    message.setSubject(environment.getProperty(USER_VERIFICATION_EMAIL_SUBJECT));
+                    message.setSubject(mailUI.getMessage(USER_VERIFICATION_EMAIL_SUBJECT));
 
-                    String greeting = environment.getProperty(USER_VERIFICATION_EMAIL_GREETING);
+                    String greeting = mailUI.getMessage(USER_VERIFICATION_EMAIL_GREETING);
                     greeting = MessageFormat.format(greeting, String.format("%s %s", user.getFirstName(), user.getLastName()));
 
                     String applicationPropertyUrl = environment.getProperty("spring.application.url");
-                    String siteName = environment.getProperty("mail.site.name");
+                    String siteName = mailUI.getMessage("mail.site.name");
 
                     String verifyLink = applicationSettings.getBaseUrl() + "/users/verify/" + user.getUserKey();
 
@@ -205,7 +210,7 @@ public class FmMailServiceImpl implements FmMailService {
 
                     Map<String, Object> model = new Hashtable<>();
                     model.put("greeting", greeting);
-                    model.put("memberServices",  environment.getProperty(EMAIL_SITE_USER_SERVICES));
+                    model.put("memberServices",  mailUI.getMessage(EMAIL_SITE_USER_SERVICES));
                     model.put("siteName", siteName);
                     model.put("applicationPropertyUrl", applicationPropertyUrl);
                     model.put("verifyLink", verifyLink);
