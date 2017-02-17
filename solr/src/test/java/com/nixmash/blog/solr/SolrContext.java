@@ -1,6 +1,5 @@
 package com.nixmash.blog.solr;
 
-import com.nixmash.blog.jpa.config.ApplicationConfig;
 import com.nixmash.blog.jpa.enums.DataConfigProfile;
 import com.nixmash.blog.solr.common.SolrSettings;
 import com.nixmash.blog.solr.config.SolrApplicationConfig;
@@ -16,7 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {SolrTestConfig.class, ApplicationConfig.class, SolrApplicationConfig.class})
+@ContextConfiguration(classes = {SolrTestConfig.class, SolrLauncher.class, SolrApplicationConfig.class })
 @ActiveProfiles({ DataConfigProfile.H2, SolrConfigProfile.DEV })
 public class SolrContext {
 

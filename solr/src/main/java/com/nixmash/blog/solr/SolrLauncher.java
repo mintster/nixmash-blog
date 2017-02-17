@@ -1,12 +1,15 @@
 package com.nixmash.blog.solr;
 
+import com.nixmash.blog.jpa.config.ApplicationConfig;
 import com.nixmash.blog.solr.common.SolrUI;
 import com.nixmash.blog.solr.config.SolrApplicationConfig;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.SpringVersion;
 
 @SpringBootApplication
+@Import(ApplicationConfig.class)
 public class SolrLauncher {
 
 	public static void main(String[] args) {
