@@ -141,7 +141,7 @@ public class PostsController {
     public String home(Model model) {
         boolean showMore = postService.getAllPublishedPosts().size() > TITLE_PAGING_SIZE;
         model.addAttribute("showmore", showMore);
-        return POSTS_TITLES_VIEW;
+        return POSTS_LIST_VIEW;
     }
 
     @RequestMapping(value = "/search", method = GET)

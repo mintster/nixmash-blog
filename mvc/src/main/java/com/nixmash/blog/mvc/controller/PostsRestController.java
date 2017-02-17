@@ -127,7 +127,8 @@ public class PostsRestController {
     @RequestMapping(value = "/page/{pageNumber}", produces = "text/html;charset=UTF-8")
     public String getPosts(@PathVariable Integer pageNumber, HttpServletRequest request, CurrentUser currentUser) {
         Slice<Post> posts = postService.getPublishedPosts(pageNumber, POST_PAGING_SIZE);
-        String result = populatePostStream(posts.getContent(), currentUser);
+        String template = applicationSettings.getTitleStreamDisplay() ? "title" : null;
+        String result = populatePostStream(posts.getContent(), currentUser, template);
         WebUtils.setSessionAttribute(request, SESSION_ATTRIBUTE_POSTS, posts.getContent());
         return result;
     }
@@ -148,7 +149,7 @@ public class PostsRestController {
                                   @PathVariable int pageNumber,
                                   HttpServletRequest request,
                                   CurrentUser currentUser) {
-        String template = applicationSettings.getIsNixmashSite() ? "title" : null;
+        String template = applicationSettings.getTitleStreamDisplay() ? "title" : null;
         Slice<Post> posts = postService.getPostsByTagId(tagid, pageNumber, POST_PAGING_SIZE);
         String result = populatePostStream(posts.getContent(), currentUser, template);
         WebUtils.setSessionAttribute(request, SESSION_ATTRIBUTE_TAGGEDPOSTS, posts.getContent());
@@ -287,7 +288,7 @@ public class PostsRestController {
                 logger.info("Could not convert PostDoc {} to Post with title \"{}\"", postDoc.getPostId(), postDoc.getPostTitle());
             }
         }
-        String format = applicationSettings.getIsNixmashSite() ? "title" : null;
+        String format = applicationSettings.getTitleSearchResultsDisplay() ? "title" : null;
         return populatePostStream(posts, currentUser, format);
     }
 

@@ -52,7 +52,7 @@ public class PostsControllerTests extends AbstractContext {
     @Test
     public void homePageTest() throws Exception {
         mockMvc.perform(get("/posts"))
-                .andExpect(view().name(POSTS_TITLES_VIEW));
+                .andExpect(view().name(POSTS_LIST_VIEW));
     }
 
     @Test

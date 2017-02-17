@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="body">
+
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            $('#postsTable').DataTable( {
+                "aoColumns": [
+                    null,
+                    null,
+                    { "orderable": false },
+                    { "orderable": false },
+                    { "sType": "date" },
+                    null,
+                    { "orderable": false }
+                ],
+                "autoWidth": false,
+                "pageLength": 50,
+                "order": [[ 0, "desc" ]]
+            });
+        });
+    </script>
+    <!--/*@thymesVar id="post" type="com.nixmash.blog.jpa.model.Post"*/-->
+    <!--/*@thymesVar id="posts" type="List<com.nixmash.blog.jpa.model.Post>"*/-->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2 th:text="#{admin.posts.title}">[Post Administration]
+                    </h2>
+                    <small th:text="#{admin.posts.subtitle}" class="h2_subtitle">[List Posts]</small>
+                    <div class="form-actions col-md-offset-3 col-sm-offset-2 pull-right">
+                        <a th:href="@{'/admin/posts/add/post'}" th:text="#{admin.posts.button.new}"
+                           class="btn btn-primary">[Add Post]</a>
+                        <a th:href="@{'/admin/posts/add/link'}" th:text="#{admin.links.button.new}"
+                           class="btn btn-primary">[Add a Link]</a>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content  fill-body-table">
+                    <div id="message-holder">
+                        <div th:if="${feedbackMessage}"
+                             th:class="'messageblock hidden'"
+                             th:text="${feedbackMessage}"></div>
+                    </div>
+                    <table id="postsTable" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th class="th-tags">Tags</th>
+                            <th>Post Type</th>
+                            <th>Date</th>
+                            <th style="width: 36px;"></th>
+                            <th style="width: 36px;"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="post : ${posts}" th:with="creationDate=${post.postDate},
+                                            displayType=|${#strings.replace(post.displayType,'_', ' ')}|">
+                            <td th:text="${post.postId}"></td>
+                            <td th:classappend="${post.isPublished} ? 'published-title' :  'draft-title'">
+                                <a th:href="|@{/posts/post/}${post.postName}|" th:text="${post.postTitle}" target="_blank">title</a>
+                            </td>
+                            <td>
+                                <div th:each="tag : ${post.tags}" class="inline-tag" th:inline="text" th:text="${tag.tagValue}"></div>
+                            </td>
+                            <td class="post-displaytype-col" th:text="|${#strings.toLowerCase(displayType)}|">post display type</td>
+                            <td th:text="|${#dates.format(creationDate.toInstant(), 'MMM dd, yyyy')}|">post date</td>
+                            <td class="post-check-col"><input type="checkbox" th:checked="${post.isPublished}" disabled="true" title="Checked if Post is Published"/></td>
+                            <td><a th:href="@{|/admin/posts/update/${post.postId}|}"><span
+                                    class="glyphicon glyphicon-pencil"></span></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
