@@ -3,8 +3,8 @@ package com.nixmash.blog.mail.components;
 import com.nixmash.blog.jpa.model.User;
 import com.nixmash.blog.jpa.service.UserService;
 import com.nixmash.blog.mail.dto.MailDTO;
-import com.nixmash.blog.mail.service.FmService;
 import com.nixmash.blog.mail.service.FmMailService;
+import com.nixmash.blog.mail.service.FmService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,7 @@ public class MailDemo {
     private final FmMailService fmMailService;
     private final UserService userService;
     private final FmService fmService;
+
 
     @Autowired
     public MailDemo(FmMailService fmMailService, UserService userService, FmService fmService) {
