@@ -7,7 +7,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.nixmash.blog.solr.config.SolrApplicationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +26,6 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 import java.util.List;
 
 @Configuration
-@EnableAutoConfiguration
 @Import(SolrApplicationConfig.class)
 @PropertySource("classpath:mvc.properties")
 public class WebConfig extends WebMvcConfigurerAdapter {

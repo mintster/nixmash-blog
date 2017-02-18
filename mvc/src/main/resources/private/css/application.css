@@ -701,7 +701,7 @@ span.tag.label {
     float: right;
 }
 
-.taglink a.label-default {
+#posts .taglink a.label-default {
     background-color: #89a29d;
 }
 
@@ -853,7 +853,7 @@ pre code {
     margin-top: 6px;
 }
 
-#posts .title h3 {
+#posts .title h2 {
     margin-bottom: 3px;
     font-size: 24px;
 }
@@ -886,6 +886,10 @@ pre code {
 .post img.post-photo-single {
     border: #dd4814 2px solid;
     width: 80%;
+}
+
+span.taglink .label-default {
+    background-color: #aaa;
 }
 
 /*</editor-fold>*/

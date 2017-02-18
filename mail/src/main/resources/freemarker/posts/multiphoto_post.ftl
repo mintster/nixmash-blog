@@ -1,8 +1,8 @@
 <#-- @ftlvariable name="post" type="com.nixmash.blog.jpa.model.Post" -->
 
 <div class="post note">
-    <h3><a target="_blank"
-           href="/posts/post/${post.postName}">${post.postTitle}</a></h3>
+    <h2><a target="_blank"
+           href="/posts/post/${post.postName}">${post.postTitle}</a></h2>
     <div class="post-content">${post.postContent}</div>
     <div class="post-photos">
     <#if  post.postImages??>

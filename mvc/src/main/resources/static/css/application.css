@@ -748,7 +748,8 @@ span.tag.label {
     background-color: #f6f6f6;
 }
 
-#posts .post h3 {
+
+#posts .post h2 {
     line-height: 1.3;
     padding-bottom: 10px;
     margin-top: 10px;
@@ -1214,6 +1215,12 @@ a.share {
     padding-left: 6px;
 }
 
+.post-footer .like-button button.btn-like {
+    line-height: 12px;
+    margin-bottom: 4px;
+    vertical-align: middle;
+}
+
 .post-footer .like-button span.like-count, #post-footer .like-button span.like-count {
     display: inline-block;
     float: none;
@@ -1224,6 +1231,8 @@ a.share {
     font-size: 14px;
     color: #333;
     font-weight: bold;
+    margin-top: 3px;
+    margin-right: 2px;
 }
 
 #post-footer .like-button span.like-count {
