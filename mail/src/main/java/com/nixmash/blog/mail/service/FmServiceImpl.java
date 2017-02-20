@@ -137,7 +137,7 @@ public class FmServiceImpl implements FmService {
         String html = null;
 
         String backToTop = mailUI.getMessage("posts.az.page.backtotop");
-        String azFileName = mailUI.getMessage("posts.az.file.name");
+        String azFileName = environment.getProperty("posts.az.file.name");
         String azFilePath = applicationSettings.getPostAtoZFilePath();
 
         Map<String, Object> model = new Hashtable<>();

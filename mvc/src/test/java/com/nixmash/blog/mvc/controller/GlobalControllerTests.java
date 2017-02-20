@@ -1,17 +1,20 @@
 package com.nixmash.blog.mvc.controller;
 
+import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.jpa.common.SiteOptions;
 import com.nixmash.blog.jpa.model.CurrentUser;
 import com.nixmash.blog.mvc.AbstractContext;
 import com.nixmash.blog.mvc.annotations.WithAdminUser;
+import com.nixmash.blog.mvc.components.WebUI;
 import com.nixmash.blog.mvc.security.CurrentUserDetailsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -27,77 +30,102 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SuppressWarnings("ALL")
 @RunWith(SpringRunner.class)
-@TestPropertySource("classpath:/test.properties")
 public class GlobalControllerTests extends AbstractContext {
 
-	private static final String TRACKING_ID = "UA-ABCXXX-20";
+    private static final String TRACKING_ID = "UA-ABCXXX-20";
 
-	@Autowired
-	private CurrentUserDetailsService currentUserDetailsService;
+    // region Test Users
 
-	private CurrentUser keith;
-	private CurrentUser user;
-	private CurrentUser admin;
+    @Autowired
+    private CurrentUserDetailsService currentUserDetailsService;
 
-	private MockMvc mockMvc;
+    private CurrentUser keith;
+    private CurrentUser erwin;
 
-	@MockBean
-	private SiteOptions siteOptions;
+    // endregion
 
-	@Before
-	public void setup() {
-		when(siteOptions.getAddGoogleAnalytics()).thenReturn(true);
-		when(siteOptions.getGoogleAnalyticsTrackingId()).thenReturn(TRACKING_ID);
+    private MockMvc mockMvc;
 
-		keith = currentUserDetailsService.loadUserByUsername("keith");
-		user = currentUserDetailsService.loadUserByUsername("user");
-		admin = currentUserDetailsService.loadUserByUsername("admin");
+    @MockBean
+    private SiteOptions siteOptions;
 
-		mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
-	}
+    private GlobalController globalController;
+    private WebUI webUI;
+    private ApplicationSettings applicationSettings;
 
-	@Test
-	public void keithCanPost() throws Exception {
-		assertTrue(keith.isPostUser());
-	}
+    @Before
+    public void setup() {
+        when(siteOptions.getAddGoogleAnalytics()).thenReturn(true);
+        when(siteOptions.getGoogleAnalyticsTrackingId()).thenReturn(TRACKING_ID);
 
-	@Test
-	@WithAnonymousUser
-	public void googleAnalyticsAnonymousUserTest() throws Exception {
-		RequestBuilder request = get("/").with(csrf());
-		MvcResult result = mockMvc.perform(request)
-				.andReturn();
+        keith = currentUserDetailsService.loadUserByUsername("keith");
+        erwin = currentUserDetailsService.loadUserByUsername("user");
 
-		assertTrue(result
-				.getResponse()
-				.getContentAsString()
-				.contains(TRACKING_ID));
-	}
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
+        globalController = new GlobalController(siteOptions, webUI, applicationSettings);
+    }
 
-	@Test
-	@WithAdminUser
-	public void googleAnalyticsAdminTest() throws Exception {
-		assertEquals(siteOptions.getAddGoogleAnalytics(), true);
-		RequestBuilder request = get("/").with(csrf());
-		MvcResult result = mockMvc.perform(request)
-				.andReturn();
+    @Test
+    public void displayGoogleAnalyticsTest() throws Exception {
 
-		assertFalse(result
-				.getResponse()
-				.getContentAsString()
-				.contains(TRACKING_ID));
-	}
+        // Keith is member of ROLE_POSTS so should not display Analytics
+        assertFalse(globalController.displayGoogleAnalytics(getAuthenticationToken(keith)));
 
-	@Test
-	public void googleAnalyticsPostUserTest() throws Exception {
-		// Keith can post as member of ROLE_POSTS
-		RequestBuilder request = get("/").with(user(keith)).with(csrf());
-		MvcResult result = mockMvc.perform(request)
-				.andReturn();
+        // Erwin is member of ROLE_USER. Analytics SHOULD display
+        assertTrue(globalController.displayGoogleAnalytics(getAuthenticationToken(erwin)));
 
-		assertFalse(result
-				.getResponse()
-				.getContentAsString()
-				.contains(TRACKING_ID));
-	}
+        // Anonymous user will generate no Authentication and so Analytics SHOULD display
+        assertTrue(globalController.displayGoogleAnalytics(null));
+
+    }
+
+    private Authentication getAuthenticationToken(CurrentUser currentUser) {
+        return new UsernamePasswordAuthenticationToken(currentUser,
+                currentUser.getPassword(), currentUser.getAuthorities());
+    }
+
+    @Test
+    public void keithCanPost() throws Exception {
+        assertTrue(keith.isPostUser());
+    }
+
+    @Test
+    @WithAnonymousUser
+    public void googleAnalyticsAnonymousUserTest() throws Exception {
+        RequestBuilder request = get("/").with(csrf());
+        MvcResult result = mockMvc.perform(request)
+                .andReturn();
+
+        assertTrue(result
+                .getResponse()
+                .getContentAsString()
+                .contains(TRACKING_ID));
+    }
+
+    @Test
+    @WithAdminUser
+    public void googleAnalyticsAdminTest() throws Exception {
+        assertEquals(siteOptions.getAddGoogleAnalytics(), true);
+        RequestBuilder request = get("/").with(csrf());
+        MvcResult result = mockMvc.perform(request)
+                .andReturn();
+
+        assertFalse(result
+                .getResponse()
+                .getContentAsString()
+                .contains(TRACKING_ID));
+    }
+
+    @Test
+    public void googleAnalyticsPostUserTest() throws Exception {
+        // Keith can post as member of ROLE_POSTS
+        RequestBuilder request = get("/").with(user(keith)).with(csrf());
+        MvcResult result = mockMvc.perform(request)
+                .andReturn();
+
+        assertFalse(result
+                .getResponse()
+                .getContentAsString()
+                .contains(TRACKING_ID));
+    }
 }
