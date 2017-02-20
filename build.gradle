@@ -28,7 +28,6 @@ allprojects {
 
 	ext['spring-data-releasetrain.version']="Hopper-SR7"
 	ext['hibernate.version']="5.1.4.Final"
-//	ext['jetty.version']="9.3.14.v20161028"
 
 	dependencyManagement {
 		applyMavenExclusions false
@@ -43,17 +42,8 @@ allprojects {
 
 	configurations {
 		all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
-
-		//	comment if not using Solr-Core with Jetty
 		all*.exclude module: 'spring-boot-starter-tomcat'
 
-//		all*.resolutionStrategy {
-//			eachDependency { DependencyResolveDetails details ->
-//				if (details.requested.name == "solr-solrj" ) {
-//					details.useVersion "5.5.2"
-//				}
-//			}
-//		}
 	}
 
 	dependencies {

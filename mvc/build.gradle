@@ -8,18 +8,12 @@ sourceSets {
 	test { java.srcDir 'src/test/java' }
 }
 
-//	uncomment if not using Solr-Core w/ Jetty
-//	configurations { providedRuntime }
-
 dependencies {
 	compile project(':jpa')
 	compile project(':solr')
 	compile project(':mail')
 	compile project(':jsoup')
 	compile 'org.springframework.boot:spring-boot-starter-web'
-
-//	uncomment if not using Solr-Core w/ Jetty
-//	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 
 	compile 'org.springframework.boot:spring-boot-starter-social-twitter'
 	compile 'org.springframework.boot:spring-boot-starter-social-facebook'
@@ -59,6 +53,6 @@ bootRun {
 	main = 'com.nixmash.blog.mvc.Application'
 }
 
-clean.dependsOn ':jpa:linkjBuild'
+//clean.dependsOn ':jpa:linkbBuild'
 
 
