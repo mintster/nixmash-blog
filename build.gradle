@@ -26,6 +26,7 @@ allprojects {
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
 
+	ext['spring-data-releasetrain.version']="Hopper-SR7"
 	ext['hibernate.version']="5.1.4.Final"
 //	ext['jetty.version']="9.3.14.v20161028"
 

@@ -14,9 +14,6 @@ public class SolrLauncher {
 
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-//		AnnotationConfigApplicationContext ctx = new
-//				AnnotationConfigApplicationContext("com.nixmash.blog.solr",
-//				"com.nixmash.blog.jpa");
 		ctx.register(SolrApplicationConfig.class);
 		ctx.refresh();
 		System.out.println("Using Spring Framework Version: " + SpringVersion.getVersion());

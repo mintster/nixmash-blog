@@ -10,7 +10,7 @@ import org.springframework.context.annotation.PropertySources;
 @Configuration
 @PropertySources({
         @PropertySource("classpath:application.properties"),
-        @PropertySource("file:${project.file.path.root}jpa/src/main/resources/application.properties")
+        @PropertySource("file:${jpa.properties.file.path}application.properties")
 })
 public class SolrTestConfig {
 }

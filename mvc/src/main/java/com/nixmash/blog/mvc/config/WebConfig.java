@@ -47,7 +47,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
             resolver.setPrefix("classpath:/nixmash/");
         else
             resolver.setPrefix("classpath:/templates/");
-
         resolver.setSuffix(".html");
         resolver.setTemplateMode("HTML5");
         resolver.setCacheable(false);

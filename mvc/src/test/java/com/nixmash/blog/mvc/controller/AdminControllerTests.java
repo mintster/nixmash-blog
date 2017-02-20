@@ -9,7 +9,7 @@ import com.nixmash.blog.jpa.service.SiteService;
 import com.nixmash.blog.jpa.service.UserService;
 import com.nixmash.blog.mvc.AbstractContext;
 import com.nixmash.blog.mvc.components.WebUI;
-import com.nixmash.blog.mvc.security.WithAdminUser;
+import com.nixmash.blog.mvc.annotations.WithAdminUser;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;

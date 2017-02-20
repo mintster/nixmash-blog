@@ -1,14 +1,17 @@
 package com.nixmash.blog.jsoup.configuration;
 
+import com.nixmash.blog.jpa.config.ApplicationConfig;
 import com.nixmash.blog.jsoup.dto.PagePreviewDTO;
 import com.nixmash.blog.jsoup.base.JsoupHtmlParser;
 import com.nixmash.blog.jsoup.parsers.PagePreviewParser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource("classpath:/jsoup.properties")
+@Import({ApplicationConfig.class})
 public class JsoupConfig {
 
     @Bean

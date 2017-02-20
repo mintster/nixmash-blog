@@ -9,7 +9,7 @@ import com.nixmash.blog.jpa.service.PostService;
 import com.nixmash.blog.mvc.AbstractContext;
 import com.nixmash.blog.mvc.MvcTestUtil;
 import com.nixmash.blog.mvc.dto.JsonPostDTO;
-import com.nixmash.blog.mvc.security.WithAdminUser;
+import com.nixmash.blog.mvc.annotations.WithAdminUser;
 import com.nixmash.blog.solr.model.PostDoc;
 import com.nixmash.blog.solr.service.PostDocService;
 import org.apache.commons.io.FileUtils;
