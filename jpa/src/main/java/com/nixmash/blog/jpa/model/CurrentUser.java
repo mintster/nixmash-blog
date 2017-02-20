@@ -2,6 +2,9 @@
 package com.nixmash.blog.jpa.model;
 
 import com.nixmash.blog.jpa.common.ApplicationSettings;
+
+import java.util.Collection;
+
 import static com.nixmash.blog.jpa.components.ApplicationContextUI.getAppSettingsFromContext;
 
 public class CurrentUser
@@ -37,6 +40,24 @@ public class CurrentUser
             iconUrl = applicationSettings.getProfileIconUrlRoot() + user.getUserKey();
         }
         return iconUrl;
+    }
+
+    public boolean isAdmin() {
+        return hasRole("ADMIN");
+    }
+
+    public boolean isPostUser() {
+        return hasRole("POSTS");
+    }
+
+    private boolean hasRole(String role) {
+        Collection<Authority> authorities = this.getUser().getAuthorities();
+        boolean hasAuthority = false;
+        for (Authority authority : authorities) {
+            if (authority.getAuthority().toUpperCase().contains(role))
+                hasAuthority = true;
+        }
+        return hasAuthority;
     }
 
     public String getProfileImageUrl() {

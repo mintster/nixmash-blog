@@ -18,7 +18,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 })
 @PropertySources({
         @PropertySource("classpath:/batch.properties"),
-        @PropertySource("file:/home/daveburke/web/nixmash/jobs.properties")
+        @PropertySource("file:${job.properties.file.path}${job.properties.file.basename}.properties")
 })
 public class ApplicationConfiguration {
 }

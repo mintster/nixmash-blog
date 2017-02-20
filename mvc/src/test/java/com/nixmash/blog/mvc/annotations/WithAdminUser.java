@@ -1,4 +1,4 @@
-package com.nixmash.blog.mvc.security;
+package com.nixmash.blog.mvc.annotations;
 
 import org.springframework.security.test.context.support.WithUserDetails;
 
