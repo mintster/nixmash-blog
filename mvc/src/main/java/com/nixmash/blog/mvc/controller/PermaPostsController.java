@@ -12,13 +12,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Date;
-
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
  * Created by daveburke on 2/22/17.
@@ -39,14 +37,14 @@ public class PermaPostsController {
     }
 
     @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
-    @RequestMapping(value = "/{category}/{postName}", method = GET)
-    public String post(@PathVariable("category") String category, @PathVariable("postName") String postName,
+    @GetMapping(value = "/java/{postName}")
+    public String categoryPost(@PathVariable("postName") String postName,
                        Model model, CurrentUser currentUser) throws PostNotFoundException {
         logger.debug("in category/postname -------------------------------------------------------------- */");
         return post(postName, model, currentUser);
     }
 
-    @RequestMapping(value = "/post/{postName}", method = GET)
+    @GetMapping(value = "/post/{postName}")
     public String post(@PathVariable("postName") String postName, Model model, CurrentUser currentUser)
             throws PostNotFoundException {
 
