@@ -1,0 +1,14 @@
+div.github {
+    padding: 0;
+    margin: 0;
+    font: bold 11px/14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    overflow: hidden;
+}
+
+.cke_source {
+    color: #000;
+    font-size: 16px;
+    padding: 12px;
+    white-space: inherit;
+}
+

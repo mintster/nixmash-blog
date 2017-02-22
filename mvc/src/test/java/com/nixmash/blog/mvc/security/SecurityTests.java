@@ -99,13 +99,13 @@ public class SecurityTests extends AbstractContext {
 
 	@Test
 	public void userCannotAccessAnotherProfile() throws Exception {
-		RequestBuilder request = get("/{username}", "user").with(user(keith)).with(csrf());
+		RequestBuilder request = get("/user/{username}", "user").with(user(keith)).with(csrf());
 		mvc.perform(request).andExpect(status().isForbidden());
 	}
 
 	@Test
 	public void userCanAccessOwnProfile() throws Exception {
-		RequestBuilder request = get("/{username}", "user").with(user(user)).with(csrf());
+		RequestBuilder request = get("/user/{username}", "user").with(user(user)).with(csrf());
 		mvc.perform(request).andExpect(status().isOk()).andExpect(view().name(UserController.USER_PROFILE_VIEW));
 	}
 
@@ -176,7 +176,7 @@ public class SecurityTests extends AbstractContext {
 
 	// region ResultMatchers
 
-	private static ResultMatcher loginPage() {
+	public static ResultMatcher loginPage() {
 		return result -> {
 			status().isFound().match(result);
 			redirectedUrl("http://localhost/signin").match(result);

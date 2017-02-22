@@ -42,6 +42,12 @@ public class CurrentUser
         return iconUrl;
     }
 
+    // region Roles and Permissions
+
+    public boolean canAccessAdmin() {
+        return (isAdmin() || isPostUser());
+    }
+
     public boolean isAdmin() {
         return hasRole("ADMIN");
     }
@@ -59,6 +65,8 @@ public class CurrentUser
         }
         return hasAuthority;
     }
+
+    // endregion
 
     public String getProfileImageUrl() {
 

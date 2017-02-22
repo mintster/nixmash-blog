@@ -25,16 +25,19 @@ import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
 
+import static org.springframework.security.config.Elements.ANONYMOUS;
+
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan(basePackageClasses = CurrentUserDetailsService.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String[] IGNORED_RESOURCE_LIST = new String[] {"/fonts/**", "/dashboard/**",
-			 "/files/**" , "/x/**", "/robots.txt" };
-	private static final String[] PERMITALL_RESOURCE_LIST = new String[] {"/auth/**", "/signin/**", "/signup/**", "/",
-			"/register/**", "/contacts", "/json/**", "/products/**",  "/errors/**", "/users/**", "/posts/**", "/403" };
+			"/files/**" , "/x/**", "/robots.txt", "/css/**" };
+	//	private static final String[] PERMITALL_RESOURCE_LIST = new String[] {"/auth/**", "/signin/**", "/signup/**", "/",
+//			"/register/**", "/json/**", "/products/**",  "/errors/**", "/users/**", "/posts/**", "/403" };
 	private static final String[] ADMIN_RESOURCE_LIST = new String[] { "/admin/**" };
+	private static final String[] PERMITALL_RESOURCE_LIST = new String[] {"/**"};
 
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -82,33 +85,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-			.authorizeRequests()
-				.antMatchers(PERMITALL_RESOURCE_LIST).permitAll()
-				.antMatchers(ADMIN_RESOURCE_LIST).hasAuthority("ROLE_ADMIN")
+				.authorizeRequests()
+				.antMatchers("/admin/**")
+					.access("@webUserSecurity.canAccessAdmin(authentication)")
+				.antMatchers("/**").permitAll()
 				.anyRequest()
 				.authenticated()
-			.and()
+				.and()
 				.anonymous()
-				.key("anonymous")
-			.and()
+					.principal(ANONYMOUS)
+				.and()
 				.formLogin()
-					.loginPage("/signin")
-					.loginProcessingUrl("/signin/authenticate")
-				    .failureHandler(authenticationFailureHandler)
-					.permitAll()
-			.and()
+				.loginPage("/signin")
+				.loginProcessingUrl("/signin/authenticate")
+				.failureHandler(authenticationFailureHandler)
+				.permitAll()
+				.and()
 				.logout()
-					.deleteCookies("remember-me")
-					.permitAll()
-			.and()
+				.deleteCookies("remember-me")
+				.permitAll()
+				.and()
 				.rememberMe()
-			.and()
+				.and()
 				.exceptionHandling()
 				.accessDeniedPage("/403")
-		   .and()
+				.and()
 				.apply(new SpringSocialConfigurer()
-				.postLoginUrl("/")
-				.alwaysUsePostLoginUrl(true));
+						.postLoginUrl("/")
+						.alwaysUsePostLoginUrl(true));
 
 	}
 

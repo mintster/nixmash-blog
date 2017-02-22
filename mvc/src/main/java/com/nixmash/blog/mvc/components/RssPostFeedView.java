@@ -58,7 +58,7 @@ public final class RssPostFeedView extends AbstractRssFeedView {
 
     private Item createItem(Post post) {
         Item item = new Item();
-        item.setLink(applicationSettings.getBaseUrl() + "/posts/post/" + post.getPostName());
+        item.setLink(applicationSettings.getBaseUrl() + "/post/" + post.getPostName());
         item.setTitle(post.getPostTitle());
         item.setDescription(createDescription(post));
         item.setPubDate(getPostDate(post));

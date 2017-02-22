@@ -3,19 +3,14 @@ package com.nixmash.blog.mvc.controller;
 import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.jpa.dto.PostQueryDTO;
 import com.nixmash.blog.jpa.enums.PostType;
-import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
 import com.nixmash.blog.jpa.exceptions.TagNotFoundException;
-import com.nixmash.blog.jpa.model.CurrentUser;
-import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.model.Tag;
 import com.nixmash.blog.jpa.service.PostService;
-import com.nixmash.blog.jpa.utils.PostUtils;
 import com.nixmash.blog.jsoup.service.JsoupService;
 import com.nixmash.blog.mail.service.FmService;
 import com.nixmash.blog.mvc.components.WebUI;
 import com.nixmash.blog.solr.model.PostDoc;
 import com.nixmash.blog.solr.service.PostDocService;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Date;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -48,11 +42,7 @@ public class PostsController {
     // region constants
 
     protected static final String POSTS_LIST_VIEW = "posts/list";
-    public static final String POSTS_ADD_VIEW = "posts/add";
-    public static final String POSTS_PERMALINK_VIEW = "posts/post";
-    public static final String POSTS_UPDATE_VIEW = "posts/update";
     public static final String POSTS_TITLES_VIEW = "posts/titles";
-    public static final String FEEDBACK_POST_UPDATED = "feedback.post.updated";
     private static final String POSTS_TAGS_VIEW = "posts/tags";
     private static final String POSTS_TAGTITLES_VIEW = "posts/tagtitles";
     public static final String POSTS_LIKES_VIEW = "posts/likes";
@@ -61,26 +51,9 @@ public class PostsController {
     public static final String POSTS_QUICKSEARCH_VIEW = "posts/quicksearch";
     public static final String POSTS_LINKS_VIEW = "posts/links";
 
-    private static final String FEEDBACK_POST_LINK_ADDED = "feedback.post.link.added";
-    private static final String FEEDBACK_POST_NOTE_ADDED = "feedback.post.note.added";
-    private static final String FEEDBACK_LINK_DEMO_THANKS = "feedback.post.link.demo.added";
-
-    public static final String FEEDBACK_POST_NOT_FOUND = "feedback.post.not.found";
-    private static final String FEEDBACK_NOTE_DEMO_THANKS = "feedback.post.note.demo.added";
-    private static final String ADD_POST_HEADER = "posts.add.note.page.header";
-    private static final String ADD_LINK_HEADER = "posts.add.link.page.header";
-
-    private static final String ADD_PHOTO_HEADER = "posts.add.photo.page.header";
-    private static final String ADD_MULTIPHOTO_HEADER = "posts.add.multiphoto.page.header";
-
-
-    public static final String POST_PUBLISH = "publish";
-    public static final String POST_DRAFT = "draft";
-
     public static int POST_PAGING_SIZE;
     public static int TITLE_PAGING_SIZE;
 
-    private static final String SESSION_ATTRIBUTE_NEWPOST = "activepostdto";
     public static final String SESSION_QUICKSEARCH_QUERY = "quicksearch";
     public static final String SESSION_POSTQUERYDTO = "postquerydto";
 
@@ -110,27 +83,6 @@ public class PostsController {
 
         POST_PAGING_SIZE = applicationSettings.getPostStreamPageCount();
         TITLE_PAGING_SIZE = applicationSettings.getPostTitleStreamPageCount();
-    }
-
-    // endregion
-
-    // region /post get
-
-    @RequestMapping(value = "/post/{postName}", method = GET)
-    public String post(@PathVariable("postName") String postName, Model model, CurrentUser currentUser)
-            throws PostNotFoundException {
-
-        Post post = postService.getPost(postName);
-        Date postCreated = Date.from(post.getPostDate().toInstant());
-        post.setIsOwner(PostUtils.isPostOwner(currentUser, post.getUserId()));
-        post.setPostContent(PostUtils.formatPostContent(post));
-        model.addAttribute("post", post);
-        model.addAttribute("postCreated", postCreated);
-        model.addAttribute("shareSiteName",
-                StringUtils.deleteWhitespace(applicationSettings.getSiteName()));
-        model.addAttribute("shareUrl",
-                String.format("%s/posts/post/%s", applicationSettings.getBaseUrl(), post.getPostName()));
-        return POSTS_PERMALINK_VIEW;
     }
 
     // endregion

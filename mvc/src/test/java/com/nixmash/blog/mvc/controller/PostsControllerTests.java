@@ -1,6 +1,5 @@
 package com.nixmash.blog.mvc.controller;
 
-import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
 import com.nixmash.blog.jpa.service.PostService;
 import com.nixmash.blog.jsoup.service.JsoupService;
 import com.nixmash.blog.mvc.AbstractContext;
@@ -16,7 +15,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static com.nixmash.blog.mvc.controller.PostsController.*;
 import static org.hamcrest.Matchers.containsString;
-import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -83,24 +81,6 @@ public class PostsControllerTests extends AbstractContext {
                 .andExpect(model().attributeHasNoErrors("postQueryDTO"))
                 .andExpect(model().attributeExists("isSearchResult"))
                 .andExpect(view().name(POSTS_SEARCH_VIEW));
-    }
-
-    @Test
-    public void postDisplayPage() throws Exception {
-        mockMvc.perform(get("/posts/post/javascript-bootstrap"))
-                .andExpect(model().attributeExists("post"))
-                .andExpect(view().name(POSTS_PERMALINK_VIEW));
-    }
-
-    @Test(expected = PostNotFoundException.class)
-    public void notFoundPostName_ThrowsPostNotFoundException() throws Exception {
-        String badName = "bad-name";
-        when(postService.getPost(badName))
-                .thenThrow(new PostNotFoundException());
-
-        mockMvc.perform(get("/posts/" + badName))
-                .andExpect(status().isOk())
-                .andExpect(view().name("errors/custom"));
     }
 
 
