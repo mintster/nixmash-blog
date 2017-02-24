@@ -44,9 +44,29 @@ public class PermaPostsControllerTests extends AbstractContext {
     }
 
     @Test
-    public void postDisplayPage() throws Exception {
+    public void goodCategoryPermaload() throws Exception {
         mockMvc.perform(get("/java/javascript-bootstrap"))
                 .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/post/javascript-bootstrap"));
+    }
+
+    @Test
+    public void badCategoryPermaload() throws Exception {
+        mockMvc.perform(get("/badcategory/javascript-bootstrap"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void oldCategoryThrowsException() throws Exception {
+            mockMvc.perform(get("/ruby-on-rails/javascript-bootstrap"))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("errors/category"));
+    }
+
+    @Test
+    public void postPermaload() throws Exception {
+        mockMvc.perform(get("/post/javascript-bootstrap"))
+                .andExpect(status().isOk())
                 .andExpect(model().attributeExists("post"))
                 .andExpect(view().name(POSTS_PERMALINK_VIEW));
     }

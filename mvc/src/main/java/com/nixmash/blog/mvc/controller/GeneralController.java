@@ -38,6 +38,7 @@ public class GeneralController {
     public static final String HOME_VIEW = "home";
     public static final String REDIRECT_HOME_VIEW = "redirect:/";
     public static final String ERROR_403_VIEW = "errors/custom";
+    public static final String ERROR_404_VIEW = "errors/404";
 
     private final FmService fmService;
     private final WebUI webUI;
@@ -86,6 +87,16 @@ public class GeneralController {
         mav.addObject(ERROR_PAGE_TITLE_ATTRIBUTE, "Not Authorized");
         mav.addObject(ERROR_PAGE_MESSAGE_ATTRIBUTE, "You are not authorized to view this page.");
         mav.setViewName(ERROR_403_VIEW);
+        return mav;
+    }
+
+    @RequestMapping(value = "/404", method = RequestMethod.GET)
+    public ModelAndView pageNotFound() {
+
+        ModelAndView mav = new ModelAndView();
+        mav.addObject(ERROR_PAGE_TITLE_ATTRIBUTE, "Not Found");
+        mav.addObject(ERROR_PAGE_MESSAGE_ATTRIBUTE, "This page not found around town.");
+        mav.setViewName(ERROR_404_VIEW);
         return mav;
     }
 

@@ -1,6 +1,7 @@
 package com.nixmash.blog.mvc.controller;
 
 import com.nixmash.blog.jpa.common.ApplicationSettings;
+import com.nixmash.blog.jpa.exceptions.PostCategoryNotSupportedException;
 import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
 import com.nixmash.blog.jpa.model.CurrentUser;
 import com.nixmash.blog.jpa.model.Post;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -36,13 +38,25 @@ public class PermaPostsController {
         this.applicationSettings = applicationSettings;
     }
 
+    // region Handling NixMash Post {category}/{postname} Permalink  to /post/{postname}
+
     @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
-    @GetMapping(value = "/java/{postName}")
-    public String categoryPost(@PathVariable("postName") String postName,
-                       Model model, CurrentUser currentUser) throws PostNotFoundException {
-        logger.debug("in category/postname -------------------------------------------------------------- */");
-        return post(postName, model, currentUser);
+    @GetMapping(value = "/{category:java|linux|postgresql|mysql|wordpress|android|codejohnny}/{postName}")
+    public String categoryPost() {
+        return "redirect:/post/{postName}";
     }
+
+    @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
+    @GetMapping(value = "/{category:ruby-on-rails|nixmashup|php|best-of-everyman-links|drupal}/{postName}")
+    public String oldCategoryPost(HttpServletRequest request,
+                                  @PathVariable("category") String category,
+                                  @PathVariable("postName") String postName) {
+        request.setAttribute("category", category);
+        request.setAttribute("postName", postName);
+        throw new PostCategoryNotSupportedException();
+    }
+
+    // endregion
 
     @GetMapping(value = "/post/{postName}")
     public String post(@PathVariable("postName") String postName, Model model, CurrentUser currentUser)
@@ -60,7 +74,6 @@ public class PermaPostsController {
                 String.format("%s/post/%s", applicationSettings.getBaseUrl(), post.getPostName()));
         return POSTS_PERMALINK_VIEW;
     }
-
 
 
 }

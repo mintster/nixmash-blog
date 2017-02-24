@@ -63,7 +63,7 @@
                                             displayType=|${#strings.replace(post.displayType,'_', ' ')}|">
                             <td th:text="${post.postId}"></td>
                             <td th:classappend="${post.isPublished} ? 'published-title' :  'draft-title'">
-                                <a th:href="|@{/posts/post/}${post.postName}|" th:text="${post.postTitle}" target="_blank">title</a>
+                                <a th:href="|@{/post/}${post.postName}|" th:text="${post.postTitle}" target="_blank">title</a>
                             </td>
                             <td>
                                 <div th:each="tag : ${post.tags}" class="inline-tag" th:inline="text" th:text="${tag.tagValue}"></div>

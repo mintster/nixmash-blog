@@ -21,7 +21,7 @@
                     Most recent NixMash Posts and Links
                 </p>
                 <small th:each="post : ${posts}">
-                    <a th:href="@{|/posts/post/${post.postName}|}" th:text="${post.postTitle}">[post]</a>
+                    <a th:href="@{|/post/${post.postName}|}" th:text="${post.postTitle}">[post]</a>
                 </small>
                 <div class="home-posts-link">
                     <a href="/posts" class="btn btn-primary">View NixMash Spring Posts</a>

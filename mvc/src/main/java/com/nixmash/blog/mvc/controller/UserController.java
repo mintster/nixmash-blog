@@ -55,7 +55,6 @@ import java.util.UUID;
 
 import static com.nixmash.blog.mvc.controller.GeneralController.REDIRECT_HOME_VIEW;
 import static com.nixmash.blog.mvc.controller.GlobalController.*;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
@@ -278,18 +277,18 @@ public class UserController {
 
     // region User Profile and Account Services
 
-    @PreAuthorize("#username == authentication.name")
-    @RequestMapping(value = "/{username}", method = GET)
-    public String profilePage(@PathVariable("username") String username,
-                              Model model, WebRequest request)
-            throws UsernameNotFoundException {
-
-        logger.info("Showing user page for user: {}", username);
-        ProfileImageDTO profileImageDTO = new ProfileImageDTO();
-        model.addAttribute("profileImageDTO", profileImageDTO);
-
-        return USER_PROFILE_VIEW;
-    }
+//    @PreAuthorize("#username == authentication.name")
+//    @RequestMapping(value = "/{username}", method = GET)
+//    public String profilePage(@PathVariable("username") String username,
+//                              Model model, WebRequest request)
+//            throws UsernameNotFoundException {
+//
+//        logger.info("Showing user page for user: {}", username);
+//        ProfileImageDTO profileImageDTO = new ProfileImageDTO();
+//        model.addAttribute("profileImageDTO", profileImageDTO);
+//
+//        return USER_PROFILE_VIEW;
+//    }
 
     @PreAuthorize("#username == authentication.name")
     @GetMapping(value = "/user/{username}")
