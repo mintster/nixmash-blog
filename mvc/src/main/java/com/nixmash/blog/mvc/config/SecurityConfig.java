@@ -33,11 +33,7 @@ import static org.springframework.security.config.Elements.ANONYMOUS;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String[] IGNORED_RESOURCE_LIST = new String[] {"/fonts/**", "/dashboard/**",
-			"/files/**" , "/x/**", "/robots.txt", "/css/**" };
-	//	private static final String[] PERMITALL_RESOURCE_LIST = new String[] {"/auth/**", "/signin/**", "/signup/**", "/",
-//			"/register/**", "/json/**", "/products/**",  "/errors/**", "/users/**", "/posts/**", "/403" };
-	private static final String[] ADMIN_RESOURCE_LIST = new String[] { "/admin/**" };
-	private static final String[] PERMITALL_RESOURCE_LIST = new String[] {"/**"};
+			"/files/**" , "/x/**", "/robots.txt" };
 
 	@Autowired
 	private UserDetailsService userDetailsService;

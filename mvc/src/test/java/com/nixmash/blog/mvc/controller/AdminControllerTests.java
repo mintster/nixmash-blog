@@ -8,8 +8,9 @@ import com.nixmash.blog.jpa.model.validators.UserCreateFormValidator;
 import com.nixmash.blog.jpa.service.SiteService;
 import com.nixmash.blog.jpa.service.UserService;
 import com.nixmash.blog.mvc.AbstractContext;
-import com.nixmash.blog.mvc.components.WebUI;
 import com.nixmash.blog.mvc.annotations.WithAdminUser;
+import com.nixmash.blog.mvc.annotations.WithPostUser;
+import com.nixmash.blog.mvc.components.WebUI;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -111,8 +112,20 @@ public class AdminControllerTests extends AbstractContext {
 
 
     @Test
-    @WithUserDetails(value = "erwin", userDetailsServiceBeanName = "currentUserDetailsService")
+    @WithPostUser
+    public void postUserCanAccessAdmin() throws Exception {
+        RequestBuilder request = get("/admin").with(csrf());
+        mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(view().name(ADMIN_HOME_VIEW));
+    }
+
+
+    @Test
+    @WithUserDetails(value = "erwin",
+            userDetailsServiceBeanName = "currentUserDetailsService")
     public void registeredUserCannotAccessAdmin() throws Exception {
+
         // Erwin a registered user but not in ROLE_POSTS
         RequestBuilder request = get("/admin").with(csrf());
         mvc.perform(request)
@@ -123,6 +136,7 @@ public class AdminControllerTests extends AbstractContext {
     @Test
     @WithAnonymousUser
     public void anonymousCannotAccessAdmin() throws Exception {
+
         // Whereas Erwin is forbidden, anonymous users redirected to login page
         RequestBuilder request = get("/admin").with(csrf());
         mvc.perform(request)
