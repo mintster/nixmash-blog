@@ -23,7 +23,7 @@
                         <#list alphaPosts as alphaPost>
                             <#if alphaPost.alphaKey == key>
                                 <p>
-                                    <a href="/posts/post/${alphaPost.postName}">${alphaPost.postTitle}</a>
+                                    <a href="/post/${alphaPost.postName}">${alphaPost.postTitle}</a>
                                 </p>
                             </#if>
                         </#list>

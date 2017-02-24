@@ -55,14 +55,19 @@ public class GlobalControllerTests extends AbstractContext {
 
     @Before
     public void setup() {
+
         when(siteOptions.getAddGoogleAnalytics()).thenReturn(true);
         when(siteOptions.getGoogleAnalyticsTrackingId()).thenReturn(TRACKING_ID);
-
         keith = currentUserDetailsService.loadUserByUsername("keith");
         erwin = currentUserDetailsService.loadUserByUsername("user");
 
-        mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .apply(springSecurity())
+                .build();
+
         globalController = new GlobalController(siteOptions, webUI, applicationSettings);
+
     }
 
     @Test

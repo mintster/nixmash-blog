@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:include="fragments/error-head :: head" th:remove="tag">Global Header</div>
+    <title>NixMash Spring 404 Page</title>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: navbar('error')">Navbar</nav>
+
+<div class="container">
+    <div class="page-header" id="banner">
+        <div class="row">
+            <div class="col-lg-8 col-md-7 col-sm-6">
+                <div id="category-message">
+                    <h1>This Post Category has been Retired</h1>
+                    <p>Thank you for your interest in this <span class="oldCategory" th:text="${category}">old category</span>
+                        post. The original WordPress blog has been migrated to the <strong>NixMash Blog Engine</strong>
+                        <a href="https://github.com/mintster/nixmash-blog">(on GitHub)</a> and the URLs of posts with categories that are no longer active on the blog have been
+                        changed.</p>
+                    <p>You will find the post at its new location <a th:href="${newurl}">here.</a></p>
+                </div>
+            </div>
+            <div th:replace="fragments/sponsor :: [id='sponsor']">[sponsor image]</div>
+        </div>
+    </div>
+</div>
+
+<div th:include="fragments/scripts :: [id='scripts']" th:remove="tag">[scripts]</div>
+</body>
+</html>

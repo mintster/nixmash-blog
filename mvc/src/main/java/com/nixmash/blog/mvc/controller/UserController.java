@@ -55,7 +55,6 @@ import java.util.UUID;
 
 import static com.nixmash.blog.mvc.controller.GeneralController.REDIRECT_HOME_VIEW;
 import static com.nixmash.blog.mvc.controller.GlobalController.*;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
@@ -107,6 +106,8 @@ public class UserController {
         this.fmMailService = fmMailService;
     }
 
+    // region validators
+
     @InitBinder("userDTO")
     public void initUserBinder(WebDataBinder binder) {
         binder.addValidators(userCreateFormValidator);
@@ -116,6 +117,10 @@ public class UserController {
     public void initSocialUserBinder(WebDataBinder binder) {
         binder.addValidators(socialUserFormValidator);
     }
+
+    // endregion
+
+    // region User Sign-in, Registration and Email Validation
 
     @RequestMapping(value = "/signin", method = RequestMethod.GET)
     public void signin() {
@@ -182,10 +187,14 @@ public class UserController {
         } else {
             userService.enableAndApproveUser(user.get());
             redirectAttributes.addFlashAttribute("emailVerifiedWelcomeMessage", true);
-            viewName =  REDIRECT_HOME_VIEW;
+            viewName = REDIRECT_HOME_VIEW;
         }
         return viewName;
     }
+
+    // endregion
+
+    // region Social User Signup
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String signupForm(@ModelAttribute SocialUserDTO socialUserDTO, WebRequest request, Model model) {
@@ -264,17 +273,34 @@ public class UserController {
         return dto;
     }
 
-    @PreAuthorize("#username == authentication.name")
-    @RequestMapping(value = "/{username}", method = GET)
-    public String profilePage(@PathVariable("username") String username,
-                              Model model, WebRequest request)
-            throws UsernameNotFoundException {
+    // endregion
 
+    // region User Profile and Account Services
+
+//    @PreAuthorize("#username == authentication.name")
+//    @RequestMapping(value = "/{username}", method = GET)
+//    public String profilePage(@PathVariable("username") String username,
+//                              Model model, WebRequest request)
+//            throws UsernameNotFoundException {
+//
+//        logger.info("Showing user page for user: {}", username);
+//        ProfileImageDTO profileImageDTO = new ProfileImageDTO();
+//        model.addAttribute("profileImageDTO", profileImageDTO);
+//
+//        return USER_PROFILE_VIEW;
+//    }
+
+    @PreAuthorize("#username == authentication.name")
+    @GetMapping(value = "/user/{username}")
+    public String userProfilePage(@PathVariable("username") String username,
+                                  Model model) throws UsernameNotFoundException {
         logger.info("Showing user page for user: {}", username);
         ProfileImageDTO profileImageDTO = new ProfileImageDTO();
         model.addAttribute("profileImageDTO", profileImageDTO);
 
         return USER_PROFILE_VIEW;
     }
+
+    // endregion
 
 }

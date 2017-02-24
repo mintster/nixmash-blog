@@ -2,10 +2,7 @@ package com.nixmash.blog.mvc.controller;
 
 import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.jpa.common.SiteOptions;
-import com.nixmash.blog.jpa.exceptions.ContactNotFoundException;
-import com.nixmash.blog.jpa.exceptions.DuplicatePostNameException;
-import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
-import com.nixmash.blog.jpa.exceptions.ResourceNotFoundException;
+import com.nixmash.blog.jpa.exceptions.*;
 import com.nixmash.blog.jpa.model.CurrentUser;
 import com.nixmash.blog.mvc.components.WebUI;
 import com.nixmash.blog.solr.exceptions.GeoLocationException;
@@ -107,6 +104,17 @@ public class GlobalController {
             return displayAnalytics && isDisplayUser;
         } else
             return displayAnalytics;
+    }
+
+    @ExceptionHandler(PostCategoryNotSupportedException.class)
+    public ModelAndView handleCategoryNotSupportedException(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("category", (String) request.getAttribute("category"));
+        String postName = (String) request.getAttribute("postName");
+        String newurl = "/post/" + postName;
+        mav.addObject("newurl", newurl);
+        mav.setViewName("errors/category");
+        return mav;
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)

@@ -28,13 +28,21 @@ import static com.nixmash.blog.mvc.controller.UserController.USER_PROFILE_VIEW;
 @Controller
 public class FileUploadController {
 
+    // region Constants
+
     private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
     private static final String FEEDBACK_MESSAGE_KEY_PROFILE_IMAGE_UPDATED = "feedback.message.profile.image.updated";
     private static final String FEEDBACK_MESSAGE_KEY_PROFILE_IMAGE_REMOVED = "feedback.message.profile.image.removed";
 
+    // endregion
+
+    // region Beans
+
     private WebUI webUI;
     private ProfileImageValidator profileImageValidator;
     private UserService userService;
+
+    // endregion
 
     @Autowired
     public FileUploadController(WebUI webUI, ProfileImageValidator profileImageValidator,
@@ -44,10 +52,16 @@ public class FileUploadController {
         this.userService = userService;
     }
 
+    // region Validators
+
     @InitBinder("profileImageDTO")
     protected void initBinderProfileImage(WebDataBinder binder) {
         binder.setValidator(profileImageValidator);
     }
+
+    // endregion
+
+    // region User Profile Image Upload
 
     @RequestMapping(value = "/users/upload", params = {"deleteImage"}, method = RequestMethod.POST)
     public String deleteProfileImage(CurrentUser currentUser, RedirectAttributes attributes,
@@ -89,5 +103,7 @@ public class FileUploadController {
             return profileRedirectUrl;
         }
     }
+
+    // endregion
 
 }

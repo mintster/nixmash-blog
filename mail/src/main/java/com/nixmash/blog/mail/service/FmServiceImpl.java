@@ -113,7 +113,7 @@ public class FmServiceImpl implements FmService {
         model.put("shareSiteName",
                 StringUtils.deleteWhitespace(applicationSettings.getSiteName()));
         model.put("shareUrl",
-                String.format("%s/posts/post/%s", applicationSettings.getBaseUrl(), post.getPostName()));
+                String.format("%s/post/%s", applicationSettings.getBaseUrl(), post.getPostName()));
 
         String displayType = templateName == null ? post.getDisplayType().name().toLowerCase() : templateName;
         String ftl = String.format("posts/%s.ftl", displayType);

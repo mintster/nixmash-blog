@@ -5,7 +5,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
-@PropertySource("file:${solr.properties.file.path}${solr.properties.file.basename}.properties")
+@PropertySource(
+		"file:${solr.properties.file.path}${solr.properties.file.basename}.properties"
+)
 @ConfigurationProperties(prefix="solr")
 public class SolrSettings {
 

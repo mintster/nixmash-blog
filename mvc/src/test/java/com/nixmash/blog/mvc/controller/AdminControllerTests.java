@@ -8,14 +8,16 @@ import com.nixmash.blog.jpa.model.validators.UserCreateFormValidator;
 import com.nixmash.blog.jpa.service.SiteService;
 import com.nixmash.blog.jpa.service.UserService;
 import com.nixmash.blog.mvc.AbstractContext;
-import com.nixmash.blog.mvc.components.WebUI;
 import com.nixmash.blog.mvc.annotations.WithAdminUser;
+import com.nixmash.blog.mvc.annotations.WithPostUser;
+import com.nixmash.blog.mvc.components.WebUI;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,6 +30,7 @@ import javax.servlet.ServletException;
 import static com.nixmash.blog.jpa.model.SiteOptionTests.*;
 import static com.nixmash.blog.mvc.controller.AdminController.*;
 import static com.nixmash.blog.mvc.security.SecurityRequestPostProcessors.csrf;
+import static com.nixmash.blog.mvc.security.SecurityTests.loginPage;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -100,20 +103,45 @@ public class AdminControllerTests extends AbstractContext {
 
     @Test
     @WithAdminUser
-    public void adminUserCanAccessAdminDashboard() throws Exception {
+    public void adminUserCanAccessAdmin() throws Exception {
         RequestBuilder request = get("/admin").with(csrf());
         mvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(view().name(ADMIN_HOME_VIEW));
     }
 
+
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "currentUserDetailsService")
-    public void nonAdminCannotAccessAdminDashboard() throws Exception {
+    @WithPostUser
+    public void postUserCanAccessAdmin() throws Exception {
+        RequestBuilder request = get("/admin").with(csrf());
+        mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(view().name(ADMIN_HOME_VIEW));
+    }
+
+
+    @Test
+    @WithUserDetails(value = "erwin",
+            userDetailsServiceBeanName = "currentUserDetailsService")
+    public void registeredUserCannotAccessAdmin() throws Exception {
+
+        // Erwin a registered user but not in ROLE_POSTS
         RequestBuilder request = get("/admin").with(csrf());
         mvc.perform(request)
                 .andExpect(status().isForbidden())
                 .andExpect(forwardedUrl("/403"));
+    }
+
+    @Test
+    @WithAnonymousUser
+    public void anonymousCannotAccessAdmin() throws Exception {
+
+        // Whereas Erwin is forbidden, anonymous users redirected to login page
+        RequestBuilder request = get("/admin").with(csrf());
+        mvc.perform(request)
+                .andExpect(status().is3xxRedirection())
+                .andExpect(loginPage());
     }
 
     @Test

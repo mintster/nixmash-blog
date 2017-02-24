@@ -1405,4 +1405,21 @@ button.btn.btn-success.btn-flashcard-category {
 }
 
 /*</editor-fold>*/
-
+/*<editor-fold desc="EXCEPTION MESSAGES">*/
+#category-message {
+    margin-top: 50px;
+}
+#category-message a {
+    font-weight: bold;
+}
+#category-message h1 {
+    margin-bottom: 40px;
+}
+#category-message p {
+    font-size: 20px;
+    padding-bottom: 20px;
+}
+#category-message span.oldCategory {
+    font-weight: bold;
+}
+/*</editor-fold>*/

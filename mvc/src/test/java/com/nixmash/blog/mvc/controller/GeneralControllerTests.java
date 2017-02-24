@@ -60,6 +60,5 @@ public class GeneralControllerTests extends AbstractContext {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.TEXT_PLAIN))
                 .andExpect(content().string(containsString("Disallow")));
-
     }
 }
