@@ -156,16 +156,15 @@
     <field name="description" type="text_general" indexed="true" stored="true"/>
     <field name="comments" type="text_general" indexed="true" stored="true"/>
     <field name="keywords" type="text_general" indexed="true" stored="true"/>
-    <field name="category" type="text_general" indexed="true" stored="true"/>
+    <field name="category" type="text_general" indexed="true" stored="true" termVectors="true" />
     <field name="resourcename" type="text_general" indexed="true" stored="true"/>
     <field name="url" type="text_general" indexed="true" stored="true"/>
-    <field name="content_type" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="content_type" type="string" indexed="true" stored="true" />
     <field name="last_modified" type="date" indexed="true" stored="true"/>
-    <field name="links" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="links" type="string" indexed="true" stored="true" />
     <field name="_src_" type="string" indexed="false" stored="true"/>
 
     <!-- NixMash Spring Posts Start  -->
-
 
     <!-- NixMash Spring master field added to filter by document type -->
     <!-- Indexed: PRODUCT, BOOK, MANUFACTURER, MONEY, POST -->
@@ -175,14 +174,16 @@
     <!--From Existing Fields ...............................-->
 
     <field name="author" type="text_general" indexed="true" stored="true"/>
-    <field name="title" type="text_general" indexed="true" stored="true" />
+    <field name="title" type="text_general" indexed="true" stored="true" termVectors="true" />
 
     <!--Primary Post Search Fields .........................................-->
 
-    <field name="body" type="text_general" indexed="true" stored="true" />
+    <field name="body" type="text_general" indexed="true" stored="true"
+           termVectors="true" />
     <field name="posttype" type="string" indexed="true" stored="true" />
     <field name="source" type="text_general" indexed="true" stored="true"  />
-    <field name="tag" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="tag" type="string" indexed="true" stored="true" multiValued="true"
+           termVectors="true" />
     <field name="postdate" type="date" indexed="true" stored="true"/>
 
     <!--Stored Post Fields .........................................-->

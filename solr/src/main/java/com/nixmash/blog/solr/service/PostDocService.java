@@ -15,6 +15,8 @@ public interface PostDocService {
 
     List<PostDoc> getPostsWithUserQuery(String userQuery);
 
+    List<PostDoc> getMoreLikeThis(Long postId);
+
     void addToIndex(Post post);
 
     @Transactional
