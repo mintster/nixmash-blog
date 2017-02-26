@@ -43,6 +43,11 @@ public class PostDocServiceImpl implements PostDocService {
         return customPostDocRepository.findPostsBySimpleQuery(userQuery);
     }
 
+    @Override
+    public List<PostDoc> getMoreLikeThis(Long postId) {
+        return customPostDocRepository.findMoreLikeThis(postId);
+    }
+
     @Transactional
     @Override
     public void addToIndex(Post post) {

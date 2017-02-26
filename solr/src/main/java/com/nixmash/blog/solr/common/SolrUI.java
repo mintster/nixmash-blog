@@ -2,7 +2,9 @@ package com.nixmash.blog.solr.common;
 
 import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.service.PostService;
+import com.nixmash.blog.solr.enums.SolrDocType;
 import com.nixmash.blog.solr.exceptions.GeoLocationException;
+import com.nixmash.blog.solr.model.PostDoc;
 import com.nixmash.blog.solr.model.Product;
 import com.nixmash.blog.solr.service.PostDocService;
 import com.nixmash.blog.solr.service.ProductService;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -35,17 +38,25 @@ public class SolrUI {
     @Resource
     private ProductService service;
 
-    private final SolrSettings solrSettings;
+    // region Beans
 
-    final SolrOperations solrOperations;
-    final PostService postService;
-    final PostDocService postDocService;
+    private final SolrSettings solrSettings;
+    private final SolrOperations solrOperations;
+    private final PostService postService;
+    private final PostDocService postDocService;
+
+    // endregion
+
+    // region Variables
 
     private Page<Product> productListPage;
     private HighlightPage<Product> highlightProductPage;
     private List<Product> productList;
+    private List<PostDoc> postDocList;
     private FacetPage<Product> facetProductPage;
     private Iterable<Product> productIterable;
+
+    // endregion
 
     @Autowired
     public SolrUI(SolrOperations solrOperations, PostDocService postDocService, SolrSettings solrSettings, PostService postService) {
@@ -75,13 +86,13 @@ public class SolrUI {
         HIGHLIGHT_SEARCH_CRITERIA,
         BY_LOCATION,
         POPULATE_DATABASE_SINGLE_ENTRIES,
-        POPULATE_DATABASE_AS_LIST
+        MORE_LIKE_THIS, POPULATE_DATABASE_AS_LIST
     }
 
     // @formatter:on
 
     public void init() {
-        DEMO demo = DEMO.FACET_ON_NAME;
+        DEMO demo = DEMO.MORE_LIKE_THIS;
 
         String[] profiles = environment.getActiveProfiles();
         if (profiles[0].equals("dev"))
@@ -90,18 +101,24 @@ public class SolrUI {
             System.out.println("PRODUCTION mode: SOLR Server Url: " + solrSettings.getSolrServerUrl());
         System.out.println("Running Solr Function: " + demo.name() + "\n");
 
-        runDemos(DEMO.HIGHLIGHT_SEARCH_CRITERIA);
-        runDemos(DEMO.HIGHLIGHT_SEARCH);
-        runDemos(DEMO.METHOD_NAME_QUERY);
-        runDemos(DEMO.CRITERIA_SEARCH);
-        runDemos(DEMO.AVAILABLE_PRODUCTS);
-        runDemos(DEMO.ALL_PRODUCTS);
-        runDemos(DEMO.ANNOTATED_QUERY);
-        runDemos(DEMO.BY_LOCATION);
-        runDemos(DEMO.FACET_ON_CATEGORY);
-        runDemos(DEMO.FACET_ON_NAME);
-        runDemos(DEMO.ALL_RECORDS);
+        // region other demos
 
+//        runDemos(DEMO.HIGHLIGHT_SEARCH_CRITERIA);
+//        runDemos(DEMO.HIGHLIGHT_SEARCH);
+//        runDemos(DEMO.METHOD_NAME_QUERY);
+//        runDemos(DEMO.CRITERIA_SEARCH);
+//        runDemos(DEMO.AVAILABLE_PRODUCTS);
+//        runDemos(DEMO.ALL_PRODUCTS);
+//        runDemos(DEMO.ANNOTATED_QUERY);
+//        runDemos(DEMO.BY_LOCATION);
+//        runDemos(DEMO.FACET_ON_CATEGORY);
+//        runDemos(DEMO.FACET_ON_AVAILABLE);
+//        runDemos(DEMO.FACET_ON_NAME);
+//        runDemos(DEMO.ALL_RECORDS);
+
+        // endregion
+
+        runDemos(DEMO.MORE_LIKE_THIS);
     }
 
     private void runDemos(DEMO demo) {
@@ -110,6 +127,16 @@ public class SolrUI {
         List<Post> posts = postService.getAllPublishedPosts();
 
         switch (demo) {
+
+            case MORE_LIKE_THIS:
+                PostDoc postDoc = postDocService.getPostDocByPostId(435L);
+                printPost(postDoc);
+
+                postDocList = postDocService.getMoreLikeThis(435L).subList(0, 5);
+                printPosts(postDocList);
+                break;
+
+            // region non-active case options
 
             case POPULATE_DATABASE_SINGLE_ENTRIES:
                 solrOperations.delete(query);
@@ -123,7 +150,6 @@ public class SolrUI {
                 }
                 System.out.println("All posts added to Solr Server at " + solrSettings.getSolrServerUrl());
                 break;
-
 
             case POPULATE_DATABASE_AS_LIST:
                 solrOperations.delete(query);
@@ -143,6 +169,7 @@ public class SolrUI {
                 break;
 
             case HIGHLIGHT_SEARCH_CRITERIA:
+
                 highlightProductPage = service.findByHighlightedNameCriteria("canon powershot");
                 SolrUtils.processHighlights(highlightProductPage);
                 printProducts(highlightProductPage);
@@ -182,13 +209,13 @@ public class SolrUI {
 
             case FACET_ON_AVAILABLE:
 
-//                facetProductPage = service.getFacetedProductsAvailable();
-//                Page<FacetFieldEntry> avPage = facetProductPage.getFacetResultPage(Product.AVAILABLE_FIELD);
-//
-//                for (FacetFieldEntry entry : avPage) {
-//                    System.out.println(String.format("%s:%s \t %s", entry.getField().getName(), entry.getValue(),
-//                            entry.getValueCount()));
-//                }
+                facetProductPage = service.getFacetedProductsAvailable();
+                Page<FacetFieldEntry> avPage = facetProductPage.getFacetResultPage(Product.AVAILABLE_FIELD);
+
+                for (FacetFieldEntry entry : avPage) {
+                    System.out.println(String.format("%s:%s \t %s", entry.getField().getName(), entry.getValue(),
+                            entry.getValueCount()));
+                }
 
                 break;
 
@@ -246,7 +273,12 @@ public class SolrUI {
             case ALL_RECORDS:
 
                 Iterable<Product> allRecords = service.getAllRecords();
-                printProducts(allRecords);
+                List<Product> productList = new ArrayList<>();
+                for (Product product : allRecords) {
+                    if (product.getDoctype().equals(SolrDocType.PRODUCT))
+                        productList.add(product);
+                }
+                printProducts(productList);
                 break;
 
             case UPDATE_RECORD:
@@ -265,11 +297,12 @@ public class SolrUI {
                 break;
 
             case CRITERIA_SEARCH:
-
-                productList = service.searchWithCriteria("Canon Camera memory");
-                printProducts(productList);
+                this.productList = service.searchWithCriteria("Canon Camera memory");
+                printProducts(this.productList);
 
                 break;
+
+            // endregion
 
             default:
                 break;
@@ -277,9 +310,28 @@ public class SolrUI {
 
     }
 
+    private void printPost(PostDoc postDoc) {
+        System.out.println("Retrieved Post ---------------------------- */\n");
+        MessageFormat mf = new MessageFormat("{0} | Post: {1}");
+        Object[] items = {postDoc.getPostId(), postDoc.getPostTitle()};
+        System.out.println(mf.format(items));
+        System.out.println("");
+    }
+
+    private void printPosts(Iterable<? extends PostDoc> posts) {
+        int i = 0;
+        System.out.println("More Like This Posts -------------------------- */\n");
+        for (PostDoc postDoc : posts) {
+            MessageFormat mf = new MessageFormat("{0} | Post: {1}");
+            Object[] items = {postDoc.getPostId(), postDoc.getPostTitle()};
+            System.out.println(mf.format(items));
+            i++;
+        }
+        System.out.println("");
+    }
+
     private void printProducts(Iterable<? extends Product> products) {
         int i = 0;
-        System.out.println("");
         for (Product product : products) {
             MessageFormat mf = new MessageFormat("{0} | Popularity: {1} | Lng/Lat: {2},{3}");
             Object[] items = {product.getName(), product.getPopularity(), product.getPoint().getX(),
@@ -293,6 +345,7 @@ public class SolrUI {
             i++;
         }
         System.out.println("\nTOTAL RECORDS: " + i);
+        System.out.println("\n\n");
     }
 
 }

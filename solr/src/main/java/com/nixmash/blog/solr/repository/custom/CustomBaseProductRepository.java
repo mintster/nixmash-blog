@@ -36,5 +36,4 @@ public interface CustomBaseProductRepository {
 
 	HighlightPage<Product> searchProductsWithHighlights(String term);
 
-
 }

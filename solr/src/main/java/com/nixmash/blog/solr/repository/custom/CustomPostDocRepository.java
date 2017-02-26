@@ -29,5 +29,7 @@ public interface CustomPostDocRepository extends CustomBasePostDocRepository, So
     @Query("doctype:post AND id:?0")
     PostDoc findPostDocByPostId(long postId);
 
+    @Query(value = "id:?0", requestHandler = "/mlt", filters = { "posttype:POST" })
+    List<PostDoc> findMoreLikeThis(long postId);
 
 }
