@@ -705,6 +705,10 @@ span.tag.label {
     background-color: #89a29d;
 }
 
+#posts .taglink a.label-default:hover {
+    background-color: #555;
+}
+
 /*</editor-fold>*/
 /*/<editor-fold> desc="POST DISPLAY IN STREAM----------------------------/ "*/
 #more-posts-button-row {

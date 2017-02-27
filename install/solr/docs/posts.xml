@@ -1,7 +1,7 @@
 <add>
     <doc>
         <field name="id">1</field>
-        <field name="author">Dave Burke</field>
+        <field name="author">Bill Blaster</field>
         <field name="title">JavaScript · Bootstrap</field>
         <field name="postname">javascript-bootstrap</field>
         <field name="postlink">http://getbootstrap.com/javascript/#carousel</field>
@@ -20,7 +20,7 @@
 
     <doc>
         <field name="id">2</field>
-        <field name="author">Dave Burke</field>
+        <field name="author">Bill Blaster</field>
         <field name="title">Jsoup Parsing and Traversing Document and URL - JAVATIPS.INFO</field>
         <field name="postname">jsoup-parsing-and-traversing-document-and-url-javatips-info</field>
         <field name="postlink">http://javatips.info/jsoup-parsing-and-traversing-document-and-url.html</field>
@@ -37,7 +37,7 @@
 
     <doc>
         <field name="id">3</field>
-        <field name="author">Dave Burke</field>
+        <field name="author">Bill Blaster</field>
         <field name="title">Changelist for Thursday AM</field>
         <field name="postname">changelist-for-thursday-am</field>
         <field name="postlink"></field>
@@ -52,7 +52,7 @@
 
     <doc>
         <field name="id">4</field>
-        <field name="author">Dave Burke</field>
+        <field name="author">Bill Blaster</field>
         <field name="title">First Single Photo Post</field>
         <field name="postname">first-single-photo-post</field>
         <field name="postlink"></field>
@@ -67,7 +67,7 @@
 
     <doc>
         <field name="id">5</field>
-        <field name="author">Dave Burke</field>
+        <field name="author">Bill Blaster</field>
         <field name="title">Behind the Pieces of a Flashcards App</field>
         <field name="postname">behind-the-pieces-of-a-flashcards-app</field>
         <field name="postlink">http://nixmash.com/java/behind-the-pieces-of-a-flashcards-app/</field>
@@ -83,7 +83,7 @@
 
     <doc>
         <field name="id">6</field>
-        <field name="author">Dave Burke</field>
+        <field name="author">Bill Blaster</field>
         <field name="title">Behavior Post</field>
         <field name="postname">behavior-post</field>
         <field name="postlink"></field>
@@ -100,7 +100,7 @@
 
     <doc>
         <field name="id">7</field>
-        <field name="author">Dave Burke</field>
+        <field name="author">Bill Blaster</field>
         <field name="title">New Post Delight</field>
         <field name="postname">new-post-delight</field>
         <field name="postlink"></field>
@@ -108,6 +108,54 @@
         <field name="posttype">POST</field>
         <field name="html">&lt;p&gt;A post to test Preview function&lt;/p&gt;</field>
         <field name="body">A post to test Preview function</field>
+        <field name="source">NA</field>
+        <field name="tag">cats</field>
+        <field name="tag">dogs</field>
+        <field name="doctype">post</field>
+    </doc>
+
+    <doc>
+        <field name="id">8</field>
+        <field name="author">Bill Blaster</field>
+        <field name="title">200 Ways To Title Something</field>
+        <field name="postname">200-ways-to-title-something</field>
+        <field name="postlink"></field>
+        <field name="postdate">2016-09-19T11:10:06Z</field>
+        <field name="posttype">POST</field>
+        <field name="html">&lt;p&gt;This post title begins with 200&lt;/p&gt;</field>
+        <field name="body">This post title begins with 200</field>
+        <field name="source">NA</field>
+        <field name="tag">cats</field>
+        <field name="tag">dogs</field>
+        <field name="doctype">post</field>
+    </doc>
+
+    <doc>
+        <field name="id">9</field>
+        <field name="author">Bill Blaster</field>
+        <field name="title">1000 Ways To Title Something</field>
+        <field name="postname">1000-ways-to-title-something</field>
+        <field name="postlink"></field>
+        <field name="postdate">2016-09-19T11:10:06Z</field>
+        <field name="posttype">POST</field>
+        <field name="html">&lt;p&gt;This post title begins with 1000&lt;/p&gt;</field>
+        <field name="body">This post title begins with 1000</field>
+        <field name="source">NA</field>
+        <field name="tag">cats</field>
+        <field name="tag">dogs</field>
+        <field name="doctype">post</field>
+    </doc>
+
+    <doc>
+        <field name="id">10</field>
+        <field name="author">Bill Blaster</field>
+        <field name="title">Solr Rama</field>
+        <field name="postname">solr-rama</field>
+        <field name="postlink"></field>
+        <field name="postdate">2016-09-19T11:10:06Z</field>
+        <field name="posttype">POST</field>
+        <field name="html">&lt;p&gt;This is a post. This is a post. This is a post.&lt;/p&gt;</field>
+        <field name="body">This is a post. This is a post. This is a post.</field>
         <field name="source">NA</field>
         <field name="tag">cats</field>
         <field name="tag">dogs</field>

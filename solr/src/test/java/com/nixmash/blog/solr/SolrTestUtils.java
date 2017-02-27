@@ -39,7 +39,7 @@ public abstract class SolrTestUtils {
 	public static List<String> tags = Arrays.asList("testone", "testtwo");
 
 
-	protected static List<Product> createProductList(int nrProducts) {
+	public static List<Product> createProductList(int nrProducts) {
 		List<Product> products = new ArrayList<Product>(nrProducts);
 		for (int i = 0; i < nrProducts; i++) {
 			products.add(createProduct(i));
@@ -61,9 +61,9 @@ public abstract class SolrTestUtils {
 		return product;
 	}
 
-	protected static List<PostDoc> createPostList(int nrPosts) {
+	public static List<PostDoc> createPostList(int nrPosts) {
 		List<PostDoc> posts = new ArrayList<PostDoc>(nrPosts);
-		for (int i = 0; i < nrPosts; i++) {
+		for (int i = 1; i < nrPosts + 1; i++) {
 			posts.add(createPost(i));
 		}
 		return posts;

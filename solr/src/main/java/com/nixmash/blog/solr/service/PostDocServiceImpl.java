@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.solr.UncategorizedSolrException;
 import org.springframework.data.solr.core.SolrOperations;
 import org.springframework.data.solr.core.query.Query;
 import org.springframework.data.solr.core.query.SimpleQuery;
@@ -44,8 +45,14 @@ public class PostDocServiceImpl implements PostDocService {
     }
 
     @Override
-    public List<PostDoc> getMoreLikeThis(Long postId) {
-        return customPostDocRepository.findMoreLikeThis(postId);
+    public List<PostDoc> getMoreLikeThis(Long postId)  {
+        List<PostDoc> postDocList = null;
+        try {
+            postDocList = customPostDocRepository.findMoreLikeThis(postId);
+        } catch (UncategorizedSolrException e) {
+            logger.info("MoreLikeThis posts not retrieved for postId " + String.valueOf(postId));
+        }
+        return postDocList;
     }
 
     @Transactional

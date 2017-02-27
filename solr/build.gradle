@@ -30,7 +30,9 @@ dependencies {
             }
 }
 
-run { systemProperty 'spring.profiles.active', 'prod, mysql' }
+task reindex << {
+    bootRun.args "--reindex=true"
+}
 
 bootRun {
     addResources = false

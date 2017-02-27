@@ -141,6 +141,22 @@ public class PostsRestController {
 
     // endregion
 
+    // region Post Peramlink Display
+
+    @RequestMapping(value = "/post/mlt/{postId}",
+            produces = "text/html;charset=UTF-8")
+    public String getMoreLikeThis(@PathVariable long postId, HttpServletRequest request) {
+
+        List<PostDoc> postDocs = null;
+        String result = StringUtils.EMPTY;
+        postDocs = postDocService.getMoreLikeThis(postId);
+        if (postDocs != null)
+            result = populateMoreLikeThisStream(postDocs);
+        return result;
+    }
+
+    // endregion
+
     // region Posts by Tag
 
     @RequestMapping(value = "/tag/{tagid}/page/{pageNumber}",
@@ -274,8 +290,22 @@ public class PostsRestController {
             return "true";
     }
 
-    private String populatePostStream(List<Post> posts, CurrentUser currentUser) {
-        return populatePostStream(posts, currentUser, null);
+    private String populateMoreLikeThisStream(List<PostDoc> postDocs) {
+        List<Post> posts = new ArrayList<>();
+        String result = StringUtils.EMPTY;
+        for (PostDoc postDoc : postDocs) {
+            try {
+                posts.add(postService.getPostById(Long.parseLong(postDoc.getPostId())));
+            } catch (PostNotFoundException e) {
+                logger.info("MoreLikeThis PostDoc {} to Post with title \"{}\" NOT FOUND", postDoc.getPostId(), postDoc.getPostTitle());
+            }
+        }
+
+        for (Post post : posts) {
+            result += fmService.createPostHtml(post, "mlt");
+        }
+
+        return result;
     }
 
     private String populatePostDocStream(List<PostDoc> postDocs, CurrentUser currentUser) {
@@ -290,6 +320,10 @@ public class PostsRestController {
         }
         String format = applicationSettings.getTitleSearchResultsDisplay() ? "title" : null;
         return populatePostStream(posts, currentUser, format);
+    }
+
+    private String populatePostStream(List<Post> posts, CurrentUser currentUser) {
+        return populatePostStream(posts, currentUser, null);
     }
 
     private String populatePostStream(List<Post> posts, CurrentUser currentUser, String format) {

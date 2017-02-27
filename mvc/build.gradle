@@ -44,6 +44,7 @@ dependencies {
 	//noinspection GroovyAssignabilityCheck
 	testCompile project(':jpa').sourceSets.test.output
 	testCompile project(':mail').sourceSets.test.output
+	testCompile project(':solr').sourceSets.test.output
 }
 
 bootRun {
