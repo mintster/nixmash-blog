@@ -36,7 +36,7 @@
                 <img src="/images/share/facebook.png" title="Facebook" class="share-img-lg"
                      alt="Share on Facebook"/></a>
         </div>
-        <div class="like-button">
+        <div class="like-button" th:if="${appSettings.loginEnabled}">
             <i class="fa fa-thumbs-up"></i>
             <button class="btn-like" th:onclick="|likePost(${post.postId});|">Like</button>
             <span class="like-count" th:id="|output-${post.postId}|" th:text="${post.likesCount}">[LIKE COUNT]</span>

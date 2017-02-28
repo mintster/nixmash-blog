@@ -18,6 +18,7 @@ public class ApplicationSettings  implements Serializable {
 	private Boolean isNixmashSite;
 	private String baseUrl;
 	private String siteName;
+	private Boolean loginEnabled;
 
 	// endregion
 
@@ -73,6 +74,16 @@ public class ApplicationSettings  implements Serializable {
 	private int moreLikeThisNum;
 
 	// endregion
+
+	// region Getters Setters
+
+
+	public Boolean getLoginEnabled() {
+		return loginEnabled;
+	}
+	public void setLoginEnabled(Boolean loginEnabled) {
+		this.loginEnabled = loginEnabled;
+	}
 
 	public int getMoreLikeThisNum() {
 		return moreLikeThisNum;
@@ -269,5 +280,7 @@ public class ApplicationSettings  implements Serializable {
 	public void setPostTitleStreamPageCount(int postTitleStreamPageCount) {
 		this.postTitleStreamPageCount = postTitleStreamPageCount;
 	}
+
+	// endregion
 
 }

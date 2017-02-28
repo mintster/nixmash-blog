@@ -3,6 +3,7 @@
 <body>
 
 <div th:fragment="morelikethis" id="morelikethis">
+    <h2 th:text="${moreLikeThisHeading}">[More like this]</h2>
     <div id="mlts"></div>
     <script th:inline="javascript">
 
@@ -12,7 +13,7 @@
         var postId = [[${postId}]];
 
         $.get(baseUrl + postId, function (data) {
-            $("#mlts").html(data);
+            $("#mlts").replaceWith(data);
         });
 
         /*]]>*/
