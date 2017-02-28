@@ -121,6 +121,11 @@ public class SolrUI {
         runDemos(DEMO.MORE_LIKE_THIS);
     }
 
+    public void populate() {
+        System.out.println("REPOPULATING SOLR PRODUCTION INDEX");
+        runDemos(DEMO.POPULATE_DATABASE_AS_LIST);
+    }
+
     private void runDemos(DEMO demo) {
 
         Query query = new SimpleQuery(new SimpleStringCriteria("doctype:post"));
@@ -132,7 +137,7 @@ public class SolrUI {
                 PostDoc postDoc = postDocService.getPostDocByPostId(435L);
                 printPost(postDoc);
 
-                postDocList = postDocService.getMoreLikeThis(435L).subList(0, 5);
+                postDocList = postDocService.getMoreLikeThis(435L).subList(0,2);
                 printPosts(postDocList);
                 break;
 

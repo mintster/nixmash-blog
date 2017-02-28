@@ -1,17 +1,30 @@
 package com.nixmash.blog.mvc.controller;
 
+import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.mvc.AbstractContext;
+import com.nixmash.blog.solr.SolrTestUtils;
+import com.nixmash.blog.solr.model.PostDoc;
+import com.nixmash.blog.solr.service.PostDocService;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.List;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -26,11 +39,58 @@ public class PostsRestControllerTests extends AbstractContext {
 
     private MockMvc mockMvc;
 
+    @MockBean
+    private PostDocService mockPostDocService;
+
+    @Autowired
+    private ApplicationSettings applicationSettings;
+
+    private List<PostDoc> morelikethisDocs;
+    private final Long MORELIKETHIS_POSTID = 1L;
+
     @Before
     public void setUp() {
         mockMvc = webAppContextSetup(wac)
                 .apply(springSecurity())
                 .build();
+
+        when(mockPostDocService.getMoreLikeThis(MORELIKETHIS_POSTID)).thenReturn(SolrTestUtils.createPostList(3));
+    }
+
+    @Test
+    public void getMoreLikeThis_MoreLikeThisDisplay_False() throws Exception {
+
+        applicationSettings.setMoreLikeThisDisplay(false);
+        MvcResult mvcResult = mockMvc.perform(get("/json/posts/post/mlt/" + MORELIKETHIS_POSTID))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML)).andReturn();
+
+        assertEquals(mvcResult.getResponse().getContentAsString(), StringUtils.EMPTY);
+
+    }
+
+    @Test
+    public void getMoreLikeThis_PostDocLessThanAppSetting() throws Exception {
+
+        applicationSettings.setMoreLikeThisNum(1000);
+        MvcResult mvcResult = mockMvc.perform(get("/json/posts/post/mlt/" + MORELIKETHIS_POSTID))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML)).andReturn();
+
+        assertEquals(mvcResult.getResponse().getContentAsString(), StringUtils.EMPTY);
+
+    }
+
+    @Test
+    public void getMoreLikeThis_MoreLikeThisDisplay_True() throws Exception {
+
+        applicationSettings.setMoreLikeThisDisplay(true);
+        MvcResult mvcResult = mockMvc.perform(get("/json/posts/post/mlt/" + MORELIKETHIS_POSTID))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML)).andReturn();
+
+        assertThat(mvcResult.getResponse().getContentAsString(), containsString("<div"));
+
     }
 
     @Test

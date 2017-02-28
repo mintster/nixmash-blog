@@ -16,6 +16,7 @@
 package com.nixmash.blog.solr.repository.custom;
 
 import com.nixmash.blog.solr.model.PostDoc;
+import org.springframework.data.solr.UncategorizedSolrException;
 import org.springframework.data.solr.repository.Query;
 import org.springframework.data.solr.repository.SolrCrudRepository;
 
@@ -30,6 +31,6 @@ public interface CustomPostDocRepository extends CustomBasePostDocRepository, So
     PostDoc findPostDocByPostId(long postId);
 
     @Query(value = "id:?0", requestHandler = "/mlt", filters = { "posttype:POST" })
-    List<PostDoc> findMoreLikeThis(long postId);
+    List<PostDoc> findMoreLikeThis(long postId) throws UncategorizedSolrException;
 
 }
