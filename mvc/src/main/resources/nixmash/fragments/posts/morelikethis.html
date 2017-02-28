@@ -1,0 +1,23 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+
+<div th:fragment="morelikethis" id="morelikethis">
+    <div id="mlts"></div>
+    <script th:inline="javascript">
+
+        /*<![CDATA[*/
+
+        var baseUrl = "/json/posts/post/mlt/";
+        var postId = [[${postId}]];
+
+        $.get(baseUrl + postId, function (data) {
+            $("#mlts").html(data);
+        });
+
+        /*]]>*/
+
+    </script>
+</div>
+</body>
+</html>

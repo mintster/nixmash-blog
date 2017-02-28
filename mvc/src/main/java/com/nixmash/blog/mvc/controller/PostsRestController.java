@@ -147,11 +147,13 @@ public class PostsRestController {
             produces = "text/html;charset=UTF-8")
     public String getMoreLikeThis(@PathVariable long postId, HttpServletRequest request) {
 
-        List<PostDoc> postDocs = null;
         String result = StringUtils.EMPTY;
-        postDocs = postDocService.getMoreLikeThis(postId);
-        if (postDocs != null)
-            result = populateMoreLikeThisStream(postDocs);
+        if (applicationSettings.getMoreLikeThisDisplay()) {
+            List<PostDoc> postDocs = null;
+            postDocs = postDocService.getMoreLikeThis(postId);
+            if (postDocs != null)
+                result = populateMoreLikeThisStream(postDocs);
+        }
         return result;
     }
 
@@ -293,11 +295,17 @@ public class PostsRestController {
     private String populateMoreLikeThisStream(List<PostDoc> postDocs) {
         List<Post> posts = new ArrayList<>();
         String result = StringUtils.EMPTY;
-        for (PostDoc postDoc : postDocs) {
+
+        for (int i = 0; i < applicationSettings.getMoreLikeThisNum(); i++) {
             try {
+                PostDoc postDoc = postDocs.get(i);
                 posts.add(postService.getPostById(Long.parseLong(postDoc.getPostId())));
-            } catch (PostNotFoundException e) {
-                logger.info("MoreLikeThis PostDoc {} to Post with title \"{}\" NOT FOUND", postDoc.getPostId(), postDoc.getPostTitle());
+            } catch (PostNotFoundException | IndexOutOfBoundsException e) {
+                if (e.getClass().equals(PostNotFoundException.class))
+                    logger.info("MoreLikeThis PostDoc {} to Post with title \"{}\" NOT FOUND", postDocs.get(i).getPostId(), postDocs.get(i).getPostTitle());
+                else
+                    logger.info("EXCEPTION: AppSetting MoreLikeThisNum Value too high");
+                    return StringUtils.EMPTY;
             }
         }
 

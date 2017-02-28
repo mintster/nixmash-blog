@@ -7,6 +7,7 @@ import com.nixmash.blog.jpa.model.CurrentUser;
 import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.service.PostService;
 import com.nixmash.blog.jpa.utils.PostUtils;
+import com.nixmash.blog.solr.service.PostDocService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +32,12 @@ public class PermaPostsController {
     public static final String POSTS_PERMALINK_VIEW = "posts/post";
 
     private final PostService postService;
+    private final PostDocService postDocService;
     private final ApplicationSettings applicationSettings;
 
-    public PermaPostsController(PostService postService, ApplicationSettings applicationSettings) {
+    public PermaPostsController(PostService postService, PostDocService postDocService, ApplicationSettings applicationSettings) {
         this.postService = postService;
+        this.postDocService = postDocService;
         this.applicationSettings = applicationSettings;
     }
 
@@ -66,6 +69,16 @@ public class PermaPostsController {
         Date postCreated = Date.from(post.getPostDate().toInstant());
         post.setIsOwner(PostUtils.isPostOwner(currentUser, post.getUserId()));
         post.setPostContent(PostUtils.formatPostContent(post));
+
+        if (applicationSettings.getMoreLikeThisDisplay()) {
+
+            // Solr must be active and number of postDocs retrieved must not be null
+            if (postDocService.getMoreLikeThis(post.getPostId()) != null) {
+                model.addAttribute("moreLikeThisDisplay", true);
+                model.addAttribute("postId", post.getPostId());
+            }
+        }
+
         model.addAttribute("post", post);
         model.addAttribute("postCreated", postCreated);
         model.addAttribute("shareSiteName",

@@ -67,11 +67,30 @@ public class ApplicationSettings  implements Serializable {
 
 	// endregion
 
+	// region PermaPost Display
+
+	private Boolean moreLikeThisDisplay;
+	private int moreLikeThisNum;
+
+	// endregion
+
+	public int getMoreLikeThisNum() {
+		return moreLikeThisNum;
+	}
+	public void setMoreLikeThisNum(int moreLikeThisNum) {
+		this.moreLikeThisNum = moreLikeThisNum;
+	}
+
+	public Boolean getMoreLikeThisDisplay() {
+		return moreLikeThisDisplay;
+	}
+	public void setMoreLikeThisDisplay(Boolean moreLikeThisDisplay) {
+		this.moreLikeThisDisplay = moreLikeThisDisplay;
+	}
 
 	public Boolean getTitleStreamDisplay() {
 		return titleStreamDisplay;
 	}
-
 	public void setTitleStreamDisplay(Boolean titleStreamDisplay) {
 		this.titleStreamDisplay = titleStreamDisplay;
 	}
@@ -79,7 +98,6 @@ public class ApplicationSettings  implements Serializable {
 	public Boolean getTitleSearchResultsDisplay() {
 		return titleSearchResultsDisplay;
 	}
-
 	public void setTitleSearchResultsDisplay(Boolean titleSearchResultsDisplay) {
 		this.titleSearchResultsDisplay = titleSearchResultsDisplay;
 	}
