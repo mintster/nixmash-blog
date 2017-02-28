@@ -17,6 +17,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
@@ -28,6 +29,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -46,7 +48,9 @@ public class PostsRestControllerTests extends AbstractContext {
     private ApplicationSettings applicationSettings;
 
     private List<PostDoc> morelikethisDocs;
-    private final Long MORELIKETHIS_POSTID = 1L;
+    private static final Long MLT_POSTID = 1L;
+    private static final String MLT_POSTNAME = "javascript-bootstrap";
+    private static final String MORELIKETHIS_ATTRIBUTE = "moreLikeThisDisplay";
 
     @Before
     public void setUp() {
@@ -54,16 +58,24 @@ public class PostsRestControllerTests extends AbstractContext {
                 .apply(springSecurity())
                 .build();
 
-        when(mockPostDocService.getMoreLikeThis(MORELIKETHIS_POSTID)).thenReturn(SolrTestUtils.createPostList(3));
+        when(mockPostDocService.getMoreLikeThis(MLT_POSTID)).thenReturn(SolrTestUtils.createPostList(3));
     }
 
     @Test
     public void getMoreLikeThis_MoreLikeThisDisplay_False() throws Exception {
 
+        // MoreLikeThis Posts Disabled, returns an empty String, no "moreLikeThisDisplay" Attribute
+
         applicationSettings.setMoreLikeThisDisplay(false);
-        MvcResult mvcResult = mockMvc.perform(get("/json/posts/post/mlt/" + MORELIKETHIS_POSTID))
+
+        mockMvc.perform(get("/post/" + MLT_POSTNAME))
+                .andExpect(model().attributeDoesNotExist(MORELIKETHIS_ATTRIBUTE));
+
+        MvcResult mvcResult = mockMvc.perform(get("/json/posts/post/mlt/" + MLT_POSTID))
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML)).andReturn();
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andReturn();
 
         assertEquals(mvcResult.getResponse().getContentAsString(), StringUtils.EMPTY);
 
@@ -72,24 +84,41 @@ public class PostsRestControllerTests extends AbstractContext {
     @Test
     public void getMoreLikeThis_PostDocLessThanAppSetting() throws Exception {
 
-        applicationSettings.setMoreLikeThisNum(1000);
-        MvcResult mvcResult = mockMvc.perform(get("/json/posts/post/mlt/" + MORELIKETHIS_POSTID))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML)).andReturn();
+        // MoreLikeThis Post Stream throws IndexOutOfBoundsException
+        //  Returns No MoreLikeThis Posts message containing "nomlt-item" classname
 
-        assertEquals(mvcResult.getResponse().getContentAsString(), StringUtils.EMPTY);
+        applicationSettings.setMoreLikeThisNum(1000);
+
+        mockMvc.perform(get("/post/" + MLT_POSTNAME))
+                .andExpect(model().attributeExists(MORELIKETHIS_ATTRIBUTE));
+
+        MvcResult mvcResult = mockMvc.perform(get("/json/posts/post/mlt/" + MLT_POSTID))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andReturn();
+
+        assertThat(mvcResult.getResponse().getContentAsString(),
+                containsString("<div class=\"nomlt-item\">"));
 
     }
 
     @Test
     public void getMoreLikeThis_MoreLikeThisDisplay_True() throws Exception {
 
-        applicationSettings.setMoreLikeThisDisplay(true);
-        MvcResult mvcResult = mockMvc.perform(get("/json/posts/post/mlt/" + MORELIKETHIS_POSTID))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML)).andReturn();
+        // MoreLikeThis Posts Enabled, returns an HTML Response
 
-        assertThat(mvcResult.getResponse().getContentAsString(), containsString("<div"));
+        applicationSettings.setMoreLikeThisDisplay(true);
+
+        mockMvc.perform(get("/post/" + MLT_POSTNAME))
+                .andExpect(model().attributeExists(MORELIKETHIS_ATTRIBUTE));
+
+        MvcResult mvcResult = mockMvc.perform(get("/json/posts/post/mlt/" + MLT_POSTID))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andReturn();
+
+        assertThat(mvcResult.getResponse().getContentAsString(),
+                containsString("<div class=\"mlt-item\">"));
 
     }
 

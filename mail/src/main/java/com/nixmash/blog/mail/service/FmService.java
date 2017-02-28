@@ -17,6 +17,8 @@ public interface FmService {
 
     String createPostAtoZs();
 
+    String getNoMoreLikeThisMessage();
+
     String getRobotsTxt();
 
     String getFileUploadingScript();

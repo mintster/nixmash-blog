@@ -156,6 +156,19 @@ public class FmServiceImpl implements FmService {
         return html;
     }
 
+    @Override
+    public String getNoMoreLikeThisMessage() {
+        String result = null;
+        Map<String, Object> model = new Hashtable<>();
+
+        try {
+            result =  FreeMarkerTemplateUtils.processTemplateIntoString(fm.getTemplate("posts/nomlts.ftl"), model);
+        } catch (IOException | TemplateException e) {
+            logger.error("Problem merging No MoreLikeThis template : " + e.getMessage());
+        }
+        return result;
+    }
+
     // endregion
 
     // region Utility Templates

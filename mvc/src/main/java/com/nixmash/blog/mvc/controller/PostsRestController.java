@@ -304,8 +304,8 @@ public class PostsRestController {
                 if (e.getClass().equals(PostNotFoundException.class))
                     logger.info("MoreLikeThis PostDoc {} to Post with title \"{}\" NOT FOUND", postDocs.get(i).getPostId(), postDocs.get(i).getPostTitle());
                 else
-                    logger.info("EXCEPTION: AppSetting MoreLikeThisNum Value too high");
-                    return StringUtils.EMPTY;
+                    logger.info("EXCEPTION: AppSetting MoreLikeThisNum value exceeds post count");
+                    return fmService.getNoMoreLikeThisMessage();
             }
         }
 

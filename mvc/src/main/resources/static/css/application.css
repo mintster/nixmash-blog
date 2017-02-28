@@ -1442,4 +1442,12 @@ button.btn.btn-success.btn-flashcard-category {
     font-size: small;
     margin-top: 6px;
 }
+.nomlt-item p {
+    font-style: italic;
+    padding: 6px;
+    border: solid 1px #ccc;
+    font-size: small;
+    margin-top: 20px;
+    background-color: #f2f2f2;
+}
 /*</editor-fold>*/
