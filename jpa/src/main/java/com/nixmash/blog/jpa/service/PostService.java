@@ -1,12 +1,15 @@
 package com.nixmash.blog.jpa.service;
 
 import com.nixmash.blog.jpa.dto.AlphabetDTO;
+import com.nixmash.blog.jpa.dto.CategoryDTO;
 import com.nixmash.blog.jpa.dto.PostDTO;
 import com.nixmash.blog.jpa.dto.TagDTO;
 import com.nixmash.blog.jpa.enums.PostType;
+import com.nixmash.blog.jpa.exceptions.CategoryNotFoundException;
 import com.nixmash.blog.jpa.exceptions.DuplicatePostNameException;
 import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
 import com.nixmash.blog.jpa.exceptions.TagNotFoundException;
+import com.nixmash.blog.jpa.model.Category;
 import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.model.PostImage;
 import com.nixmash.blog.jpa.model.Tag;
@@ -102,6 +105,29 @@ public interface PostService {
 
     @Transactional(readOnly = true)
     PostImage getPostImage(long imageId);
+
+    @Transactional(readOnly = true)
+    Category getCategory(String categoryValue) throws CategoryNotFoundException;
+
+    @SuppressWarnings("JpaQueryApiInspection")
+    @Transactional(readOnly = true)
+    List<CategoryDTO> getCategoryCounts();
+
+    @SuppressWarnings("JpaQueryApiInspection")
+    @Transactional(readOnly = true)
+    List<CategoryDTO> getCategoryCounts(int categoryCount);
+
+    @Transactional(readOnly = true)
+    List<CategoryDTO> getAssignedCategories();
+
+    @Transactional(readOnly = true)
+    List<Category> getAllCategories();
+
+    @Transactional
+    Category createCategory(CategoryDTO categoryDTO);
+
+    @Transactional(readOnly = true)
+    Category getCategoryById(long categoryId);
 
     Tag getTag(String tagValue) throws TagNotFoundException;
 

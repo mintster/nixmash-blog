@@ -199,6 +199,21 @@ INSERT INTO tags (tag_id, tag_value) VALUES (4, 'h2tagfour');
 INSERT INTO tags (tag_id, tag_value) VALUES (5, 'h2 Tag With Spaces');
 INSERT INTO tags (tag_id, tag_value) VALUES (6, 'h2tagsix');
 
+INSERT INTO categories (category_id, category_value) VALUES (1, 'Uncategorized');
+INSERT INTO categories (category_id, category_value) VALUES (2, 'Java');
+INSERT INTO categories (category_id, category_value) VALUES (3, 'Solr');
+
+INSERT INTO post_category_ids (post_id, category_id) VALUES (1, 1);
+INSERT INTO post_category_ids (post_id, category_id) VALUES (2, 1);
+INSERT INTO post_category_ids (post_id, category_id) VALUES (3, 2);
+INSERT INTO post_category_ids (post_id, category_id) VALUES (4, 2);
+INSERT INTO post_category_ids (post_id, category_id) VALUES (5, 2);
+INSERT INTO post_category_ids (post_id, category_id) VALUES (6, 2);
+INSERT INTO post_category_ids (post_id, category_id) VALUES (7, 2);
+INSERT INTO post_category_ids (post_id, category_id) VALUES (8, 2);
+INSERT INTO post_category_ids (post_id, category_id) VALUES (9, 3);
+INSERT INTO post_category_ids (post_id, category_id) VALUES (10, 3);
+
 INSERT INTO post_tag_ids (post_id, tag_id) VALUES (1, 1);
 INSERT INTO post_tag_ids (post_id, tag_id) VALUES (1, 2);
 INSERT INTO post_tag_ids (post_id, tag_id) VALUES (1, 3);

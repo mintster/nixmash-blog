@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.nixmash.blog.jpa.utils.PostTestUtils.getTestCategory;
+import static com.nixmash.blog.jpa.utils.PostTestUtils.getTestTags;
 import static org.hamcrest.Matchers.isA;
 import static org.junit.Assert.*;
 
@@ -58,14 +60,35 @@ public class PostRepoTests {
     }
 
     @Test
-    public void addPost() {
-        Post post = Post.getBuilder(1L, "New Title", "new-title", "http://some.link", "New post content!", PostType.POST, PostDisplayType.POST).build();
+    public void newLinkHasPostSourceDomain() {
+        Post post = Post
+                .getBuilder(1L, "New Link", "new-link", "http://linksource.com", "New link content!", PostType.LINK, PostDisplayType.LINK_SUMMARY)
+                .tags(getTestTags(2))
+                .category(getTestCategory())
+                .build();
+
+        Post saved = postRepository.save(post);
+        assertNotNull(saved);
+        assertEquals(saved.getPostType(), PostType.LINK);
+
+        // postSource is domain of url passed to builder
+        assertEquals(saved.getPostSource(), "linksource.com");
+    }
+
+    @Test
+    public void newCategoryAdded() {
+        Post post = Post
+                .getBuilder(1L, "New Title", "new-title", null, "New post content!", PostType.POST, PostDisplayType.POST)
+                .tags(getTestTags(2))
+                .category(getTestCategory())
+                .build();
+
         Post saved = postRepository.save(post);
         assertNotNull(saved);
         assertEquals(saved.getPostType(), PostType.POST);
 
         // postSource is domain of url passed to builder
-        assertEquals(saved.getPostSource(), "some.link");
+        assertEquals(saved.getPostSource(), null);
     }
 
     @Test

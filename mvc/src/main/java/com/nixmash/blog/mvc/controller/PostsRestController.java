@@ -145,7 +145,7 @@ public class PostsRestController {
 
     @RequestMapping(value = "/post/mlt/{postId}",
             produces = "text/html;charset=UTF-8")
-    public String getMoreLikeThis(@PathVariable long postId, HttpServletRequest request) {
+    public String getMoreLikeThis(@PathVariable long postId) {
 
         String result = StringUtils.EMPTY;
         if (applicationSettings.getMoreLikeThisDisplay()) {
@@ -304,7 +304,7 @@ public class PostsRestController {
                 if (e.getClass().equals(PostNotFoundException.class))
                     logger.info("MoreLikeThis PostDoc {} to Post with title \"{}\" NOT FOUND", postDocs.get(i).getPostId(), postDocs.get(i).getPostTitle());
                 else
-                    logger.info("EXCEPTION: AppSetting MoreLikeThisNum value exceeds post count");
+                    logger.info("EXCEPTION: AppSetting.MoreLikeThisNum > post count");
                     return fmService.getNoMoreLikeThisMessage();
             }
         }

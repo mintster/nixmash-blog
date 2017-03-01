@@ -160,6 +160,7 @@ CREATE TABLE userconnection (
 -- ----------------------------
 -- Table structure for posts
 -- ----------------------------
+DROP TABLE IF EXISTS posts;
 CREATE TABLE posts (
   post_id bigint(20) NOT NULL AUTO_INCREMENT,
   user_id bigint(20) NOT NULL,
@@ -172,7 +173,7 @@ CREATE TABLE posts (
   display_type varchar(20) NOT NULL DEFAULT 'LINK',
   is_published tinyint(1) NOT NULL DEFAULT '0',
   post_content varchar(5000) NOT NULL,
-  post_source varchar(50) NULL,
+  post_source varchar(50) DEFAULT 'NA',
   post_image varchar(200) DEFAULT NULL,
   click_count int(11) NOT NULL DEFAULT '0',
   likes_count int(11) NOT NULL DEFAULT '0',
@@ -191,7 +192,6 @@ CREATE TABLE tags
   PRIMARY KEY (tag_id)
 );
 
-
 CREATE TABLE post_tag_ids
 (
   post_tag_id BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -201,6 +201,24 @@ CREATE TABLE post_tag_ids
   CONSTRAINT fk_posts_post_id FOREIGN KEY (post_id) REFERENCES posts (post_id),
   CONSTRAINT fk_tags_tag_id FOREIGN KEY (tag_id) REFERENCES tags (tag_id)
 );
+
+CREATE TABLE categories
+(
+  category_id BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  category_value VARCHAR(50) NOT NULL
+);
+CREATE UNIQUE INDEX categories_category_id_uindex ON categories (category_id);
+
+CREATE TABLE post_category_ids
+(
+  post_category_id BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  post_id BIGINT(20) NOT NULL,
+  category_id BIGINT(20) NOT NULL,
+  CONSTRAINT fk_categories_post_id FOREIGN KEY (post_id) REFERENCES posts (post_id),
+  CONSTRAINT fk_categories_category_id FOREIGN KEY (category_id) REFERENCES categories (category_id)
+);
+CREATE INDEX fk_categories_category_id ON post_category_ids (category_id);
+CREATE INDEX fk_categories_post_id ON post_category_ids (post_id);
 
 CREATE TABLE user_likes (
   like_id bigint(20) NOT NULL AUTO_INCREMENT,

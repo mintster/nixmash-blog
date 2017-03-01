@@ -58,11 +58,12 @@ public class PostsRestControllerTests extends AbstractContext {
                 .apply(springSecurity())
                 .build();
 
-        when(mockPostDocService.getMoreLikeThis(MLT_POSTID)).thenReturn(SolrTestUtils.createPostList(3));
+        when(mockPostDocService.getMoreLikeThis(MLT_POSTID))
+                .thenReturn(SolrTestUtils.createPostList(3));
     }
 
     @Test
-    public void getMoreLikeThis_MoreLikeThisDisplay_False() throws Exception {
+    public void moreLikeThis_DisplaySetFalse() throws Exception {
 
         // MoreLikeThis Posts Disabled, returns an empty String, no "moreLikeThisDisplay" Attribute
 
@@ -82,28 +83,29 @@ public class PostsRestControllerTests extends AbstractContext {
     }
 
     @Test
-    public void getMoreLikeThis_PostDocLessThanAppSetting() throws Exception {
+    public void moreLikeThis_PostDocNumLessThanAppSetting() throws Exception {
 
-        // MoreLikeThis Post Stream throws IndexOutOfBoundsException
-        //  Returns No MoreLikeThis Posts message containing "nomlt-item" classname
+        // MoreLikeThis PopulatePostStream() throws IndexOutOfBoundsException
+        //  Returns No MoreLikeThis Posts message containing "nomlt-message" classname
 
         applicationSettings.setMoreLikeThisNum(1000);
 
         mockMvc.perform(get("/post/" + MLT_POSTNAME))
                 .andExpect(model().attributeExists(MORELIKETHIS_ATTRIBUTE));
 
-        MvcResult mvcResult = mockMvc.perform(get("/json/posts/post/mlt/" + MLT_POSTID))
+        MvcResult mvcResult =
+                mockMvc.perform(get("/json/posts/post/mlt/" + MLT_POSTID))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
 
         assertThat(mvcResult.getResponse().getContentAsString(),
-                containsString("<div class=\"nomlt-item\">"));
+                containsString("<div class=\"nomlt-message\">"));
 
     }
 
     @Test
-    public void getMoreLikeThis_MoreLikeThisDisplay_True() throws Exception {
+    public void moreLikeThis_DisplaySetTrue() throws Exception {
 
         // MoreLikeThis Posts Enabled, returns an HTML Response
 

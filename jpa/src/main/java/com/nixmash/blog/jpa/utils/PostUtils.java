@@ -1,8 +1,10 @@
 package com.nixmash.blog.jpa.utils;
 
 import com.github.slugify.Slugify;
+import com.nixmash.blog.jpa.dto.CategoryDTO;
 import com.nixmash.blog.jpa.dto.PostDTO;
 import com.nixmash.blog.jpa.dto.TagDTO;
+import com.nixmash.blog.jpa.model.Category;
 import com.nixmash.blog.jpa.model.CurrentUser;
 import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.model.Tag;
@@ -44,11 +46,11 @@ public class PostUtils {
                 .build();
     }
 
-    public static Post postDtoToSolrPost(PostDTO dto) {
-        Post post = postDtoToPost(dto);
-        post.setTags(tagsDTOsToTags(dto.getTags()));
-        return post;
-    }
+//    public static Post postDtoToSolrPost(PostDTO dto) {
+//        Post post = postDtoToPost(dto);
+//        post.setTags(tagsDTOsToTags(dto.getTags()));
+//        return post;
+//    }
 
 
     public static PostDTO postToPostDTO(Post post) {
@@ -65,6 +67,7 @@ public class PostUtils {
                 .postImage(post.getPostImage())
                 .postId(post.getPostId())
                 .tags(tagsToTagDTOs(post.getTags()))
+                .category(categoryToCategoryDTO(post.getCategory()))
                 .build();
     }
 
@@ -142,6 +145,18 @@ public class PostUtils {
             tagDTOs.add(new TagDTO(tag.getTagId(), tag.getTagValue()));
         }
         return tagDTOs;
+    }
+
+    public static CategoryDTO categoryToCategoryDTO(Category category) {
+        return new CategoryDTO(category.getCategoryId(), category.getCategoryValue());
+    }
+
+    public static List<CategoryDTO> categoriesToCategoryDTOs(List<Category> categories) {
+        List<CategoryDTO> categoryDTOS = new ArrayList<>();
+        for (Category category : categories) {
+            categoryDTOS.add(new CategoryDTO(category.getCategoryId(), category.getCategoryValue()));
+        }
+        return categoryDTOS;
     }
 
     public static Set<Tag> tagsDTOsToTags(Set<TagDTO> tagDTOs) {

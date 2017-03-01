@@ -4,19 +4,18 @@ import com.google.common.collect.Lists;
 import com.nixmash.blog.jpa.annotations.CachePostUpdate;
 import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.jpa.dto.AlphabetDTO;
+import com.nixmash.blog.jpa.dto.CategoryDTO;
 import com.nixmash.blog.jpa.dto.PostDTO;
 import com.nixmash.blog.jpa.dto.TagDTO;
 import com.nixmash.blog.jpa.enums.ContentType;
 import com.nixmash.blog.jpa.enums.PostDisplayType;
 import com.nixmash.blog.jpa.enums.PostType;
+import com.nixmash.blog.jpa.exceptions.CategoryNotFoundException;
 import com.nixmash.blog.jpa.exceptions.DuplicatePostNameException;
 import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
 import com.nixmash.blog.jpa.exceptions.TagNotFoundException;
 import com.nixmash.blog.jpa.model.*;
-import com.nixmash.blog.jpa.repository.LikeRepository;
-import com.nixmash.blog.jpa.repository.PostImageRepository;
-import com.nixmash.blog.jpa.repository.PostRepository;
-import com.nixmash.blog.jpa.repository.TagRepository;
+import com.nixmash.blog.jpa.repository.*;
 import com.nixmash.blog.jpa.utils.PostUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,16 +52,18 @@ public class PostServiceImpl implements PostService {
     private TagRepository tagRepository;
     private LikeRepository likeRepository;
     private PostImageRepository postImageRepository;
+    private CategoryRepository categoryRepository;
+
     private ApplicationSettings applicationSettings;
     private CacheManager cacheManager;
 
-
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, TagRepository tagRepository, LikeRepository likeRepository, PostImageRepository postImageRepository, ApplicationSettings applicationSettings, CacheManager cacheManager) {
+    public PostServiceImpl(PostRepository postRepository, TagRepository tagRepository, LikeRepository likeRepository, PostImageRepository postImageRepository, CategoryRepository categoryRepository, ApplicationSettings applicationSettings, CacheManager cacheManager) {
         this.postRepository = postRepository;
         this.tagRepository = tagRepository;
         this.likeRepository = likeRepository;
         this.postImageRepository = postImageRepository;
+        this.categoryRepository = categoryRepository;
         this.applicationSettings = applicationSettings;
         this.cacheManager = cacheManager;
     }
@@ -97,6 +98,9 @@ public class PostServiceImpl implements PostService {
             }
         }
 
+        Category category = categoryRepository.findByCategoryId(postDTO.getCategory().getCategoryId());
+        post.setCategory(category);
+
         return post;
     }
 
@@ -117,6 +121,9 @@ public class PostServiceImpl implements PostService {
             if (!post.getTags().contains(tag))
                 post.getTags().add(tag);
         }
+
+        Category category = categoryRepository.findByCategoryId(postDTO.getCategory().getCategoryId());
+        post.setCategory(category);
 
         return post;
     }
@@ -322,6 +329,74 @@ public class PostServiceImpl implements PostService {
 
     // endregion
 
+    // region Categories
+
+    @Transactional(readOnly = true)
+    @Override
+    public Category getCategory(String categoryValue) throws CategoryNotFoundException {
+        Category found = categoryRepository.findByCategoryValueIgnoreCase(categoryValue);
+        if (found == null) {
+            logger.info("No category found with id: {}", categoryValue);
+            throw new CategoryNotFoundException("No category found with id: " + categoryValue);
+        }
+        return found;
+    }
+
+    @SuppressWarnings("JpaQueryApiInspection")
+    @Transactional(readOnly = true)
+    @Override
+    public List<CategoryDTO> getCategoryCounts() {
+        return getCategoryCounts(-1);
+    }
+
+    @SuppressWarnings("JpaQueryApiInspection")
+    @Transactional(readOnly = true)
+    @Override
+    public List<CategoryDTO> getCategoryCounts(int categoryCount) {
+        List<Category> categories = em.createNamedQuery("getCategoryCounts", Category.class)
+                .getResultList();
+        List<CategoryDTO> categoryDTOS = categories
+                .stream()
+                .filter(c -> c.getPosts().size() > 0)
+                .limit(categoryCount > 0 ? categoryCount : Long.MAX_VALUE)
+                .map(CategoryDTO::new)
+                .sorted(comparing(CategoryDTO::getCategoryValue))
+                .collect(Collectors.toList());
+        return categoryDTOS;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<CategoryDTO> getAssignedCategories() {
+        List<Category> categories = categoryRepository.findByCategoryIdGreaterThan(1L, sortByCategoryAsc());
+        return PostUtils.categoriesToCategoryDTOs(categories);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll(sortByCategoryAsc());
+    }
+
+    @Transactional
+    @Override
+    public Category createCategory(CategoryDTO categoryDTO) {
+        Category category = categoryRepository.findByCategoryValueIgnoreCase(categoryDTO.getCategoryValue());
+        if (category == null) {
+            category = new Category(categoryDTO.getCategoryValue());
+            categoryRepository.save(category);
+        }
+        return category;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Category getCategoryById(long categoryId) {
+        return categoryRepository.findByCategoryId(categoryId);
+    }
+
+    // endregion
+
     // region Tags
 
     @Transactional(readOnly = true)
@@ -509,6 +584,11 @@ public class PostServiceImpl implements PostService {
     public Sort sortByPostDateDesc() {
         return new Sort(Sort.Direction.DESC, "postDate");
     }
+
+    public Sort sortByCategoryAsc() {
+        return new Sort(Sort.Direction.ASC, "categoryValue");
+    }
+
 
     public void clearPostCaches() {
         cacheManager.getCache("posts").clear();

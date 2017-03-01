@@ -2,11 +2,14 @@ package com.nixmash.blog.jpa.service;
 
 import com.nixmash.blog.jpa.SpringDataTests;
 import com.nixmash.blog.jpa.dto.AlphabetDTO;
+import com.nixmash.blog.jpa.dto.CategoryDTO;
 import com.nixmash.blog.jpa.dto.PostDTO;
 import com.nixmash.blog.jpa.dto.TagDTO;
 import com.nixmash.blog.jpa.enums.PostType;
+import com.nixmash.blog.jpa.exceptions.CategoryNotFoundException;
 import com.nixmash.blog.jpa.exceptions.DuplicatePostNameException;
 import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
+import com.nixmash.blog.jpa.model.Category;
 import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.model.PostImage;
 import com.nixmash.blog.jpa.repository.LikeRepository;
@@ -39,11 +42,17 @@ import static org.junit.Assert.*;
 @Transactional
 public class PostServiceTests extends SpringDataTests {
 
+    private static final String UNCATEGORIZED = "Uncategorized";
+    private static final String WOW_CATEGORY_NAME = "Wowwa Category";
+    private static final String NONEXISTENT_CATEGORY_NAME = "MAMMA LAMMA";
+
     @Autowired
     private PostService postService;
 
     @Autowired
     LikeRepository likeRepository;
+
+    // region Posts
 
     @Test
     public void addPostDTO() throws DuplicatePostNameException {
@@ -165,6 +174,28 @@ public class PostServiceTests extends SpringDataTests {
     }
 
     @Test
+    public void getPostsByPostType() throws Exception {
+        List<Post> posts;
+        posts = postService.getAllPublishedPostsByPostType(PostType.POST);
+        assertNotNull(posts);
+        posts = postService.getAllPublishedPostsByPostType(PostType.LINK);
+        assertNotNull(posts);
+    }
+
+    @Test
+    public void getPagedPostsByPostType() throws Exception {
+        Page<Post> posts;
+        posts = postService.getPagedPostsByPostType(PostType.POST, 0, 10);
+        assertNotNull(posts);
+        posts = postService.getPagedPostsByPostType(PostType.LINK, 0, 10);
+        assertNotNull(posts);
+    }
+
+    // endregion
+
+    // region Tags
+
+    @Test
     public void addPostWithTags() throws DuplicatePostNameException, PostNotFoundException {
         PostDTO postDTO = PostTestUtils.createPostDTO(3);
         postDTO.getTags().add(new TagDTO("addPostWithTags1"));
@@ -197,6 +228,10 @@ public class PostServiceTests extends SpringDataTests {
         assertNotNull(tagcloud);
     }
 
+    // endregion
+
+    // region Likes
+
     @Test
     public void getPostsByUserLikes() {
         // userId 3 "keith" has 3 likes, userId 2 "user" has 2 likes
@@ -211,23 +246,6 @@ public class PostServiceTests extends SpringDataTests {
         assertNull(posts);
     }
 
-    @Test
-    public void getPostsByPostType() throws Exception{
-        List<Post> posts;
-        posts = postService.getAllPublishedPostsByPostType(PostType.POST);
-        assertNotNull(posts);
-        posts = postService.getAllPublishedPostsByPostType(PostType.LINK);
-        assertNotNull(posts);
-    }
-
-    @Test
-    public void getPagedPostsByPostType() throws Exception{
-        Page<Post> posts;
-        posts = postService.getPagedPostsByPostType(PostType.POST, 0, 10);
-        assertNotNull(posts);
-        posts = postService.getPagedPostsByPostType(PostType.LINK, 0, 10);
-        assertNotNull(posts);
-    }
 
     @Test
     public void addLikedPost_UserWithNoLikes_ReturnsPlusOne()
@@ -287,6 +305,10 @@ public class PostServiceTests extends SpringDataTests {
 
     }
 
+    // endregion
+
+    // region AlphaPosts
+
     @Test
     public void alphaLinksContainsActive() {
         // AlphabetDTO characters isActive() property set to true by first letter in Post Titles
@@ -339,6 +361,10 @@ public class PostServiceTests extends SpringDataTests {
 
     }
 
+    // endregion
+
+    // region Post Images
+
     @Test
     public void postImagesLoad() {
         List<PostImage> postImages = postService.getPostImages(1L);
@@ -351,10 +377,79 @@ public class PostServiceTests extends SpringDataTests {
         assertEquals(postImages.size(), 3);
     }
 
+    // endregion
+
+    // region Misc tests
+
     @Test
     public void negativePostIdStub_NotYetSelected() throws PostNotFoundException {
         Post post = postService.getPostById(-1L);
         assertEquals(post.getPostName(), "not-yet-selected");
 
     }
+
+    // endregion
+
+    // region Category Tests
+
+    @Test(expected = CategoryNotFoundException.class)
+    public void nonExistingCategory() throws Exception {
+        Category category = postService.getCategory(NONEXISTENT_CATEGORY_NAME);
+    }
+
+    @Test
+    public void uncategorizedCategory() throws CategoryNotFoundException {
+        Category category = postService.getCategory(UNCATEGORIZED);
+        assertEquals(category.getCategoryValue(), UNCATEGORIZED);
+    }
+
+    @Test
+    public void categoryCountsTest() {
+        List<CategoryDTO> categoryDTOS = postService.getCategoryCounts(5);
+        for (CategoryDTO categoryDTO : categoryDTOS) {
+            assertThat(categoryDTO.getCategoryCount(), greaterThan(0));
+        }
+    }
+
+    @Test
+    public void getAssignedCategories_OneLessThanAllCategories() {
+        int allCategories = postService.getAllCategories().size();
+        int assignedCategories = postService.getAssignedCategories().size();
+        assertEquals(allCategories, assignedCategories + 1);
+    }
+
+    @Test
+    public void createCategory() {
+        CategoryDTO categoryDTO = new CategoryDTO(WOW_CATEGORY_NAME);
+        long categoryId = postService.createCategory(categoryDTO).getCategoryId();
+        Category category = postService.getCategoryById(categoryId);
+        assertTrue(category.getCategoryValue().equals(WOW_CATEGORY_NAME));
+    }
+
+    @Test
+    public void newPostContainsAssignedCategory() throws DuplicatePostNameException {
+        PostDTO postDTO = PostTestUtils.createPostDTO(100);
+        Post post = postService.add(postDTO);
+        assertNotNull(post);
+        assertNotNull(post.getCategory());
+
+        Category category = post.getCategory();
+        assertEquals(category.getCategoryValue(), "Java");
+    }
+
+    @Test
+    public void updatedPostContainsNewlyAssignedCategory() throws DuplicatePostNameException, PostNotFoundException {
+
+        Post post = postService.getPostById(1L);
+        assertEquals(post.getCategory().getCategoryValue(), "Uncategorized");
+
+        PostDTO postDTO = PostUtils.postToPostDTO(post);
+        postDTO.setCategory(new CategoryDTO(2L, "Java"));
+        post = postService.update(postDTO);
+        assertEquals(post.getCategory().getCategoryValue(), "Java");
+
+    }
+
+    // endregion
+
 }

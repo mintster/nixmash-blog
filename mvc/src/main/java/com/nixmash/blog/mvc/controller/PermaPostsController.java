@@ -75,11 +75,13 @@ public class PermaPostsController {
         post.setPostContent(PostUtils.formatPostContent(post));
 
         if (applicationSettings.getMoreLikeThisDisplay()) {
+
             // Solr must be active and number of postDocs retrieved must not be null
             if (postDocService.getMoreLikeThis(post.getPostId()) != null) {
                 model.addAttribute("moreLikeThisDisplay", true);
                 model.addAttribute("postId", post.getPostId());
-                model.addAttribute("moreLikeThisHeading", webUI.getMessage(MORELIKETHIS_HEADING));
+                model.addAttribute("moreLikeThisHeading",
+                        webUI.getMessage(MORELIKETHIS_HEADING));
             }
         }
 

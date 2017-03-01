@@ -160,35 +160,70 @@ CREATE TABLE `posts` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
+-- Set posts.post_content table for proper encoding on HTML on WP import
+-- ----------------------------
+
+-- ALTER TABLE posts MODIFY COLUMN post_content TEXT
+-- CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
+
+-- ----------------------------
 -- Table structure for tags
 -- ----------------------------
 
-DROP TABLE IF EXISTS `tags`;
-CREATE TABLE `tags` (
-  `tag_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `tag_value` varchar(50) NOT NULL,
-  PRIMARY KEY (`tag_id`),
-  UNIQUE KEY `tags_tag_id_uindex` (`tag_id`),
-  UNIQUE KEY `tags_tag_value_uindex` (`tag_value`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS tags;
+CREATE TABLE tags (
+  tag_id bigint(20) NOT NULL AUTO_INCREMENT,
+  tag_value varchar(50) NOT NULL,
+  wp_tag_id BIGINT(20),
+  PRIMARY KEY (tag_id),
+  UNIQUE KEY tags_tag_id_uindex (tag_id),
+  UNIQUE KEY tags_tag_value_uindex (tag_value)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- ----------------------------
+-- Table structure for categories
+-- ----------------------------
+
+DROP TABLE IF EXISTS categories;
+CREATE TABLE categories
+(
+  category_id BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  category_value VARCHAR(50) NOT NULL,
+  wp_category_id BIGINT(20)
+);
+CREATE UNIQUE INDEX categories_category_id_uindex ON categories (category_id);
 
 -- ----------------------------
 -- Table structure for post_tag_ids
 -- ----------------------------
 
-DROP TABLE IF EXISTS `post_tag_ids`;
-CREATE TABLE `post_tag_ids` (
-  `post_tag_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `post_id` bigint(20) NOT NULL,
-  `tag_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`post_tag_id`),
-  KEY `fk_posts_post_id` (`post_id`),
-  KEY `fk_tags_tag_id` (`tag_id`),
-  CONSTRAINT `fk_posts_post_id` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`),
-  CONSTRAINT `fk_tags_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`tag_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS post_tag_ids;
+CREATE TABLE post_tag_ids (
+  post_tag_id bigint(20) NOT NULL AUTO_INCREMENT,
+  post_id bigint(20) NOT NULL,
+  tag_id bigint(20) NOT NULL,
+  PRIMARY KEY (post_tag_id),
+  KEY fk_posts_post_id (post_id),
+  KEY fk_tags_tag_id (tag_id),
+  CONSTRAINT fk_posts_post_id FOREIGN KEY (post_id) REFERENCES posts (post_id),
+  CONSTRAINT fk_tags_tag_id FOREIGN KEY (tag_id) REFERENCES tags (tag_id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- ----------------------------
+-- Table structure for post_category_ids
+-- ----------------------------
+
+DROP TABLE IF EXISTS post_category_ids;
+CREATE TABLE post_category_ids
+(
+  post_category_id BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  post_id BIGINT(20) NOT NULL,
+  category_id BIGINT(20) NOT NULL,
+  CONSTRAINT fk_categories_post_id FOREIGN KEY (post_id) REFERENCES posts (post_id),
+  CONSTRAINT fk_categories_category_id FOREIGN KEY (category_id) REFERENCES categories (category_id)
+);
+CREATE INDEX fk_categories_category_id ON post_category_ids (category_id);
+CREATE INDEX fk_categories_post_id ON post_category_ids (post_id);
 
 -- ----------------------------
 -- Table structure for user_likes

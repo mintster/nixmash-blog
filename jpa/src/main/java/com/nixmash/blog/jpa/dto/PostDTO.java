@@ -29,14 +29,17 @@ public class PostDTO implements Serializable {
     private Long userId;
 
     @NotEmpty
-    private Set<TagDTO> tags =new HashSet<TagDTO>();
+    private Set<TagDTO> tags = new HashSet<TagDTO>();
 
     @NotEmpty
-    @Length(max= Post.MAX_POST_TITLE_LENGTH)
+    private CategoryDTO category;
+
+    @NotEmpty
+    @Length(max = Post.MAX_POST_TITLE_LENGTH)
     private String postTitle;
 
     @NotEmpty
-    @Length(min= Post.MIN_POST_CONTENT_LENGTH)
+    @Length(min = Post.MIN_POST_CONTENT_LENGTH)
     private String postContent;
 
     private String postName;
@@ -102,6 +105,13 @@ public class PostDTO implements Serializable {
 
     public void setTags(Set<TagDTO> tags) {
         this.tags = tags;
+    }
+
+    public CategoryDTO getCategory() {
+        return category;
+    }
+    public void setCategory(CategoryDTO category) {
+        this.category = category;
     }
 
     public int getImageIndex() {
@@ -309,12 +319,12 @@ public class PostDTO implements Serializable {
     }
 
 
-    public  static PostDTO buildAlphaTitles(Post post) {
+    public static PostDTO buildAlphaTitles(Post post) {
         return populateAlphas(post, true);
 
     }
 
-    public  static PostDTO buildAlphaNumericTitles(Post post) {
+    public static PostDTO buildAlphaNumericTitles(Post post) {
         return populateAlphas(post, false);
     }
 
@@ -347,7 +357,7 @@ public class PostDTO implements Serializable {
             built.postType = postType;
             built.displayType = displayType;
             built.postSource = PostUtils.createPostSource(postLink);
-          }
+        }
 
         public Builder(Long postId,
                        String postTitle,
@@ -386,9 +396,14 @@ public class PostDTO implements Serializable {
             built.postId = postId;
             return this;
         }
-        
+
         public Builder tags(Set<TagDTO> tagDTOs) {
-            built.tags= tagDTOs;
+            built.tags = tagDTOs;
+            return this;
+        }
+
+        public Builder category(CategoryDTO category) {
+            built.category = category;
             return this;
         }
 
