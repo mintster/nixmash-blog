@@ -202,12 +202,16 @@ CREATE TABLE post_tag_ids
   CONSTRAINT fk_tags_tag_id FOREIGN KEY (tag_id) REFERENCES tags (tag_id)
 );
 
+DROP TABLE IF EXISTS categories;
 CREATE TABLE categories
 (
-  category_id BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  category_value VARCHAR(50) NOT NULL
+  category_id BIGINT(20) NOT NULL AUTO_INCREMENT,
+  category_value VARCHAR(50) NOT NULL,
+  wp_category_id BIGINT(20) NOT NULL,
+  is_active tinyint(1) NOT NULL DEFAULT '1',
+  is_default tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (category_id)
 );
-CREATE UNIQUE INDEX categories_category_id_uindex ON categories (category_id);
 
 CREATE TABLE post_category_ids
 (

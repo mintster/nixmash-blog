@@ -121,6 +121,9 @@ public interface PostService {
     List<CategoryDTO> getAssignedCategories();
 
     @Transactional(readOnly = true)
+    List<CategoryDTO> getAdminCategories();
+
+    @Transactional(readOnly = true)
     List<Category> getAllCategories();
 
     @Transactional

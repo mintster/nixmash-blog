@@ -82,6 +82,15 @@
                                     <td></td>
                                     <td>
                                         <div class="form-actions pull-right special-select" id="post-select">
+                                            <select th:field="*{categoryId}" name="categoryId" class="selectpicker"
+                                                    data-style="btn-primary">
+                                                <!--/*@thymesVar id="category" type="com.nixmash.blog.jpa.dto.CategoryDTO"*/-->
+                                                <div th:each="category : ${categories}" th:remove="tag">
+                                                    <option th:text="${category.categoryValue}"
+                                                            th:value="${category.categoryId}"
+                                                            th:selected="${category.isDefault}"></option>
+                                                </div>
+                                            </select>
                                             <select th:field="*{displayType}" name="displayType" class="selectpicker"
                                                     data-style="btn-primary">
                                                 <option value="LINK_SUMMARY" th:text="#{add.post.button.link.summary}"

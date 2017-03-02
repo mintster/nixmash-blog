@@ -17,6 +17,7 @@ import java.util.Set;
 public class PostTestUtils {
 
     public static final Long USER_ID = 1L;
+    public static final Long CATEGORY_ID = 1L;
     public static final String POST_TITLE = "Post title";
     public static final String POST_NAME = "post-title";
     public static final String POST_LINK = "http://test.link";
@@ -27,9 +28,8 @@ public class PostTestUtils {
 
     public static PostDTO createPostDTO(int i) {
         return PostDTO.getBuilder(USER_ID,
-                fieldit(POST_TITLE, i), fieldit(POST_NAME, i), POST_LINK, POST_CONTENT, POST_TYPE, DISPLAY_TYPE)
+                fieldit(POST_TITLE, i), fieldit(POST_NAME, i), POST_LINK, POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID)
                 .tags(getTestTagDTOs(2))
-                .category(getTestCategoryDTO())
                 .build();
     }
 
@@ -40,9 +40,8 @@ public class PostTestUtils {
 
     public static PostDTO createPostDTO(String appender) {
         return PostDTO.getBuilder(USER_ID,
-                fieldit(POST_TITLE, appender), fieldit(POST_NAME, appender), POST_LINK, POST_CONTENT, POST_TYPE, DISPLAY_TYPE)
+                fieldit(POST_TITLE, appender), fieldit(POST_NAME, appender), POST_LINK, POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID)
                 .tags(getTestTagDTOs(2))
-                .category(getTestCategoryDTO())
                 .build();
     }
 
@@ -63,11 +62,11 @@ public class PostTestUtils {
     }
 
     public static CategoryDTO getTestCategoryDTO() {
-        return new CategoryDTO(2L, "Java");
+        return new CategoryDTO(2L, "Java", true, true);
     }
 
     public static Category getTestCategory() {
-        return new Category(2L, "Java");
+        return new Category(2L, "Java", true, true);
     }
 
     private static String fieldit(String field, String appender) {

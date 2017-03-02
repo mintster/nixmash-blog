@@ -101,28 +101,28 @@ public class PostServiceTests extends SpringDataTests {
     @Test
     public void builderShouldReturn_Null_ForMalformedLink() {
         PostDTO postDTO = PostDTO.getBuilder(USER_ID,
-                POST_TITLE, POST_NAME, "malformed.link", POST_CONTENT, POST_TYPE, DISPLAY_TYPE).build();
+                POST_TITLE, POST_NAME, "malformed.link", POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID).build();
         assertEquals(postDTO.getPostSource(), null);
     }
 
     @Test
     public void builderShouldReturnDomainAsPostSourceFromLink() {
         PostDTO postDTO = PostDTO.getBuilder(USER_ID,
-                POST_TITLE, POST_NAME, "http://wellformed.link", POST_CONTENT, POST_TYPE, DISPLAY_TYPE).build();
+                POST_TITLE, POST_NAME, "http://wellformed.link", POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID).build();
         assertEquals(postDTO.getPostSource(), "wellformed.link");
     }
 
     @Test
     public void builderShouldReturn_Null_ForNullLink() {
         PostDTO postDTO = PostDTO.getBuilder(USER_ID,
-                POST_TITLE, POST_NAME, null, POST_CONTENT, POST_TYPE, DISPLAY_TYPE).build();
+                POST_TITLE, POST_NAME, null, POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID).build();
         assertEquals(postDTO.getPostSource(), null);
     }
 
     @Test
     public void postDtoToPostShouldRetainPostSource() {
         PostDTO postDTO = PostDTO.getBuilder(USER_ID,
-                POST_TITLE, POST_NAME, "http://wellformed.link", POST_CONTENT, POST_TYPE, DISPLAY_TYPE).build();
+                POST_TITLE, POST_NAME, "http://wellformed.link", POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID).build();
         assertEquals(postDTO.getPostSource(), "wellformed.link");
         Post post = postDtoToPost(postDTO);
         assertEquals(post.getPostSource(), "wellformed.link");
@@ -131,7 +131,7 @@ public class PostServiceTests extends SpringDataTests {
     @Test
     public void postDtoToPostShouldRetainPostSourceOf_NA_ForNullLink() {
         PostDTO postDTO = PostDTO.getBuilder(USER_ID,
-                POST_TITLE, POST_NAME, null, POST_CONTENT, POST_TYPE, DISPLAY_TYPE).build();
+                POST_TITLE, POST_NAME, null, POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID).build();
         assertEquals(postDTO.getPostSource(), null);
         Post post = postDtoToPost(postDTO);
         assertEquals(post.getPostSource(), null);
@@ -412,6 +412,12 @@ public class PostServiceTests extends SpringDataTests {
     }
 
     @Test
+    public void postWithMultipleCategories() throws PostNotFoundException {
+        Post post = postService.getPostById(10L);
+        System.out.println(post.getCategory());
+    }
+
+    @Test
     public void getAssignedCategories_OneLessThanAllCategories() {
         int allCategories = postService.getAllCategories().size();
         int assignedCategories = postService.getAssignedCategories().size();
@@ -429,6 +435,7 @@ public class PostServiceTests extends SpringDataTests {
     @Test
     public void newPostContainsAssignedCategory() throws DuplicatePostNameException {
         PostDTO postDTO = PostTestUtils.createPostDTO(100);
+        postDTO.setCategoryId(2L);
         Post post = postService.add(postDTO);
         assertNotNull(post);
         assertNotNull(post.getCategory());
@@ -444,7 +451,7 @@ public class PostServiceTests extends SpringDataTests {
         assertEquals(post.getCategory().getCategoryValue(), "Uncategorized");
 
         PostDTO postDTO = PostUtils.postToPostDTO(post);
-        postDTO.setCategory(new CategoryDTO(2L, "Java"));
+        postDTO.setCategoryId(2L);
         post = postService.update(postDTO);
         assertEquals(post.getCategory().getCategoryValue(), "Java");
 

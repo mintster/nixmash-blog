@@ -189,7 +189,9 @@ CREATE TABLE categories
 (
   category_id BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   category_value VARCHAR(50) NOT NULL,
-  wp_category_id BIGINT(20)
+  wp_category_id BIGINT(20),
+  is_active TINYINT(4) DEFAULT '1' NOT NULL,
+  is_default TINYINT(4) DEFAULT '0' NOT NULL
 );
 CREATE UNIQUE INDEX categories_category_id_uindex ON categories (category_id);
 

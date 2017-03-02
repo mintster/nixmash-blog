@@ -98,7 +98,7 @@ public class PostServiceImpl implements PostService {
             }
         }
 
-        Category category = categoryRepository.findByCategoryId(postDTO.getCategory().getCategoryId());
+        Category category = categoryRepository.findByCategoryId(postDTO.getCategoryId());
         post.setCategory(category);
 
         return post;
@@ -122,7 +122,7 @@ public class PostServiceImpl implements PostService {
                 post.getTags().add(tag);
         }
 
-        Category category = categoryRepository.findByCategoryId(postDTO.getCategory().getCategoryId());
+        Category category = categoryRepository.findByCategoryId(postDTO.getCategoryId());
         post.setCategory(category);
 
         return post;
@@ -369,6 +369,14 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<CategoryDTO> getAssignedCategories() {
         List<Category> categories = categoryRepository.findByCategoryIdGreaterThan(1L, sortByCategoryAsc());
+        return PostUtils.categoriesToCategoryDTOs(categories);
+    }
+
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<CategoryDTO> getAdminCategories() {
+        List<Category> categories = categoryRepository.findByIsActiveTrue(sortByCategoryAsc());
         return PostUtils.categoriesToCategoryDTOs(categories);
     }
 

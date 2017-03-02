@@ -14,6 +14,8 @@ public class CategoryDTO implements Serializable {
     private long categoryId = -1;
     private String categoryValue;
     private int categoryCount = 0;
+    private Boolean isActive = true;
+    private Boolean isDefault = true;
 
     public CategoryDTO() {
     }
@@ -22,6 +24,20 @@ public class CategoryDTO implements Serializable {
         this.categoryValue = categoryValue;
     }
 
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public Boolean getIsDefault() {
+        return isDefault;
+    }
+    public void setIsDefault(Boolean isDefault) {
+        this.isDefault = isDefault;
+    }
 
     public long getCategoryId() {
         return categoryId;
@@ -47,15 +63,19 @@ public class CategoryDTO implements Serializable {
         this.categoryCount = categoryCount;
     }
 
-    public CategoryDTO(long categoryId, String categoryValue) {
+    public CategoryDTO(long categoryId, String categoryValue, Boolean isActive, Boolean isDefault) {
         this.categoryId = categoryId;
         this.categoryValue = categoryValue;
+        this.isActive = isActive;
+        this.isDefault = isDefault;
     }
 
     public CategoryDTO(Category category) {
         this.categoryId = category.getCategoryId();
         this.categoryValue = category.getCategoryValue();
         this.categoryCount = category.getPosts().size();
+        this.isActive = category.getIsActive();
+        this.isDefault = category.getIsDefault();
     }
 }
 

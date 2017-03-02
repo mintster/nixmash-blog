@@ -160,13 +160,14 @@ public class AdminPostsController {
 
     // endregion
 
-    //region Add Posts GET
+    //region Add Post GET
 
     @RequestMapping(value = "/add/{type}", method = GET)
     public String addPostLink(@PathVariable("type") String type, Model model, HttpServletRequest request) {
         PostType postType = PostType.valueOf(type.toUpperCase());
         model.addAttribute("postDTO", new PostDTO());
         model.addAttribute("canPreview", false);
+        model.addAttribute("categories", postService.getAdminCategories());
         if (postType == PostType.POST) {
             WebUtils.setSessionAttribute(request, SESSION_ATTRIBUTE_NEWPOST, null);
             model.addAttribute("hasPost", true);
@@ -191,6 +192,7 @@ public class AdminPostsController {
                 result.rejectValue("link", "post.link.page.not.found");
                 return ADMIN_LINK_ADD_VIEW;
             } else {
+                model.addAttribute("categories", postService.getAdminCategories());
                 model.addAttribute("hasLink", true);
                 model.addAttribute("hasCarousel", true);
                 WebUtils.setSessionAttribute(request, "pagePreview", pagePreview);
@@ -204,7 +206,7 @@ public class AdminPostsController {
 
     //endregion
 
-    //region Add Posts POST
+    //region Add Post POST
 
     @RequestMapping(value = "/add/link", method = POST)
     public String createLinkPost(@Valid PostDTO postDTO, BindingResult result,
@@ -353,6 +355,7 @@ public class AdminPostsController {
         model.addAttribute("postDTO", postDTO);
         model.addAttribute("pageTitle", pageTitle);
         model.addAttribute("pageHeading", pageHeading);
+        model.addAttribute("categories", postService.getAdminCategories());
 
         model.addAllAttributes(getPostLinkAttributes(request, post.getPostType()));
 
@@ -486,7 +489,8 @@ public class AdminPostsController {
                 post.getPostTitle(),
                 post.getPostContent(),
                 post.getIsPublished(),
-                post.getDisplayType())
+                post.getDisplayType(),
+                post.getCategory().getCategoryId())
                 .tags(PostUtils.tagsToTagDTOs(post.getTags()))
                 .build();
     }
@@ -515,7 +519,8 @@ public class AdminPostsController {
                 postLink,
                 postDescriptionHtml,
                 PostType.LINK,
-                null)
+                null,
+                1L)
                 .postImage(tmpDTO.getPostImage())
                 .hasImages(tmpDTO.getHasImages())
                 .build();

@@ -14,5 +14,7 @@ public interface CategoryRepository extends CrudRepository<Category, Long> {
 
     List<Category> findByCategoryIdGreaterThan(Long categoryId, Sort sort);
 
+    List<Category> findByIsActiveTrue(Sort sort);
+
     Category findByCategoryId(Long categoryId);
 }

@@ -58,13 +58,26 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @WithAdminUser
 public class AdminPostsControllerTests  extends AbstractContext{
 
+    // region Logger and Constants
+
     private static final Logger logger = LoggerFactory.getLogger(AdminPostsControllerTests.class);
 
     private static final String POST_CONSTANT = "POST";
     private static final String LINK_CONSTANT = "LINK";
     private static final String GOOD_URL = "http://nixmash.com/some-post/";
 
+    // endregion
+
+    // region  Variables
+
     private JacksonTester<JsonPostDTO> json;
+
+    private MockMvc mvc;
+    private String azTestFileName;
+
+    // endregion
+
+    // region Beans
 
     @Autowired
     private Environment environment;
@@ -81,11 +94,12 @@ public class AdminPostsControllerTests  extends AbstractContext{
     @Autowired
     private PostDocService postDocService;
 
-    private MockMvc mvc;
-    private String azTestFileName;
-
     @Autowired
     protected WebApplicationContext wac;
+
+    // endregion
+
+    // region Before / After
 
     @Before
     public void setup() throws ServletException {
@@ -111,6 +125,10 @@ public class AdminPostsControllerTests  extends AbstractContext{
     public void tearDown() {
     }
 
+    // endregion
+
+    // region Pages Load
+
     @Test
     public void AZFileNameIsAZTest() throws Exception {
         assertThat(environment.getProperty("posts.az.file.name"), is("aztest.html"));
@@ -127,6 +145,8 @@ public class AdminPostsControllerTests  extends AbstractContext{
                 is(instanceOf(ArrayList.class)));
     }
 
+    // endregion
+
     // region Posts
 
     @Test
@@ -135,6 +155,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
         mvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("postDTO"))
+                .andExpect(model().attributeExists("categories"))
                 .andExpect(view().name(ADMIN_POST_ADD_VIEW));
 
     }
@@ -192,7 +213,6 @@ public class AdminPostsControllerTests  extends AbstractContext{
         String contents = FileUtils.readFileToString(azFile);
         assertTrue(contents.contains(newTitle));
     }
-
 
     @Test
     public void saveAndContinueWithValidData_UpdatesPost() throws Exception  {
@@ -267,6 +287,35 @@ public class AdminPostsControllerTests  extends AbstractContext{
     }
 
     @Test
+    public void newPostRecordContainsUpdatedCategory() throws Exception {
+        mvc.perform(solrCategoryRequest("solrCategory"));
+        Post post = postService.getPost("my-title-solrcategory");
+        assertEquals(post.getCategory().getCategoryValue().toLowerCase(), "solr");
+    }
+
+    @Test
+    public void updatedPostContainsNewCategory() throws Exception {
+
+        Post post = postService.getPostById(1L);
+        assertEquals(post.getCategory().getCategoryId(), 1L);
+
+        RequestBuilder request = post("/admin/posts/update")
+                .param("postId", "1")
+                .param("displayType", String.valueOf(post.getDisplayType()))
+                .param("postContent", post.getPostContent())
+                .param("postTitle", post.getPostTitle())
+                .param("tags", "one, two")
+                .param("categoryId", "3")
+                .with(csrf());
+
+        mvc.perform(request);
+
+        post = postService.getPostById(1L);
+        assertEquals(post.getCategory().getCategoryId(), 3L);
+
+    }
+
+    @Test
     public void newPublishedPostRedirectsToPostList() throws Exception {
         mvc.perform(addPostRequest("redirectsToPostList"))
                 .andExpect(redirectedUrl("/admin/posts"));
@@ -274,7 +323,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
 
     @Test
     public void newUnpublishedPostReturnsPostAddView() throws Exception {
-        mvc.perform(addPostRequest("returnsPostAddView", false))
+        mvc.perform(addPostRequest("returnsPostAddView", false, false))
                 .andExpect(view().name(ADMIN_POST_ADD_VIEW));
     }
 
@@ -292,6 +341,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
                 .param("postContent", post.getPostContent())
                 .param("postTitle", post.getPostTitle())
                 .param("tags", "removingTag1")
+                .param("categoryId", "1")
                 .with(csrf()));
 
         int postTagEndCount = post.getTags().size();
@@ -339,7 +389,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
 
         int postDocStartCount = postDocService.getAllPostDocuments().size();
 
-        mvc.perform(addPostRequest(TITLE, false));
+        mvc.perform(addPostRequest(TITLE, false, false));
 
         int postDocEndCount = postDocService.getAllPostDocuments().size();
         assertEquals(postDocStartCount, postDocEndCount);
@@ -437,6 +487,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
         mvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("postDTO"))
+                .andExpect(model().attributeExists("categories"))
                 .andExpect(view().name(ADMIN_LINK_ADD_VIEW));
     }
 
@@ -535,14 +586,18 @@ public class AdminPostsControllerTests  extends AbstractContext{
     // region Utility Methods
 
     private RequestBuilder addPostRequest(String s) {
-        return addPostRequest(s, true);
+        return addPostRequest(s, true, false);
+    }
+
+    private RequestBuilder solrCategoryRequest(String s) {
+        return addPostRequest(s, true, true);
     }
 
     private RequestBuilder addUnpublishedPostRequest(String s) {
-        return addPostRequest(s, false);
+        return addPostRequest(s, false, false);
     }
 
-    private RequestBuilder addPostRequest(String s, Boolean isPublished) {
+    private RequestBuilder addPostRequest(String s, Boolean isPublished, Boolean addSolrCategory) {
         return post("/admin/posts/add/post")
                 .param("post", isPublished ? POST_PUBLISH : POST_DRAFT)
                 .param("postTitle", "my title " + s)
@@ -553,6 +608,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
                 .param("postContent", "My Post Content must be longer so I don't trigger a new contraint addition!")
                 .param("isPublished", isPublished.toString())
                 .param("tags", String.format("req%s, req%s%s", s, s, 1))
+                .param("categoryId", addSolrCategory ? "3" : "1")
                 .with(csrf());
     }
 

@@ -61,13 +61,13 @@ public class PostUtils {
                 post.getPostLink(),
                 post.getPostContent(),
                 post.getPostType(),
-                post.getDisplayType())
+                post.getDisplayType(),
+                post.getCategory().getCategoryId())
                 .isPublished(post.getIsPublished())
                 .postSource(post.getPostSource())
                 .postImage(post.getPostImage())
                 .postId(post.getPostId())
                 .tags(tagsToTagDTOs(post.getTags()))
-                .category(categoryToCategoryDTO(post.getCategory()))
                 .build();
     }
 
@@ -148,13 +148,16 @@ public class PostUtils {
     }
 
     public static CategoryDTO categoryToCategoryDTO(Category category) {
-        return new CategoryDTO(category.getCategoryId(), category.getCategoryValue());
+        return new CategoryDTO(category.getCategoryId(), category.getCategoryValue(),
+                category.getIsActive(), category.getIsDefault());
     }
 
     public static List<CategoryDTO> categoriesToCategoryDTOs(List<Category> categories) {
         List<CategoryDTO> categoryDTOS = new ArrayList<>();
         for (Category category : categories) {
-            categoryDTOS.add(new CategoryDTO(category.getCategoryId(), category.getCategoryValue()));
+            categoryDTOS.add(new CategoryDTO(
+                    category.getCategoryId(), category.getCategoryValue(),
+                    category.getIsActive(), category.getIsDefault()));
         }
         return categoryDTOS;
     }

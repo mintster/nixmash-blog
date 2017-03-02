@@ -1,10 +1,14 @@
 package com.nixmash.blog.jsoup.base;
 
+import java.io.Serializable;
+
 /**
  * Created by daveburke on 5/22/16.
  */
 @SuppressWarnings("WeakerAccess")
-public class JsoupImage {
+public class JsoupImage implements Serializable{
+
+    private static final long serialVersionUID = 1772136151299547608L;
 
     public String src;
     public String alt;

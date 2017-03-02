@@ -168,7 +168,8 @@ public class JpaUI {
                 "http://nixmash.com/java/variations-on-json-key-value-pairs-in-spring-mvc/",
                 "This is the post content",
                 PostType.LINK,
-                PostDisplayType.LINK_FEATURE
+                PostDisplayType.LINK_FEATURE,
+                1L
         ).build();
         postService.add(postDTO);
     }

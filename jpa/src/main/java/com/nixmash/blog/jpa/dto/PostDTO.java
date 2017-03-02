@@ -32,9 +32,6 @@ public class PostDTO implements Serializable {
     private Set<TagDTO> tags = new HashSet<TagDTO>();
 
     @NotEmpty
-    private CategoryDTO category;
-
-    @NotEmpty
     @Length(max = Post.MAX_POST_TITLE_LENGTH)
     private String postTitle;
 
@@ -68,12 +65,21 @@ public class PostDTO implements Serializable {
     private int imageIndex = 1;
     private String alphaKey;
     private Long temporaryPostId = 1L;
+    private Long categoryId = 1L;
 
     private List<PostImage> postImages;
 
     private User author;
 
     // region getter setters
+
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
 
     public User getAuthor() {
         return author;
@@ -105,13 +111,6 @@ public class PostDTO implements Serializable {
 
     public void setTags(Set<TagDTO> tags) {
         this.tags = tags;
-    }
-
-    public CategoryDTO getCategory() {
-        return category;
-    }
-    public void setCategory(CategoryDTO category) {
-        this.category = category;
     }
 
     public int getImageIndex() {
@@ -302,20 +301,22 @@ public class PostDTO implements Serializable {
                 ", clickCount=" + clickCount +
                 ", likesCount=" + likesCount +
                 ", valueRating=" + valueRating +
+                ", categoryId =" + categoryId +
                 ", version=" + version +
                 '}';
     }
 
-    public static Builder getBuilder(Long userId, String postTitle, String postName, String postLink, String postContent, PostType postType, PostDisplayType displayType) {
-        return new PostDTO.Builder(userId, postTitle, postName, postLink, postContent, postType, displayType);
+    public static Builder getBuilder(Long userId, String postTitle, String postName, String postLink, String postContent, PostType postType, PostDisplayType displayType, Long categoryId) {
+        return new PostDTO.Builder(userId, postTitle, postName, postLink, postContent, postType, displayType, categoryId);
     }
 
     public static Builder getUpdateFields(Long postId,
                                           String postTitle,
                                           String postContent,
                                           Boolean isPublished,
-                                          PostDisplayType displayType) {
-        return new PostDTO.Builder(postId, postTitle, postContent, isPublished, displayType);
+                                          PostDisplayType displayType,
+                                          Long categoryId) {
+        return new PostDTO.Builder(postId, postTitle, postContent, isPublished, displayType, categoryId);
     }
 
 
@@ -347,7 +348,7 @@ public class PostDTO implements Serializable {
 
         private PostDTO built;
 
-        public Builder(Long userId, String postTitle, String postName, String postLink, String postContent, PostType postType, PostDisplayType displayType) {
+        public Builder(Long userId, String postTitle, String postName, String postLink, String postContent, PostType postType, PostDisplayType displayType, Long categoryId) {
             built = new PostDTO();
             built.userId = userId;
             built.postTitle = postTitle;
@@ -356,6 +357,7 @@ public class PostDTO implements Serializable {
             built.postContent = postContent;
             built.postType = postType;
             built.displayType = displayType;
+            built.categoryId = categoryId;
             built.postSource = PostUtils.createPostSource(postLink);
         }
 
@@ -363,13 +365,15 @@ public class PostDTO implements Serializable {
                        String postTitle,
                        String postContent,
                        Boolean isPublished,
-                       PostDisplayType displayType) {
+                       PostDisplayType displayType,
+                       Long categoryId) {
             built = new PostDTO();
             built.postId = postId;
             built.postTitle = postTitle;
             built.postContent = postContent;
             built.isPublished = isPublished;
             built.displayType = displayType;
+            built.categoryId = categoryId;
         }
 
         public Builder postImage(String postImage) {
@@ -399,11 +403,6 @@ public class PostDTO implements Serializable {
 
         public Builder tags(Set<TagDTO> tagDTOs) {
             built.tags = tagDTOs;
-            return this;
-        }
-
-        public Builder category(CategoryDTO category) {
-            built.category = category;
             return this;
         }
 

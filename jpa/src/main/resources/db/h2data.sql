@@ -46,12 +46,18 @@ VALUES
   (7, 'tommy@aol.com', 'tommy', '$2a$10$F2a2W8RtbD99xXd9xtwjbuI4zjSYe04kS.s0FyvQcAIDJfh/6jjLW', 'Tommy', 'Twotone',
       FALSE, FALSE, FALSE, FALSE, FALSE, 'VYlGwj3HOi665LIa', 'SITE');
 
+-- INSERT INTO user_data (user_id, lastlogin_datetime, created_datetime) VALUES
+--   (1, current_timestamp(), current_timestamp());
+-- INSERT INTO user_data (user_id, lastlogin_datetime, created_datetime, login_attempts, invited_by_id) VALUES
+--   (7, current_timestamp(), current_timestamp(), 2, 0);
+--
 
-INSERT INTO user_data (user_id, lastlogin_datetime, created_datetime) SELECT
+INSERT INTO user_data (user_id, lastlogin_datetime, created_datetime, login_attempts, invited_by_id) SELECT
                                                                         user_id,
                                                                        current_timestamp,
-                                                                        current_timestamp
+                                                                        current_timestamp, 0, 0
                                                                       FROM users;
+
 UPDATE user_data
 SET login_attempts = 2
 WHERE user_id = 7;
@@ -199,9 +205,10 @@ INSERT INTO tags (tag_id, tag_value) VALUES (4, 'h2tagfour');
 INSERT INTO tags (tag_id, tag_value) VALUES (5, 'h2 Tag With Spaces');
 INSERT INTO tags (tag_id, tag_value) VALUES (6, 'h2tagsix');
 
-INSERT INTO categories (category_id, category_value) VALUES (1, 'Uncategorized');
-INSERT INTO categories (category_id, category_value) VALUES (2, 'Java');
-INSERT INTO categories (category_id, category_value) VALUES (3, 'Solr');
+INSERT INTO categories (category_id, category_value, is_active, is_default) VALUES (1, 'Uncategorized', 1, 0);
+INSERT INTO categories (category_id, category_value, is_active, is_default) VALUES (2, 'Java', 1, 1);
+INSERT INTO categories (category_id, category_value, is_active, is_default) VALUES (3, 'Solr', 1, 0);
+INSERT INTO categories (category_id, category_value, is_active, is_default) VALUES (4, 'PHP', 0, 0);
 
 INSERT INTO post_category_ids (post_id, category_id) VALUES (1, 1);
 INSERT INTO post_category_ids (post_id, category_id) VALUES (2, 1);
@@ -212,6 +219,7 @@ INSERT INTO post_category_ids (post_id, category_id) VALUES (6, 2);
 INSERT INTO post_category_ids (post_id, category_id) VALUES (7, 2);
 INSERT INTO post_category_ids (post_id, category_id) VALUES (8, 2);
 INSERT INTO post_category_ids (post_id, category_id) VALUES (9, 3);
+INSERT INTO post_category_ids (post_id, category_id) VALUES (10, 2);
 INSERT INTO post_category_ids (post_id, category_id) VALUES (10, 3);
 
 INSERT INTO post_tag_ids (post_id, tag_id) VALUES (1, 1);
