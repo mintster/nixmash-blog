@@ -13,8 +13,8 @@ import static javax.persistence.GenerationType.IDENTITY;
                 name = "getCategoryCounts",
                 query = "select count(*) as `categoryCount`, c.category_value, c.category_id, " +
                         "c.is_active, c.is_default from categories c " +
-                        " inner join post_category_ids pc on c.category_id = pc.category_id " +
-                        " inner join posts p on pc.post_id = p.post_id " +
+                        "inner join post_category_ids pc on c.category_id = pc.category_id " +
+                        "inner join posts p on pc.post_id = p.post_id " +
                         " where p.is_published = true " +
                         "group by c.category_value order by categoryCount DESC;",
                 resultClass = Category.class)

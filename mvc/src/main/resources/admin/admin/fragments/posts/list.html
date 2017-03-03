@@ -51,7 +51,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Title</th>
-                            <th class="th-tags">Tags</th>
+                            <th class="th-tags">Category and Tags</th>
                             <th>Post Type</th>
                             <th>Date</th>
                             <th style="width: 36px;"></th>
@@ -66,7 +66,7 @@
                                 <a th:href="|@{/post/}${post.postName}|" th:text="${post.postTitle}" target="_blank">title</a>
                             </td>
                             <td>
-                                <div th:each="tag : ${post.tags}" class="inline-tag" th:inline="text" th:text="${tag.tagValue}"></div>
+                                 <div class="inline-category" th:text="${post.category.categoryValue}" ></div> <div th:each="tag : ${post.tags}" class="inline-tag" th:inline="text" th:text="${tag.tagValue}"></div>
                             </td>
                             <td class="post-displaytype-col" th:text="|${#strings.toLowerCase(displayType)}|">post display type</td>
                             <td th:text="|${#dates.format(creationDate.toInstant(), 'MMM dd, yyyy')}|">post date</td>

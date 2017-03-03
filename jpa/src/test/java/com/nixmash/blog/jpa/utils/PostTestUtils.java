@@ -62,7 +62,7 @@ public class PostTestUtils {
     }
 
     public static CategoryDTO getTestCategoryDTO() {
-        return new CategoryDTO(2L, "Java", true, true);
+        return new CategoryDTO(2L, "Java", 0, true, true);
     }
 
     public static Category getTestCategory() {

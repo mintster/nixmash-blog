@@ -176,7 +176,7 @@ public class AdminPostsController {
         PostType postType = PostType.valueOf(type.toUpperCase());
         model.addAttribute("postDTO", new PostDTO());
         model.addAttribute("canPreview", false);
-        model.addAttribute("categories", postService.getAdminCategories());
+        model.addAttribute("categories", postService.getAdminSelectionCategories());
         if (postType == PostType.POST) {
             WebUtils.setSessionAttribute(request, SESSION_ATTRIBUTE_NEWPOST, null);
             model.addAttribute("hasPost", true);
@@ -201,7 +201,7 @@ public class AdminPostsController {
                 result.rejectValue("link", "post.link.page.not.found");
                 return ADMIN_LINK_ADD_VIEW;
             } else {
-                model.addAttribute("categories", postService.getAdminCategories());
+                model.addAttribute("categories", postService.getAdminSelectionCategories());
                 model.addAttribute("hasLink", true);
                 model.addAttribute("hasCarousel", true);
                 WebUtils.setSessionAttribute(request, "pagePreview", pagePreview);
@@ -364,7 +364,7 @@ public class AdminPostsController {
         model.addAttribute("postDTO", postDTO);
         model.addAttribute("pageTitle", pageTitle);
         model.addAttribute("pageHeading", pageHeading);
-        model.addAttribute("categories", postService.getAdminCategories());
+        model.addAttribute("categories", postService.getAdminSelectionCategories());
 
         model.addAllAttributes(getPostLinkAttributes(request, post.getPostType()));
 
@@ -497,7 +497,8 @@ public class AdminPostsController {
     public ModelAndView categoryList(Model model) {
 
         ModelAndView mav = new ModelAndView();
-        mav.addObject("categories", postService.getCategoryCounts());
+        List<CategoryDTO> categories = postService.getAdminCategories();
+        mav.addObject("categories", categories);
         mav.addObject("newCategory", new Category());
         mav.setViewName(ADMIN_CATEGORIES_VIEW);
         return mav;

@@ -148,7 +148,7 @@ public class PostUtils {
     }
 
     public static CategoryDTO categoryToCategoryDTO(Category category) {
-        return new CategoryDTO(category.getCategoryId(), category.getCategoryValue(),
+        return new CategoryDTO(category.getCategoryId(), category.getCategoryValue(), category.getCategoryCount(),
                 category.getIsActive(), category.getIsDefault());
     }
 
@@ -156,7 +156,7 @@ public class PostUtils {
         List<CategoryDTO> categoryDTOS = new ArrayList<>();
         for (Category category : categories) {
             categoryDTOS.add(new CategoryDTO(
-                    category.getCategoryId(), category.getCategoryValue(),
+                    category.getCategoryId(), category.getCategoryValue(), category.getCategoryCount(),
                     category.getIsActive(), category.getIsDefault()));
         }
         return categoryDTOS;

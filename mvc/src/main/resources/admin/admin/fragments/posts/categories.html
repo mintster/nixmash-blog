@@ -5,9 +5,24 @@
 <div th:fragment="body">
     <script type="text/javascript">
 
-        $(document).ready(function(){
-            $('#categoriesTable').DataTable();
+        $(document).ready(function () {
+            $('#categoriesTable').DataTable( {
+                "aaSorting": [[1, "asc" ]]
+            } );
+            $('#newCategoryTable').css('display', 'none');
+            $('#refreshCategories').css('display', 'none');
+
+            $('#addCategory').on('click', function () {
+                $('#newCategoryTable').css('display', 'table');
+                $('#refreshCategories').css('display', 'inline-block');
+            });
+
+            $('#refreshCategories').on('click', function () {
+                $('#newCategoryTable').css('display', 'none');
+            });
+
         });
+
     </script>
 
     <div class="row">
@@ -16,7 +31,12 @@
                 <div class="x_title">
                     <h2 th:text="#{admin.categories.title}">[Category Administration]
                     </h2>
-                    <small th:text="#{admin.site.categories.subtitle}" class="h2_subtitle">[Update and Remove Categories]</small>
+                    <div class="form-actions col-md-offset-3 col-sm-offset-2 pull-right">
+                        <a id="addCategory" th:text="#{admin.categories.button.new}"
+                           class="btn btn-primary">[Add Category]</a>
+                        <a id="refreshCategories" th:text="#{admin.categories.button.cancel}"
+                           class="btn btn-primary">[Cancel]</a>
+                    </div>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content  fill-body-table">
@@ -26,7 +46,7 @@
                              th:text="${feedbackMessage}"></div>
                     </div>
 
-                    <table id="newCategoryTable" style="display: none;"  class="table table-striped">
+                    <table id="newCategoryTable" style="display: none;" class="table table-striped">
                         <thead>
                         <tr>
                             <th width="100px"></th>
@@ -37,9 +57,10 @@
                         <tr>
                             <td>&nbsp;</td>
                             <td>
-                                <form th:object="${newCategory}" method="post" th:action="@{/admin/posts/categories/new}"
+                                <form th:object="${newCategory}" method="post"
+                                      th:action="@{/admin/posts/categories/new}"
                                       class="form-inline" id="new-tag-form">
-                                    <input type="text" class="form-control align-top" th:field="*{categoryValue}"/>
+                                    <input type="text" class="form-control align-top new-category" th:field="*{categoryValue}" />
                                     <input type="submit" class="btn btn-primary" th:value="Add"/>
                                 </form>
                             </td>
@@ -59,7 +80,7 @@
                         <tbody>
                         <!--/*@thymesVar id="category" type="com.nixmash.blog.jpa.dto.CategoryDTO"*/-->
                         <!--/*@thymesVar id="categories" type="List<com.nixmash.blog.jpa.dto.CategoryDTO>"*/-->
-                        <tr th:each="category : ${categories}">
+                        <tr th:each="category : ${categories}" th:classappend="${category.getIsDefault() ? 'category-default' : ''}">
                             <td th:text="${category.categoryId}">1</td>
                             <td th:text="${category.categoryValue}">SOME_TAG</td>
                             <td th:text="${category.categoryCount}">1</td>
@@ -67,8 +88,15 @@
                                 <form th:object="${category}" method="post"
                                       th:action="@{/admin/posts/categories/update}"
                                       class="form-inline" id="tag-form">
-                                    <input type="text" class="form-control" th:name="categoryValue" id="categoryValue" th:value="${category.categoryValue}" />
+                                    <input type="text" class="form-control" th:name="categoryValue" id="categoryValue"
+                                           th:value="${category.categoryValue}"/>
                                     <input type="hidden" name="categoryId" th:value="*{categoryId}"/>
+                                    <input type="checkbox" id="isActive" name="isActive"
+                                           th:checked="${category.isActive}" class="category-checkbox" title="Is Active"/>
+                                    <input type="checkbox" id="isDefault" name="isDefault"
+                                           th:checked="${category.isDefault}" class="category-checkbox" title="Is Default Category"/>
+                                    <input type="hidden" value="on" name="_isActive"/>
+                                    <input type="hidden" value="on" name="_isDefault"/>
                                     <input type="submit" class="btn btn-primary" th:value="Update"/>
                                     <input th:type="submit" class="btn btn-success"
                                            name="deleteCategory"

@@ -178,8 +178,9 @@ td.new-flashcard-form input#description {
 }
 
 /*</editor-fold>*/
+
 /*/<editor-fold> desc="TAGS AND POST FORMS----------------------------/ "*/
-.inline-tag {
+.inline-tag, .inline-category {
     font-size: smaller;
     /* font-weight: bold; */
     background-color: hsl(219, 14%, 94%);
@@ -189,6 +190,10 @@ td.new-flashcard-form input#description {
     margin-right: 0;
     white-space: nowrap;
     border-radius: 3px;
+}
+.inline-category {
+    color: #000;
+    background-color: #cdceda;
 }
 
 .bootstrap-tagsinput {
@@ -291,7 +296,31 @@ a.password-glyph {
     margin-left: 4px;
 }
 
+#tagsTable {
+    color: #403b63;
+}
 /*</editor-fold>*/
+
+input.new-category {
+    min-width: 250px;
+    margin-top: -4px;
+}
+input[type=checkbox].category-checkbox {
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(1.5); /* IE */
+    -moz-transform: scale(1.5); /* FF */
+    -webkit-transform: scale(1.5); /* Safari and Chrome */
+    -o-transform: scale(1.5); /* Opera */
+    margin: 10px;
+}
+#categoriesTable {
+    color: #403b63;
+}
+#categoriesTable tr.category-default {
+  background-color: #eee;
+}
+
+
 /*/<editor-fold> desc="SOLR FORMS----------------------------/ "*/
 
 td.reindex-msg-td {
@@ -299,7 +328,6 @@ td.reindex-msg-td {
 }
 
 /*</editor-fold>*/
-
 /*<editor-fold desc="LIST  TABLES">*/
 .th-tags {
 

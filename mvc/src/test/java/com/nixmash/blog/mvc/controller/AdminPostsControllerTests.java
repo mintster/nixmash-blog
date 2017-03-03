@@ -298,7 +298,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
     public void updatedPostContainsNewCategory() throws Exception {
 
         Post post = postService.getPostById(1L);
-        assertEquals(post.getCategory().getCategoryId(), 1L);
+        assert(post.getCategory().getCategoryId().equals(1L));
 
         RequestBuilder request = post("/admin/posts/update")
                 .param("postId", "1")
@@ -312,7 +312,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
         mvc.perform(request);
 
         post = postService.getPostById(1L);
-        assertEquals(post.getCategory().getCategoryId(), 3L);
+        assert(post.getCategory().getCategoryId().equals(3L));
 
     }
 

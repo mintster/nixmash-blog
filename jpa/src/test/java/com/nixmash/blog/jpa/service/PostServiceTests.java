@@ -445,7 +445,7 @@ public class PostServiceTests extends SpringDataTests {
         assertEquals(defaultCategoryCount(), 1);
 
         // Sole Default will be Wannabe Category
-        Category updated = postService.updateCategory(new CategoryDTO(5L, "Wannabe", true, true));
+        Category updated = postService.updateCategory(new CategoryDTO(5L, "Wannabe", 0, true, true));
         assertEquals(category.getIsDefault(), true);
         assertEquals(defaultCategoryCount(), 1);
     }
@@ -465,7 +465,7 @@ public class PostServiceTests extends SpringDataTests {
         // H2Data Status: Uncategorized is CategoryId 1
         Category uncategorized = postService.getCategoryById(1L);
         assertEquals(uncategorized.getCategoryValue(), "Uncategorized");
-        Category updated = postService.updateCategory(new CategoryDTO(1L, "Categorized", true, false));
+        Category updated = postService.updateCategory(new CategoryDTO(1L, "Categorized", 0, true, false));
 
         uncategorized = postService.getCategoryById(1L);
         assertEquals(uncategorized.getCategoryValue(), "Uncategorized");
@@ -475,7 +475,7 @@ public class PostServiceTests extends SpringDataTests {
     private boolean startCount_isEqual_to_endCount(long categoryId) {
         int startCount = postService.getAllCategories().size();
         Category category = postService.getCategoryById(categoryId);
-        postService.deleteCategory(new CategoryDTO(categoryId, "something", true, false), null);
+        postService.deleteCategory(new CategoryDTO(categoryId, "something", 0, true, false), null);
         int endCount = postService.getAllCategories().size();
         return startCount==endCount;
     }

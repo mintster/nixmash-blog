@@ -378,8 +378,19 @@ public class PostServiceImpl implements PostService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<CategoryDTO> getAdminCategories() {
+    public List<CategoryDTO> getAdminSelectionCategories() {
         List<Category> categories = categoryRepository.findByIsActiveTrue(sortByCategoryAsc());
+        return PostUtils.categoriesToCategoryDTOs(categories);
+    }
+
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<CategoryDTO> getAdminCategories() {
+        List<Category> categories = categoryRepository.findAll(sortByCategoryAsc());
+        for (Category category : categories) {
+            category.setCategoryCount(getAllPostsByCategoryId(category.getCategoryId()).size());
+        }
         return PostUtils.categoriesToCategoryDTOs(categories);
     }
 
@@ -394,7 +405,7 @@ public class PostServiceImpl implements PostService {
     public Category createCategory(CategoryDTO categoryDTO) {
         Category category = categoryRepository.findByCategoryValueIgnoreCase(categoryDTO.getCategoryValue());
         if (category == null) {
-            category = new Category(categoryDTO.getCategoryValue());
+            category = new Category(null, categoryDTO.getCategoryValue(), true, false);
             categoryRepository.save(category);
         }
         return category;

@@ -63,9 +63,10 @@ public class CategoryDTO implements Serializable {
         this.categoryCount = categoryCount;
     }
 
-    public CategoryDTO(Long categoryId, String categoryValue, Boolean isActive, Boolean isDefault) {
+    public CategoryDTO(Long categoryId, String categoryValue, int categoryCount, Boolean isActive, Boolean isDefault) {
         this.categoryId = categoryId;
         this.categoryValue = categoryValue;
+        this.categoryCount = categoryCount;
         this.isActive = isActive;
         this.isDefault = isDefault;
     }

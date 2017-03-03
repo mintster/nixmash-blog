@@ -120,6 +120,9 @@ public interface PostService {
     List<CategoryDTO> getCategoryCounts(int categoryCount);
 
     @Transactional(readOnly = true)
+    List<CategoryDTO> getAdminSelectionCategories();
+
+    @Transactional(readOnly = true)
     List<CategoryDTO> getAdminCategories();
 
     @Transactional(readOnly = true)
