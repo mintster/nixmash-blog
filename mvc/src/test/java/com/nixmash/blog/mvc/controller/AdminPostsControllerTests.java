@@ -3,6 +3,7 @@ package com.nixmash.blog.mvc.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
+import com.nixmash.blog.jpa.model.Category;
 import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.model.Tag;
 import com.nixmash.blog.jpa.service.PostService;
@@ -535,6 +536,45 @@ public class AdminPostsControllerTests  extends AbstractContext{
 
     // endregion
 
+    // region Categories
+
+    @Test
+    public void categoriesList_page_loads() throws Exception {
+        RequestBuilder request = get("/admin/posts/categories").with(csrf());
+        MvcResult result = mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(view().name(ADMIN_CATEGORIES_VIEW)).andReturn();
+
+        assertThat(result.getModelAndView().getModel().get("categories"),
+                is(instanceOf(ArrayList.class)));
+    }
+
+    @Test
+    public void newCategoryIncreasesCategorySize() throws Exception {
+        int preCategoryCount = postService.getAllCategories().size();
+        mvc.perform(addCategoryRequest("categoryIncreasesCount"))
+                .andExpect(redirectedUrl("/admin/posts/categories"));
+
+        int postCategoryCount = postService.getTagDTOs().size();
+        assertThat(postCategoryCount, is(greaterThan(preCategoryCount)));
+    }
+
+
+    @Test
+    public void updateCategoryTests() throws Exception {
+        // H2Data VALUES (4, 'PHP', 0, 0);
+        Category category = postService.getCategory("PHP");
+
+        mvc.perform(updateCategoryRequest(category.getCategoryId(), "NOPE", true, true))
+                .andExpect(redirectedUrl("/admin/posts/categories"));
+
+        Category updated = postService.getCategory("nope");
+        assertEquals(category.getCategoryId(), updated.getCategoryId());
+        assertEquals(category.getIsDefault(), true);
+    }
+
+    // endregion
+
     // region Tags
 
     @Test
@@ -633,10 +673,27 @@ public class AdminPostsControllerTests  extends AbstractContext{
                 .with(csrf());
     }
 
+    private RequestBuilder addCategoryRequest(String s) {
+        return post("/admin/posts/categories/new")
+                .param("categoryValue", s)
+                .param("isActive", "1")
+                .param("isDefault", "0")
+                .with(csrf());
+    }
+
     private RequestBuilder updateTagRequest(long tagId, String s) {
         return post("/admin/posts/tags/update")
                 .param("tagValue", s)
                 .param("tagId", String.valueOf(tagId))
+                .with(csrf());
+    }
+
+    private RequestBuilder updateCategoryRequest(long categoryId, String s, Boolean isActive, Boolean isDefault) {
+        return post("/admin/posts/categories/update")
+                .param("categoryValue", s)
+                .param("categoryId", String.valueOf(categoryId))
+                .param("isActive", String.valueOf(isActive))
+                .param("isActive", String.valueOf(categoryId))
                 .with(csrf());
     }
 

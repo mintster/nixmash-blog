@@ -278,14 +278,25 @@ public class PostServiceImpl implements PostService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<Post> getPostsByTagId(long tagId, int pageNumber, int pageSize) {
+    public Page<Post> getPublishedPostsByTagId(long tagId, int pageNumber, int pageSize) {
         PageRequest pageRequest =
                 new PageRequest(pageNumber, pageSize, sortByPostDateDesc());
-        return postRepository.findByTagId(tagId, pageRequest);
+        return postRepository.findPagedPublishedByTagId(tagId, pageRequest);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Post> getAllPostsByCategoryId(long categoryId) {
+        return postRepository.findAllByCategoryId(categoryId);
     }
 
     @Override
-    public List<Post> getPostsByTagId(long tagId) {
+    public List<Post> getPublishedPostsByTagId(long tagId) {
+        return postRepository.findAllPublishedByTagId(tagId);
+    }
+
+    @Override
+    public List<Post> getAllPostsByTagId(long tagId) {
         return postRepository.findAllByTagId(tagId);
     }
 
@@ -367,14 +378,6 @@ public class PostServiceImpl implements PostService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<CategoryDTO> getAssignedCategories() {
-        List<Category> categories = categoryRepository.findByCategoryIdGreaterThan(1L, sortByCategoryAsc());
-        return PostUtils.categoriesToCategoryDTOs(categories);
-    }
-
-
-    @Transactional(readOnly = true)
-    @Override
     public List<CategoryDTO> getAdminCategories() {
         List<Category> categories = categoryRepository.findByIsActiveTrue(sortByCategoryAsc());
         return PostUtils.categoriesToCategoryDTOs(categories);
@@ -395,6 +398,39 @@ public class PostServiceImpl implements PostService {
             categoryRepository.save(category);
         }
         return category;
+    }
+
+    @Transactional
+    @Override
+    public Category updateCategory(CategoryDTO categoryDTO) {
+        Category category = categoryRepository.findByCategoryId(categoryDTO.getCategoryId());
+        if (categoryDTO.getCategoryId() > 1) {
+            if (categoryDTO.getIsDefault().equals(true))
+                clearCategoryDefaults();
+            category.update(categoryDTO.getCategoryValue(), categoryDTO.getIsActive(), categoryDTO.getIsDefault());
+        }
+        return category;
+    }
+
+    private void clearCategoryDefaults() {
+        Iterable<Category> cats = categoryRepository.findAll();
+        for (Category cat : cats) {
+            cat.clearDefault();
+        }
+    }
+
+    @Transactional
+    @Override
+    public void deleteCategory(CategoryDTO categoryDTO, List<Post> posts) {
+        if (categoryDTO.getCategoryId() > 1) {
+            if (posts != null) {
+                Category unCategorizedCategory = categoryRepository.findOne(1L);
+                for (Post post : posts) {
+                    post.setCategory(unCategorizedCategory);
+                }
+            }
+            categoryRepository.delete(categoryDTO.getCategoryId());
+        }
     }
 
     @Transactional(readOnly = true)

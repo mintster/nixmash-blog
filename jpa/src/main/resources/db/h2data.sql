@@ -209,6 +209,7 @@ INSERT INTO categories (category_id, category_value, is_active, is_default) VALU
 INSERT INTO categories (category_id, category_value, is_active, is_default) VALUES (2, 'Java', 1, 1);
 INSERT INTO categories (category_id, category_value, is_active, is_default) VALUES (3, 'Solr', 1, 0);
 INSERT INTO categories (category_id, category_value, is_active, is_default) VALUES (4, 'PHP', 0, 0);
+INSERT INTO categories (category_id, category_value, is_active, is_default) VALUES (5, 'Wannabe', 1, 0);
 
 INSERT INTO post_category_ids (post_id, category_id) VALUES (1, 1);
 INSERT INTO post_category_ids (post_id, category_id) VALUES (2, 1);

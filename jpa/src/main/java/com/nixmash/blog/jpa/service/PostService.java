@@ -94,6 +94,8 @@ public interface PostService {
 
     Set<TagDTO> getTagDTOs(Long postId);
 
+    List<Post> getAllPostsByTagId(long tagId);
+
     @Transactional(readOnly = true)
     List<PostImage> getAllPostImages();
 
@@ -118,9 +120,6 @@ public interface PostService {
     List<CategoryDTO> getCategoryCounts(int categoryCount);
 
     @Transactional(readOnly = true)
-    List<CategoryDTO> getAssignedCategories();
-
-    @Transactional(readOnly = true)
     List<CategoryDTO> getAdminCategories();
 
     @Transactional(readOnly = true)
@@ -129,14 +128,23 @@ public interface PostService {
     @Transactional
     Category createCategory(CategoryDTO categoryDTO);
 
+    @Transactional
+    Category updateCategory(CategoryDTO categoryDTO);
+
+    @Transactional
+    void deleteCategory(CategoryDTO categoryDTO, List<Post> posts);
+
     @Transactional(readOnly = true)
     Category getCategoryById(long categoryId);
 
     Tag getTag(String tagValue) throws TagNotFoundException;
 
-    Page<Post> getPostsByTagId(long tagId, int pageNumber, int pageSize);
+    Page<Post> getPublishedPostsByTagId(long tagId, int pageNumber, int pageSize);
 
-    List<Post> getPostsByTagId(long tagId);
+    @Transactional(readOnly = true)
+    List<Post> getAllPostsByCategoryId(long categoryId);
+
+    List<Post> getPublishedPostsByTagId(long tagId);
 
     void deleteImage(PostImage image);
 }

@@ -108,7 +108,7 @@ public class PostsRestController {
                                        @PathVariable int pageNumber,
                                        HttpServletRequest request,
                                        CurrentUser currentUser) {
-        Slice<Post> posts = postService.getPostsByTagId(tagid, pageNumber, TITLE_PAGING_SIZE);
+        Slice<Post> posts = postService.getPublishedPostsByTagId(tagid, pageNumber, TITLE_PAGING_SIZE);
         String result = populatePostStream(posts.getContent(), currentUser, TITLE_TEMPLATE);
         WebUtils.setSessionAttribute(request, SESSION_ATTRIBUTE_TAGPOSTTITLES, posts.getContent());
         return result;
@@ -168,7 +168,7 @@ public class PostsRestController {
                                   HttpServletRequest request,
                                   CurrentUser currentUser) {
         String template = applicationSettings.getTitleStreamDisplay() ? "title" : null;
-        Slice<Post> posts = postService.getPostsByTagId(tagid, pageNumber, POST_PAGING_SIZE);
+        Slice<Post> posts = postService.getPublishedPostsByTagId(tagid, pageNumber, POST_PAGING_SIZE);
         String result = populatePostStream(posts.getContent(), currentUser, template);
         WebUtils.setSessionAttribute(request, SESSION_ATTRIBUTE_TAGGEDPOSTS, posts.getContent());
         return result;

@@ -9,9 +9,9 @@ import java.io.Serializable;
  */
 public class CategoryDTO implements Serializable {
 
-    private static final long serialVersionUID = -4809849404139121173L;
+    private static final Long serialVersionUID = -4809849404139121173L;
 
-    private long categoryId = -1;
+    private Long categoryId = 1L;
     private String categoryValue;
     private int categoryCount = 0;
     private Boolean isActive = true;
@@ -39,11 +39,11 @@ public class CategoryDTO implements Serializable {
         this.isDefault = isDefault;
     }
 
-    public long getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(long categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -63,7 +63,7 @@ public class CategoryDTO implements Serializable {
         this.categoryCount = categoryCount;
     }
 
-    public CategoryDTO(long categoryId, String categoryValue, Boolean isActive, Boolean isDefault) {
+    public CategoryDTO(Long categoryId, String categoryValue, Boolean isActive, Boolean isDefault) {
         this.categoryId = categoryId;
         this.categoryValue = categoryValue;
         this.isActive = isActive;

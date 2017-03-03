@@ -161,7 +161,7 @@ public class PostServiceTests extends SpringDataTests {
 
     @Test
     public void findPostsByTagId() {
-        Slice<Post> posts = postService.getPostsByTagId(1, 0, 3);
+        Slice<Post> posts = postService.getPublishedPostsByTagId(1, 0, 3);
 
         // posts are retrieved for tagId #1 as all 5 H2 posts have tagId #1
         assertEquals(posts.getSize(), 3);
@@ -418,13 +418,6 @@ public class PostServiceTests extends SpringDataTests {
     }
 
     @Test
-    public void getAssignedCategories_OneLessThanAllCategories() {
-        int allCategories = postService.getAllCategories().size();
-        int assignedCategories = postService.getAssignedCategories().size();
-        assertEquals(allCategories, assignedCategories + 1);
-    }
-
-    @Test
     public void createCategory() {
         CategoryDTO categoryDTO = new CategoryDTO(WOW_CATEGORY_NAME);
         long categoryId = postService.createCategory(categoryDTO).getCategoryId();
@@ -445,6 +438,49 @@ public class PostServiceTests extends SpringDataTests {
     }
 
     @Test
+    public void setDefaultCategoryResultsInSingleDefault() throws Exception {
+        // H2Data Status: Java Category is Sole Default
+        Category category = postService.getCategory("wannabe");
+        assertEquals(category.getIsDefault(), false);
+        assertEquals(defaultCategoryCount(), 1);
+
+        // Sole Default will be Wannabe Category
+        Category updated = postService.updateCategory(new CategoryDTO(5L, "Wannabe", true, true));
+        assertEquals(category.getIsDefault(), true);
+        assertEquals(defaultCategoryCount(), 1);
+    }
+
+    @Test
+    public void uncategorizedCategoryIsNotDeleted() throws Exception {
+        // H2Data Status: Uncategorized is CategoryId 1
+        assertTrue(startCount_isEqual_to_endCount(1L));
+
+        // H2Data Status: PHP is CategoryId 4
+        assertFalse(startCount_isEqual_to_endCount(4L));
+
+    }
+
+    @Test
+    public void uncategorizedCategoryIsNotUpdated() throws Exception {
+        // H2Data Status: Uncategorized is CategoryId 1
+        Category uncategorized = postService.getCategoryById(1L);
+        assertEquals(uncategorized.getCategoryValue(), "Uncategorized");
+        Category updated = postService.updateCategory(new CategoryDTO(1L, "Categorized", true, false));
+
+        uncategorized = postService.getCategoryById(1L);
+        assertEquals(uncategorized.getCategoryValue(), "Uncategorized");
+
+    }
+
+    private boolean startCount_isEqual_to_endCount(long categoryId) {
+        int startCount = postService.getAllCategories().size();
+        Category category = postService.getCategoryById(categoryId);
+        postService.deleteCategory(new CategoryDTO(categoryId, "something", true, false), null);
+        int endCount = postService.getAllCategories().size();
+        return startCount==endCount;
+    }
+
+    @Test
     public void updatedPostContainsNewlyAssignedCategory() throws DuplicatePostNameException, PostNotFoundException {
 
         Post post = postService.getPostById(1L);
@@ -455,6 +491,11 @@ public class PostServiceTests extends SpringDataTests {
         post = postService.update(postDTO);
         assertEquals(post.getCategory().getCategoryValue(), "Java");
 
+    }
+
+    private int defaultCategoryCount() {
+        List<Category> categories = postService.getAllCategories();
+        return (int) categories.stream().filter(c -> c.getIsDefault().equals(true)).count();
     }
 
     // endregion

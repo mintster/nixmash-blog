@@ -21,9 +21,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 })
 public class Category implements Serializable {
 
-    private static final long serialVersionUID = -5531381747015731447L;
+    private static final Long serialVersionUID = -5531381747015731447L;
 
-    private long categoryId;
+    private Long categoryId;
     private String categoryValue;
     private Set<Post> posts;
     private int categoryCount = 0;
@@ -47,11 +47,11 @@ public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "category_id", nullable = false)
-    public long getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(long categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -109,8 +109,14 @@ public class Category implements Serializable {
         return getCategoryValue();
     }
 
-    public void update(final String categoryValue) {
+    public void update(String categoryValue, Boolean isActive, Boolean isDefault) {
         this.categoryValue = categoryValue;
+        this.isActive = isActive;
+        this.isDefault = isDefault;
+    }
+
+    public void clearDefault() {
+        this.isDefault = false;
     }
 
     public static Builder getBuilder(Long categoryId, String categoryValue) {
