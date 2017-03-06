@@ -46,6 +46,8 @@ import static java.util.Comparator.comparing;
 @CacheConfig(cacheNames = "posts")
 public class PostServiceImpl implements PostService {
 
+    // region Beans
+
     private static final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
 
     private PostRepository postRepository;
@@ -53,9 +55,15 @@ public class PostServiceImpl implements PostService {
     private LikeRepository likeRepository;
     private PostImageRepository postImageRepository;
     private CategoryRepository categoryRepository;
-
     private ApplicationSettings applicationSettings;
     private CacheManager cacheManager;
+
+    @PersistenceContext
+    private EntityManager em;
+
+    // endregion
+
+    // region Constructor
 
     @Autowired
     public PostServiceImpl(PostRepository postRepository, TagRepository tagRepository, LikeRepository likeRepository, PostImageRepository postImageRepository, CategoryRepository categoryRepository, ApplicationSettings applicationSettings, CacheManager cacheManager) {
@@ -68,8 +76,7 @@ public class PostServiceImpl implements PostService {
         this.cacheManager = cacheManager;
     }
 
-    @PersistenceContext
-    private EntityManager em;
+    // endregion
 
     //region Add / UpdatePost
 
@@ -176,7 +183,7 @@ public class PostServiceImpl implements PostService {
 
     // endregion
 
-    //region Get Posts
+    // region PermaPost
 
     @Transactional(readOnly = true)
     @Override
@@ -211,6 +218,10 @@ public class PostServiceImpl implements PostService {
 
         return found;
     }
+
+    // endregion
+
+    //region Get Posts
 
     @Transactional(readOnly = true)
     @Override

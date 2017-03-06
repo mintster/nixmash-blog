@@ -274,3 +274,5 @@ INSERT INTO github_stats (forks, stars, subscribers, followers, stat_date) VALUE
 INSERT INTO github_stats (forks, stars, subscribers, followers, stat_date) VALUES (21, 102, 27, 18, '2016-12-02');
 INSERT INTO github_stats (forks, stars, subscribers, followers, stat_date) VALUES (22, 105, 31, 19, '2016-12-03');
 
+insert into post_meta select post_id, 'SUMMARY', '@daveburkevt', '/x/pics/twitter120x120.jpg', 'na'
+                      from posts;

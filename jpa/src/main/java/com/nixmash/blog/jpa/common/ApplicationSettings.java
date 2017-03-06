@@ -68,15 +68,22 @@ public class ApplicationSettings  implements Serializable {
 
 	// endregion
 
-	// region PermaPost Display
+	// region PermaPost Display and MetaData
 
 	private Boolean moreLikeThisDisplay;
 	private int moreLikeThisNum;
+	private String twitterSite;
 
 	// endregion
 
 	// region Getters Setters
 
+	public String getTwitterSite() {
+		return twitterSite;
+	}
+	public void setTwitterSite(String twitterSite) {
+		this.twitterSite = twitterSite;
+	}
 
 	public Boolean getLoginEnabled() {
 		return loginEnabled;
