@@ -149,9 +149,9 @@ INSERT INTO site_options (option_id, option_name, option_value) VALUES ('6', 'us
 -- INSERT INTO posts (post_id, user_id, post_title, post_name, post_link, post_date, post_modified, post_type, display_type, is_published, post_content, post_source, post_image, click_count, likes_count, value_rating, version) VALUES (1, 1, 'Post One Title', 'post-one-title', 'http://nixmash.com/something', '2016-05-31 13:27:47', '2016-05-31 13:28:01', 'LINK', 'LINK', 1, 'Post One Content', 'nixmash.com', null, 0, 0, 0, 0);
 -- INSERT INTO posts (post_id, user_id, post_title, post_name, post_link, post_date, post_modified, post_type, display_type, is_published, post_content, post_source, post_image, click_count, likes_count, value_rating, version) VALUES (2, 1, 'Post Two Title', 'post-two-title', 'http://stackoverflow.com/something', '2016-05-31 14:30:45', '2016-05-31 14:30:47', 'LINK', 'LINK', 1, 'Post Two Content', 'stackoverflow.com', null, 0, 0, 0, 0);
 
-INSERT INTO posts (post_id, user_id, post_title, post_name, post_link, post_date, post_modified, post_type, display_type, is_published, post_content, post_source, post_image, click_count, likes_count, value_rating, version)
-VALUES (-1, 3, 'Not Yet Selected', 'not-yet-selected', NULL, '2016-03-28 17:40:18', '2016-03-28 17:40:18', 'POST',
-            'SINGLEPHOTO_POST', 0, 'This is a placemarker post', 'NA', NULL, 0, 0, 0, 0);
+-- INSERT INTO posts (post_id, user_id, post_title, post_name, post_link, post_date, post_modified, post_type, display_type, is_published, post_content, post_source, post_image, click_count, likes_count, value_rating, version)
+-- VALUES (-1, 3, 'Not Yet Selected', 'not-yet-selected', NULL, '2016-03-28 17:40:18', '2016-03-28 17:40:18', 'POST',
+--             'SINGLEPHOTO_POST', 0, 'This is a placemarker post', 'NA', NULL, 0, 0, 0, 0);
 INSERT INTO posts (post_id, user_id, post_title, post_name, post_link, post_date, post_modified, post_type, display_type, is_published, post_content, post_source, post_image, click_count, likes_count, value_rating, version)
 VALUES (1, 3, 'JavaScript · Bootstrap', 'javascript-bootstrap', 'http://getbootstrap.com/javascript/#carousel',
            '2016-06-06 15:30:34', '2016-06-06 15:30:34', 'LINK', 'LINK', 1,
@@ -210,6 +210,7 @@ INSERT INTO categories (category_id, category_value, is_active, is_default) VALU
 INSERT INTO categories (category_id, category_value, is_active, is_default) VALUES (3, 'Solr', 1, 0);
 INSERT INTO categories (category_id, category_value, is_active, is_default) VALUES (4, 'PHP', 0, 0);
 INSERT INTO categories (category_id, category_value, is_active, is_default) VALUES (5, 'Wannabe', 1, 0);
+INSERT INTO categories (category_id, category_value, is_active, is_default) VALUES (6, 'Shorttimer', 1, 0);
 
 INSERT INTO post_category_ids (post_id, category_id) VALUES (1, 1);
 INSERT INTO post_category_ids (post_id, category_id) VALUES (2, 1);
@@ -218,10 +219,9 @@ INSERT INTO post_category_ids (post_id, category_id) VALUES (4, 2);
 INSERT INTO post_category_ids (post_id, category_id) VALUES (5, 2);
 INSERT INTO post_category_ids (post_id, category_id) VALUES (6, 2);
 INSERT INTO post_category_ids (post_id, category_id) VALUES (7, 2);
-INSERT INTO post_category_ids (post_id, category_id) VALUES (8, 2);
+INSERT INTO post_category_ids (post_id, category_id) VALUES (8, 6);
 INSERT INTO post_category_ids (post_id, category_id) VALUES (9, 3);
 INSERT INTO post_category_ids (post_id, category_id) VALUES (10, 2);
-INSERT INTO post_category_ids (post_id, category_id) VALUES (10, 3);
 
 INSERT INTO post_tag_ids (post_id, tag_id) VALUES (1, 1);
 INSERT INTO post_tag_ids (post_id, tag_id) VALUES (1, 2);

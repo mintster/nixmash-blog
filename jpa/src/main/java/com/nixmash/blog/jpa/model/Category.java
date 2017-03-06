@@ -6,6 +6,7 @@ import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "categories")
 @NamedNativeQueries({
@@ -85,8 +86,10 @@ public class Category implements Serializable {
 
     @OneToMany
     @JoinTable(name="post_category_ids",
-            joinColumns={@JoinColumn(name="category_id", referencedColumnName="category_id")},
-            inverseJoinColumns={@JoinColumn(name="post_id", referencedColumnName="post_id")})
+            joinColumns={@JoinColumn(name="category_id",
+                    referencedColumnName="category_id")},
+            inverseJoinColumns={@JoinColumn(name="post_id",
+                    referencedColumnName="post_id")})
     public Set<Post> getPosts() {
         return posts;
     }

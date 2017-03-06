@@ -555,10 +555,9 @@ public class AdminPostsControllerTests  extends AbstractContext{
         mvc.perform(addCategoryRequest("categoryIncreasesCount"))
                 .andExpect(redirectedUrl("/admin/posts/categories"));
 
-        int postCategoryCount = postService.getTagDTOs().size();
+        int postCategoryCount = postService.getAllCategories().size();
         assertThat(postCategoryCount, is(greaterThan(preCategoryCount)));
     }
-
 
     @Test
     public void updateCategoryTests() throws Exception {

@@ -383,7 +383,6 @@ public class PostServiceImpl implements PostService {
         return PostUtils.categoriesToCategoryDTOs(categories);
     }
 
-
     @Transactional(readOnly = true)
     @Override
     public List<CategoryDTO> getAdminCategories() {

@@ -412,12 +412,6 @@ public class PostServiceTests extends SpringDataTests {
     }
 
     @Test
-    public void postWithMultipleCategories() throws PostNotFoundException {
-        Post post = postService.getPostById(10L);
-        System.out.println(post.getCategory());
-    }
-
-    @Test
     public void createCategory() {
         CategoryDTO categoryDTO = new CategoryDTO(WOW_CATEGORY_NAME);
         long categoryId = postService.createCategory(categoryDTO).getCategoryId();
@@ -451,6 +445,21 @@ public class PostServiceTests extends SpringDataTests {
     }
 
     @Test
+    public void deletedCategoryIncreasesUncategorizedBySame() throws Exception {
+        // H2 "ShortTimer" category removed, existing posts assigned "uncategorized"
+
+        int startCount = postService.getAllPostsByCategoryId(1L).size();
+
+        List<Post> posts = postService.getAllPostsByCategoryId(6L);
+        int postCount = posts.size();
+
+        postService.deleteCategory(new CategoryDTO(6L, "shorttimer", 1, true, false), posts);
+        int endCount = postService.getAllPostsByCategoryId(1L).size();
+
+        assertEquals(endCount, startCount + postCount);
+    }
+
+    @Test
     public void uncategorizedCategoryIsNotDeleted() throws Exception {
         // H2Data Status: Uncategorized is CategoryId 1
         assertTrue(startCount_isEqual_to_endCount(1L));
@@ -472,14 +481,6 @@ public class PostServiceTests extends SpringDataTests {
 
     }
 
-    private boolean startCount_isEqual_to_endCount(long categoryId) {
-        int startCount = postService.getAllCategories().size();
-        Category category = postService.getCategoryById(categoryId);
-        postService.deleteCategory(new CategoryDTO(categoryId, "something", 0, true, false), null);
-        int endCount = postService.getAllCategories().size();
-        return startCount==endCount;
-    }
-
     @Test
     public void updatedPostContainsNewlyAssignedCategory() throws DuplicatePostNameException, PostNotFoundException {
 
@@ -493,9 +494,22 @@ public class PostServiceTests extends SpringDataTests {
 
     }
 
+
+
+
+
+
     private int defaultCategoryCount() {
         List<Category> categories = postService.getAllCategories();
         return (int) categories.stream().filter(c -> c.getIsDefault().equals(true)).count();
+    }
+
+    private boolean startCount_isEqual_to_endCount(long categoryId) {
+        int startCount = postService.getAllCategories().size();
+        Category category = postService.getCategoryById(categoryId);
+        postService.deleteCategory(new CategoryDTO(categoryId, "something", 0, true, false), null);
+        int endCount = postService.getAllCategories().size();
+        return startCount == endCount;
     }
 
     // endregion
