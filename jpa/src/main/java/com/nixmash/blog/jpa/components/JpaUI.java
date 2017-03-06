@@ -4,6 +4,7 @@ import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.jpa.common.ISiteOption;
 import com.nixmash.blog.jpa.common.SiteOptions;
 import com.nixmash.blog.jpa.dto.AlphabetDTO;
+import com.nixmash.blog.jpa.dto.CategoryDTO;
 import com.nixmash.blog.jpa.dto.PostDTO;
 import com.nixmash.blog.jpa.dto.SiteOptionDTO;
 import com.nixmash.blog.jpa.enums.BatchJobName;
@@ -14,7 +15,10 @@ import com.nixmash.blog.jpa.exceptions.SiteOptionNotFoundException;
 import com.nixmash.blog.jpa.model.BatchJob;
 import com.nixmash.blog.jpa.model.GitHubStats;
 import com.nixmash.blog.jpa.model.Post;
-import com.nixmash.blog.jpa.service.*;
+import com.nixmash.blog.jpa.service.PostService;
+import com.nixmash.blog.jpa.service.SiteService;
+import com.nixmash.blog.jpa.service.StatService;
+import com.nixmash.blog.jpa.service.UserService;
 import com.nixmash.blog.jpa.utils.PostUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
@@ -24,6 +28,7 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import static com.nixmash.blog.jpa.utils.SharedUtils.timeMark;
@@ -64,8 +69,19 @@ public class JpaUI {
         String activeProfile = environment.getActiveProfiles()[0];
         logger.info(String.format("Current JPA Active Profile: %s", activeProfile));
 
-        displayPosts();
+        displayCategoryCounts();
     }
+
+    // region Categories
+
+    private void displayCategoryCounts() {
+        List<CategoryDTO> categoryDTOS = postService.getCategoryCounts();
+        for (CategoryDTO categoryDTO : categoryDTOS) {
+            System.out.println(MessageFormat.format("{0} | {1} | {2}",
+                    categoryDTO.getCategoryId(), categoryDTO.getCategoryValue(), categoryDTO.getCategoryCount()));
+        }
+    }
+    // endregion
 
     // region BatchJob Reports and GitHub Stats
 
@@ -86,7 +102,6 @@ public class JpaUI {
     }
 
     // endregion
-
 
     // region Posts
 
@@ -153,7 +168,8 @@ public class JpaUI {
                 "http://nixmash.com/java/variations-on-json-key-value-pairs-in-spring-mvc/",
                 "This is the post content",
                 PostType.LINK,
-                PostDisplayType.LINK_FEATURE
+                PostDisplayType.LINK_FEATURE,
+                1L
         ).build();
         postService.add(postDTO);
     }

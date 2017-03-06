@@ -160,7 +160,7 @@ public class PostsController {
     public String tags(@PathVariable("tagValue") String tagValue, Model model)
             throws TagNotFoundException, UnsupportedEncodingException {
         Tag tag = postService.getTag(URLDecoder.decode(tagValue, "UTF-8"));
-        boolean showMore = postService.getPostsByTagId(tag.getTagId()).size() > POST_PAGING_SIZE;
+        boolean showMore = postService.getPublishedPostsByTagId(tag.getTagId()).size() > POST_PAGING_SIZE;
         model.addAttribute("tag", tag);
         model.addAttribute("showmore", showMore);
         return POSTS_TAGS_VIEW;
@@ -179,7 +179,7 @@ public class PostsController {
     public String tagTitles(@PathVariable("tagValue") String tagValue, Model model)
             throws TagNotFoundException, UnsupportedEncodingException {
         Tag tag = postService.getTag(URLDecoder.decode(tagValue, "UTF-8"));
-        boolean showMore = postService.getPostsByTagId(tag.getTagId()).size() > TITLE_PAGING_SIZE;
+        boolean showMore = postService.getPublishedPostsByTagId(tag.getTagId()).size() > TITLE_PAGING_SIZE;
         model.addAttribute("tag", tag);
         model.addAttribute("showmore", showMore);
         return POSTS_TAGTITLES_VIEW;

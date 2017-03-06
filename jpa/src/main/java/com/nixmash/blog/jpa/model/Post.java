@@ -103,6 +103,16 @@ public class Post implements Serializable {
                     nullable = false))
     public Set<Tag> tags;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinTable(name = "post_category_ids",
+            joinColumns = @JoinColumn(name = "post_id",
+                    referencedColumnName = "post_id",
+                    nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "category_id",
+                    referencedColumnName = "category_id",
+                    nullable = false))
+    public Category category;
+
     @Transient
     public List<PostImage> postImages;
 
@@ -222,7 +232,6 @@ public class Post implements Serializable {
     public PostType getPostType() {
         return postType;
     }
-
     public void setPostType(PostType postType) {
         this.postType = postType;
     }
@@ -230,7 +239,6 @@ public class Post implements Serializable {
     public PostDisplayType getDisplayType() {
         return displayType;
     }
-
     public void setDisplayType(PostDisplayType displayType) {
         this.displayType = displayType;
     }
@@ -238,7 +246,6 @@ public class Post implements Serializable {
     public Boolean getIsPublished() {
         return isPublished;
     }
-
     public void setIsPublished(Boolean isPublished) {
         this.isPublished = isPublished;
     }
@@ -246,7 +253,6 @@ public class Post implements Serializable {
     public String getPostContent() {
         return postContent;
     }
-
     public void setPostContent(String postContent) {
         this.postContent = postContent;
     }
@@ -254,7 +260,6 @@ public class Post implements Serializable {
     public String getPostSource() {
         return postSource;
     }
-
     public void setPostSource(String postSource) {
         this.postSource = postSource;
     }
@@ -262,7 +267,6 @@ public class Post implements Serializable {
     public String getPostImage() {
         return postImage;
     }
-
     public void setPostImage(String postImage) {
         this.postImage = postImage;
     }
@@ -270,7 +274,6 @@ public class Post implements Serializable {
     public int getClickCount() {
         return clickCount;
     }
-
     public void setClickCount(int clickCount) {
         this.clickCount = clickCount;
     }
@@ -278,7 +281,6 @@ public class Post implements Serializable {
     public int getLikesCount() {
         return likesCount;
     }
-
     public void setLikesCount(int likesCount) {
         this.likesCount = likesCount;
     }
@@ -286,7 +288,6 @@ public class Post implements Serializable {
     public int getValueRating() {
         return valueRating;
     }
-
     public void setValueRating(int valueRating) {
         this.valueRating = valueRating;
     }
@@ -294,7 +295,6 @@ public class Post implements Serializable {
     public int getVersion() {
         return version;
     }
-
     public void setVersion(int version) {
         this.version = version;
     }
@@ -302,9 +302,15 @@ public class Post implements Serializable {
     public Set<Tag> getTags() {
         return tags;
     }
-
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     //endregion
@@ -386,6 +392,11 @@ public class Post implements Serializable {
 
         public Builder tags(Set<Tag> tags) {
             built.tags= tags;
+            return this;
+        }
+
+        public Builder category(Category category) {
+            built.category = category;
             return this;
         }
 

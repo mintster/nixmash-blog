@@ -1,11 +1,13 @@
 package com.nixmash.blog.mvc.controller;
 
+import com.nixmash.blog.jpa.dto.CategoryDTO;
 import com.nixmash.blog.jpa.dto.PostDTO;
 import com.nixmash.blog.jpa.dto.TagDTO;
 import com.nixmash.blog.jpa.enums.PostDisplayType;
 import com.nixmash.blog.jpa.enums.PostType;
 import com.nixmash.blog.jpa.exceptions.DuplicatePostNameException;
 import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
+import com.nixmash.blog.jpa.model.Category;
 import com.nixmash.blog.jpa.model.CurrentUser;
 import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.model.Tag;
@@ -58,18 +60,18 @@ public class AdminPostsController {
     public static final String ADMIN_TAGS_VIEW = "admin/posts/tags";
     public static final String ADMIN_POSTLINK_UPDATE_VIEW = "admin/posts/update";
     public static final String ADMIN_POSTS_REINDEX_VIEW = "admin/posts/reindex";
+    public static final String ADMIN_CATEGORIES_VIEW = "admin/posts/categories";
 
     // endregion
 
     // region static message.properites
-
     private static final String MESSAGE_ADMIN_UPDATE_POSTLINK_TITLE = "admin.update.postlink.title";
     private static final String MESSAGE_ADMIN_SOLR_REINDEX_COMPLETE = "admin.solr.posts.reindexed";
+
     private static final String MESSAGE_ADMIN_UPDATE_POSTLINK_HEADING = "admin.update.postlink.heading";
-
     private static final String ADD_POST_HEADER = "posts.add.note.page.header";
-    private static final String ADD_LINK_HEADER = "posts.add.link.page.header";
 
+    private static final String ADD_LINK_HEADER = "posts.add.link.page.header";
     private static final String FEEDBACK_POST_LINK_ADDED = "feedback.post.link.added";
     private static final String FEEDBACK_POST_POST_ADDED = "feedback.post.post.added";
     public static final String FEEDBACK_POST_UPDATED = "feedback.post.updated";
@@ -78,12 +80,19 @@ public class AdminPostsController {
     private static final String FEEDBACK_MESSAGE_TAG_UPDATED = "feedback.message.tag.updated";
     private static final String FEEDBACK_MESSAGE_TAG_DELETED = "feedback.message.tag.deleted";
 
+    private static final String FEEDBACK_MESSAGE_CATEGORY_ADDED = "feedback.message.category.added";
+    private static final String FEEDBACK_MESSAGE_CATEGORY_ERROR = "feedback.message.category.error";
+    private static final String FEEDBACK_MESSAGE_CATEGORY_UPDATED = "feedback.message.category.updated";
+    private static final String FEEDBACK_MESSAGE_CATEGORY_DELETED = "feedback.message.category.deleted";
+
+    private static final String UNCATEGORIZED_CANNOT_BE_DELETED = "category.uncategorized.cannot.be.deleted";
+    private static final String UNCATEGORIZED_CANNOT_BE_UPDATED = "category.uncategorized.cannot.be.updated";
+
     // endregion
 
     // region class variables
 
     private static final String SESSION_ATTRIBUTE_NEWPOST = "activepostdto";
-
     public static final String POST_PUBLISH = "publish";
     public static final String POST_DRAFT = "draft";
 
@@ -160,13 +169,14 @@ public class AdminPostsController {
 
     // endregion
 
-    //region Add Posts GET
+    //region Add Post GET
 
     @RequestMapping(value = "/add/{type}", method = GET)
     public String addPostLink(@PathVariable("type") String type, Model model, HttpServletRequest request) {
         PostType postType = PostType.valueOf(type.toUpperCase());
         model.addAttribute("postDTO", new PostDTO());
         model.addAttribute("canPreview", false);
+        model.addAttribute("categories", postService.getAdminSelectionCategories());
         if (postType == PostType.POST) {
             WebUtils.setSessionAttribute(request, SESSION_ATTRIBUTE_NEWPOST, null);
             model.addAttribute("hasPost", true);
@@ -191,6 +201,7 @@ public class AdminPostsController {
                 result.rejectValue("link", "post.link.page.not.found");
                 return ADMIN_LINK_ADD_VIEW;
             } else {
+                model.addAttribute("categories", postService.getAdminSelectionCategories());
                 model.addAttribute("hasLink", true);
                 model.addAttribute("hasCarousel", true);
                 WebUtils.setSessionAttribute(request, "pagePreview", pagePreview);
@@ -204,7 +215,7 @@ public class AdminPostsController {
 
     //endregion
 
-    //region Add Posts POST
+    //region Add Post POST
 
     @RequestMapping(value = "/add/link", method = POST)
     public String createLinkPost(@Valid PostDTO postDTO, BindingResult result,
@@ -353,6 +364,7 @@ public class AdminPostsController {
         model.addAttribute("postDTO", postDTO);
         model.addAttribute("pageTitle", pageTitle);
         model.addAttribute("pageHeading", pageHeading);
+        model.addAttribute("categories", postService.getAdminSelectionCategories());
 
         model.addAllAttributes(getPostLinkAttributes(request, post.getPostType()));
 
@@ -420,7 +432,7 @@ public class AdminPostsController {
     // region Tags
 
     @RequestMapping(value = "/tags", method = GET)
-    public ModelAndView roleList(Model model) {
+    public ModelAndView tagList(Model model) {
 
         ModelAndView mav = new ModelAndView();
         mav.addObject("tags", postService.getTagCloud(Integer.MAX_VALUE));
@@ -430,7 +442,7 @@ public class AdminPostsController {
     }
 
     @RequestMapping(value = "/tags/new", method = RequestMethod.POST)
-    public String addUser(@Valid TagDTO tagDTO,
+    public String addTag(@Valid TagDTO tagDTO,
                           BindingResult result,
                           SessionStatus status,
                           RedirectAttributes attributes) {
@@ -449,7 +461,7 @@ public class AdminPostsController {
 
 
     @RequestMapping(value = "/tags/update", method = RequestMethod.POST)
-    public String updateRole(@Valid @ModelAttribute(value = "tag") TagDTO tagDTO, BindingResult result,
+    public String updateTag(@Valid @ModelAttribute(value = "tag") TagDTO tagDTO, BindingResult result,
                              RedirectAttributes attributes) {
         if (result.hasErrors()) {
             webUI.addFeedbackMessage(attributes, FEEDBACK_MESSAGE_TAG_ERROR);
@@ -462,13 +474,13 @@ public class AdminPostsController {
     }
 
     @RequestMapping(value = "/tags/update", params = {"deleteTag"}, method = RequestMethod.POST)
-    public String deleteRole(@Valid @ModelAttribute(value = "tag") TagDTO tagDTO, BindingResult result,
+    public String deleteTag(@Valid @ModelAttribute(value = "tag") TagDTO tagDTO, BindingResult result,
                              RedirectAttributes attributes) {
         if (result.hasErrors()) {
             webUI.addFeedbackMessage(attributes, FEEDBACK_MESSAGE_TAG_ERROR);
             return "redirect:/admin/posts/tags";
         } else {
-            List<Post> posts = postService.getPostsByTagId(tagDTO.getTagId());
+            List<Post> posts = postService.getAllPostsByTagId(tagDTO.getTagId());
             postService.deleteTag(tagDTO, posts);
             webUI.addFeedbackMessage(attributes, FEEDBACK_MESSAGE_TAG_DELETED, tagDTO.getTagValue());
         }
@@ -479,6 +491,79 @@ public class AdminPostsController {
 
     // endregion
 
+    // region Categories
+
+    @RequestMapping(value = "/categories", method = GET)
+    public ModelAndView categoryList(Model model) {
+
+        ModelAndView mav = new ModelAndView();
+        List<CategoryDTO> categories = postService.getAdminCategories();
+        mav.addObject("categories", categories);
+        mav.addObject("newCategory", new Category());
+        mav.setViewName(ADMIN_CATEGORIES_VIEW);
+        return mav;
+    }
+
+    @RequestMapping(value = "/categories/new", method = RequestMethod.POST)
+    public String addCategory(@Valid CategoryDTO categoryDTO,
+                          BindingResult result,
+                          SessionStatus status,
+                          RedirectAttributes attributes) {
+        if (result.hasErrors()) {
+            return ADMIN_CATEGORIES_VIEW;
+        } else {
+
+            Category category = postService.createCategory(categoryDTO);
+            logger.info("Category Added: {}", category.getCategoryValue());
+            status.setComplete();
+
+            webUI.addFeedbackMessage(attributes, FEEDBACK_MESSAGE_CATEGORY_ADDED, category.getCategoryValue());
+            return "redirect:/admin/posts/categories";
+        }
+    }
+
+
+    @RequestMapping(value = "/categories/update", method = RequestMethod.POST)
+    public String updateCategory(@Valid @ModelAttribute(value = "category") CategoryDTO categoryDTO, BindingResult result,
+                             RedirectAttributes attributes) {
+        if (categoryDTO.getCategoryId().equals(1L)) {
+            webUI.addFeedbackMessage(attributes, UNCATEGORIZED_CANNOT_BE_UPDATED);
+            return "redirect:/admin/posts/categories";
+        }
+
+        if (result.hasErrors()) {
+            webUI.addFeedbackMessage(attributes, FEEDBACK_MESSAGE_CATEGORY_ERROR);
+            return "redirect:/admin/posts/categories";
+        } else {
+            postService.updateCategory(categoryDTO);
+            webUI.addFeedbackMessage(attributes, FEEDBACK_MESSAGE_CATEGORY_UPDATED, categoryDTO.getCategoryValue());
+            return "redirect:/admin/posts/categories";
+        }
+    }
+
+    @RequestMapping(value = "/categories/update", params = {"deleteCategory"}, method = RequestMethod.POST)
+    public String deleteRole(@Valid @ModelAttribute(value = "category") CategoryDTO categoryDTO, BindingResult result,
+                             RedirectAttributes attributes) {
+        if (categoryDTO.getCategoryId().equals(1L)) {
+            webUI.addFeedbackMessage(attributes, UNCATEGORIZED_CANNOT_BE_DELETED);
+            return "redirect:/admin/posts/categories";
+        }
+
+        if (result.hasErrors()) {
+            webUI.addFeedbackMessage(attributes, FEEDBACK_MESSAGE_CATEGORY_ERROR);
+            return "redirect:/admin/posts/categories";
+        } else {
+            List<Post> posts = postService.getAllPostsByCategoryId(categoryDTO.getCategoryId());
+            postService.deleteCategory(categoryDTO, posts);
+            webUI.addFeedbackMessage(attributes, FEEDBACK_MESSAGE_CATEGORY_DELETED, categoryDTO.getCategoryValue());
+        }
+        return "redirect:/admin/posts/categories";
+    }
+
+
+    // endregion
+
+
     // region postDTO Utilities
 
     private PostDTO getUpdatedPostDTO(Post post) {
@@ -486,7 +571,8 @@ public class AdminPostsController {
                 post.getPostTitle(),
                 post.getPostContent(),
                 post.getIsPublished(),
-                post.getDisplayType())
+                post.getDisplayType(),
+                post.getCategory().getCategoryId())
                 .tags(PostUtils.tagsToTagDTOs(post.getTags()))
                 .build();
     }
@@ -515,7 +601,8 @@ public class AdminPostsController {
                 postLink,
                 postDescriptionHtml,
                 PostType.LINK,
-                null)
+                null,
+                1L)
                 .postImage(tmpDTO.getPostImage())
                 .hasImages(tmpDTO.getHasImages())
                 .build();

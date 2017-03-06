@@ -7,11 +7,14 @@ import com.nixmash.blog.jsoup.annotations.TwitterSelector;
 import com.nixmash.blog.jsoup.base.JsoupImage;
 import com.nixmash.blog.jsoup.base.JsoupTwitter;
 
+import java.io.Serializable;
 import java.util.List;
 
 
-@SuppressWarnings("WeakerAccess")
-public class PagePreviewDTO {
+//@SuppressWarnings("WeakerAccess")
+public class PagePreviewDTO implements Serializable {
+
+    private static final long serialVersionUID = -3568730305139406803L;
 
     @Selector("title")
     public String title;

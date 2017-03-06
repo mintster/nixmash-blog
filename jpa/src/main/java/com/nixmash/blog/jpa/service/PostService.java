@@ -1,12 +1,15 @@
 package com.nixmash.blog.jpa.service;
 
 import com.nixmash.blog.jpa.dto.AlphabetDTO;
+import com.nixmash.blog.jpa.dto.CategoryDTO;
 import com.nixmash.blog.jpa.dto.PostDTO;
 import com.nixmash.blog.jpa.dto.TagDTO;
 import com.nixmash.blog.jpa.enums.PostType;
+import com.nixmash.blog.jpa.exceptions.CategoryNotFoundException;
 import com.nixmash.blog.jpa.exceptions.DuplicatePostNameException;
 import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
 import com.nixmash.blog.jpa.exceptions.TagNotFoundException;
+import com.nixmash.blog.jpa.model.Category;
 import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.model.PostImage;
 import com.nixmash.blog.jpa.model.Tag;
@@ -91,6 +94,8 @@ public interface PostService {
 
     Set<TagDTO> getTagDTOs(Long postId);
 
+    List<Post> getAllPostsByTagId(long tagId);
+
     @Transactional(readOnly = true)
     List<PostImage> getAllPostImages();
 
@@ -103,11 +108,46 @@ public interface PostService {
     @Transactional(readOnly = true)
     PostImage getPostImage(long imageId);
 
+    @Transactional(readOnly = true)
+    Category getCategory(String categoryValue) throws CategoryNotFoundException;
+
+    @SuppressWarnings("JpaQueryApiInspection")
+    @Transactional(readOnly = true)
+    List<CategoryDTO> getCategoryCounts();
+
+    @SuppressWarnings("JpaQueryApiInspection")
+    @Transactional(readOnly = true)
+    List<CategoryDTO> getCategoryCounts(int categoryCount);
+
+    @Transactional(readOnly = true)
+    List<CategoryDTO> getAdminSelectionCategories();
+
+    @Transactional(readOnly = true)
+    List<CategoryDTO> getAdminCategories();
+
+    @Transactional(readOnly = true)
+    List<Category> getAllCategories();
+
+    @Transactional
+    Category createCategory(CategoryDTO categoryDTO);
+
+    @Transactional
+    Category updateCategory(CategoryDTO categoryDTO);
+
+    @Transactional
+    void deleteCategory(CategoryDTO categoryDTO, List<Post> posts);
+
+    @Transactional(readOnly = true)
+    Category getCategoryById(long categoryId);
+
     Tag getTag(String tagValue) throws TagNotFoundException;
 
-    Page<Post> getPostsByTagId(long tagId, int pageNumber, int pageSize);
+    Page<Post> getPublishedPostsByTagId(long tagId, int pageNumber, int pageSize);
 
-    List<Post> getPostsByTagId(long tagId);
+    @Transactional(readOnly = true)
+    List<Post> getAllPostsByCategoryId(long categoryId);
+
+    List<Post> getPublishedPostsByTagId(long tagId);
 
     void deleteImage(PostImage image);
 }

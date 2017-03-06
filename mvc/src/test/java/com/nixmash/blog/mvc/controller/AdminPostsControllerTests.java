@@ -3,6 +3,7 @@ package com.nixmash.blog.mvc.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
+import com.nixmash.blog.jpa.model.Category;
 import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.model.Tag;
 import com.nixmash.blog.jpa.service.PostService;
@@ -58,13 +59,26 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @WithAdminUser
 public class AdminPostsControllerTests  extends AbstractContext{
 
+    // region Logger and Constants
+
     private static final Logger logger = LoggerFactory.getLogger(AdminPostsControllerTests.class);
 
     private static final String POST_CONSTANT = "POST";
     private static final String LINK_CONSTANT = "LINK";
     private static final String GOOD_URL = "http://nixmash.com/some-post/";
 
+    // endregion
+
+    // region  Variables
+
     private JacksonTester<JsonPostDTO> json;
+
+    private MockMvc mvc;
+    private String azTestFileName;
+
+    // endregion
+
+    // region Beans
 
     @Autowired
     private Environment environment;
@@ -81,11 +95,12 @@ public class AdminPostsControllerTests  extends AbstractContext{
     @Autowired
     private PostDocService postDocService;
 
-    private MockMvc mvc;
-    private String azTestFileName;
-
     @Autowired
     protected WebApplicationContext wac;
+
+    // endregion
+
+    // region Before / After
 
     @Before
     public void setup() throws ServletException {
@@ -111,6 +126,10 @@ public class AdminPostsControllerTests  extends AbstractContext{
     public void tearDown() {
     }
 
+    // endregion
+
+    // region Pages Load
+
     @Test
     public void AZFileNameIsAZTest() throws Exception {
         assertThat(environment.getProperty("posts.az.file.name"), is("aztest.html"));
@@ -127,6 +146,8 @@ public class AdminPostsControllerTests  extends AbstractContext{
                 is(instanceOf(ArrayList.class)));
     }
 
+    // endregion
+
     // region Posts
 
     @Test
@@ -135,6 +156,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
         mvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("postDTO"))
+                .andExpect(model().attributeExists("categories"))
                 .andExpect(view().name(ADMIN_POST_ADD_VIEW));
 
     }
@@ -192,7 +214,6 @@ public class AdminPostsControllerTests  extends AbstractContext{
         String contents = FileUtils.readFileToString(azFile);
         assertTrue(contents.contains(newTitle));
     }
-
 
     @Test
     public void saveAndContinueWithValidData_UpdatesPost() throws Exception  {
@@ -267,6 +288,35 @@ public class AdminPostsControllerTests  extends AbstractContext{
     }
 
     @Test
+    public void newPostRecordContainsUpdatedCategory() throws Exception {
+        mvc.perform(solrCategoryRequest("solrCategory"));
+        Post post = postService.getPost("my-title-solrcategory");
+        assertEquals(post.getCategory().getCategoryValue().toLowerCase(), "solr");
+    }
+
+    @Test
+    public void updatedPostContainsNewCategory() throws Exception {
+
+        Post post = postService.getPostById(1L);
+        assert(post.getCategory().getCategoryId().equals(1L));
+
+        RequestBuilder request = post("/admin/posts/update")
+                .param("postId", "1")
+                .param("displayType", String.valueOf(post.getDisplayType()))
+                .param("postContent", post.getPostContent())
+                .param("postTitle", post.getPostTitle())
+                .param("tags", "one, two")
+                .param("categoryId", "3")
+                .with(csrf());
+
+        mvc.perform(request);
+
+        post = postService.getPostById(1L);
+        assert(post.getCategory().getCategoryId().equals(3L));
+
+    }
+
+    @Test
     public void newPublishedPostRedirectsToPostList() throws Exception {
         mvc.perform(addPostRequest("redirectsToPostList"))
                 .andExpect(redirectedUrl("/admin/posts"));
@@ -274,7 +324,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
 
     @Test
     public void newUnpublishedPostReturnsPostAddView() throws Exception {
-        mvc.perform(addPostRequest("returnsPostAddView", false))
+        mvc.perform(addPostRequest("returnsPostAddView", false, false))
                 .andExpect(view().name(ADMIN_POST_ADD_VIEW));
     }
 
@@ -292,6 +342,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
                 .param("postContent", post.getPostContent())
                 .param("postTitle", post.getPostTitle())
                 .param("tags", "removingTag1")
+                .param("categoryId", "1")
                 .with(csrf()));
 
         int postTagEndCount = post.getTags().size();
@@ -339,7 +390,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
 
         int postDocStartCount = postDocService.getAllPostDocuments().size();
 
-        mvc.perform(addPostRequest(TITLE, false));
+        mvc.perform(addPostRequest(TITLE, false, false));
 
         int postDocEndCount = postDocService.getAllPostDocuments().size();
         assertEquals(postDocStartCount, postDocEndCount);
@@ -437,6 +488,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
         mvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("postDTO"))
+                .andExpect(model().attributeExists("categories"))
                 .andExpect(view().name(ADMIN_LINK_ADD_VIEW));
     }
 
@@ -480,6 +532,44 @@ public class AdminPostsControllerTests  extends AbstractContext{
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("postDTO"))
                 .andExpect(view().name(ADMIN_POSTLINK_UPDATE_VIEW));
+    }
+
+    // endregion
+
+    // region Categories
+
+    @Test
+    public void categoriesList_page_loads() throws Exception {
+        RequestBuilder request = get("/admin/posts/categories").with(csrf());
+        MvcResult result = mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(view().name(ADMIN_CATEGORIES_VIEW)).andReturn();
+
+        assertThat(result.getModelAndView().getModel().get("categories"),
+                is(instanceOf(ArrayList.class)));
+    }
+
+    @Test
+    public void newCategoryIncreasesCategorySize() throws Exception {
+        int preCategoryCount = postService.getAllCategories().size();
+        mvc.perform(addCategoryRequest("categoryIncreasesCount"))
+                .andExpect(redirectedUrl("/admin/posts/categories"));
+
+        int postCategoryCount = postService.getAllCategories().size();
+        assertThat(postCategoryCount, is(greaterThan(preCategoryCount)));
+    }
+
+    @Test
+    public void updateCategoryTests() throws Exception {
+        // H2Data VALUES (4, 'PHP', 0, 0);
+        Category category = postService.getCategory("PHP");
+
+        mvc.perform(updateCategoryRequest(category.getCategoryId(), "NOPE", true, true))
+                .andExpect(redirectedUrl("/admin/posts/categories"));
+
+        Category updated = postService.getCategory("nope");
+        assertEquals(category.getCategoryId(), updated.getCategoryId());
+        assertEquals(category.getIsDefault(), true);
     }
 
     // endregion
@@ -535,14 +625,18 @@ public class AdminPostsControllerTests  extends AbstractContext{
     // region Utility Methods
 
     private RequestBuilder addPostRequest(String s) {
-        return addPostRequest(s, true);
+        return addPostRequest(s, true, false);
+    }
+
+    private RequestBuilder solrCategoryRequest(String s) {
+        return addPostRequest(s, true, true);
     }
 
     private RequestBuilder addUnpublishedPostRequest(String s) {
-        return addPostRequest(s, false);
+        return addPostRequest(s, false, false);
     }
 
-    private RequestBuilder addPostRequest(String s, Boolean isPublished) {
+    private RequestBuilder addPostRequest(String s, Boolean isPublished, Boolean addSolrCategory) {
         return post("/admin/posts/add/post")
                 .param("post", isPublished ? POST_PUBLISH : POST_DRAFT)
                 .param("postTitle", "my title " + s)
@@ -553,6 +647,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
                 .param("postContent", "My Post Content must be longer so I don't trigger a new contraint addition!")
                 .param("isPublished", isPublished.toString())
                 .param("tags", String.format("req%s, req%s%s", s, s, 1))
+                .param("categoryId", addSolrCategory ? "3" : "1")
                 .with(csrf());
     }
 
@@ -577,10 +672,27 @@ public class AdminPostsControllerTests  extends AbstractContext{
                 .with(csrf());
     }
 
+    private RequestBuilder addCategoryRequest(String s) {
+        return post("/admin/posts/categories/new")
+                .param("categoryValue", s)
+                .param("isActive", "1")
+                .param("isDefault", "0")
+                .with(csrf());
+    }
+
     private RequestBuilder updateTagRequest(long tagId, String s) {
         return post("/admin/posts/tags/update")
                 .param("tagValue", s)
                 .param("tagId", String.valueOf(tagId))
+                .with(csrf());
+    }
+
+    private RequestBuilder updateCategoryRequest(long categoryId, String s, Boolean isActive, Boolean isDefault) {
+        return post("/admin/posts/categories/update")
+                .param("categoryValue", s)
+                .param("categoryId", String.valueOf(categoryId))
+                .param("isActive", String.valueOf(isActive))
+                .param("isActive", String.valueOf(categoryId))
                 .with(csrf());
     }
 

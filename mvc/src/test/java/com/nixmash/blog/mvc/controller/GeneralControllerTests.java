@@ -50,7 +50,7 @@ public class GeneralControllerTests extends AbstractContext {
     @Test
     public void resourceNotFoundExceptionTest() throws Exception {
         mockMvc.perform(get("/badurl/here"))
-                .andExpect(status().is3xxRedirection())
+                .andExpect(status().is4xxClientError())
                 .andReturn();
     }
 

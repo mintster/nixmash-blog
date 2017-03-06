@@ -108,7 +108,7 @@ public class PostsRestController {
                                        @PathVariable int pageNumber,
                                        HttpServletRequest request,
                                        CurrentUser currentUser) {
-        Slice<Post> posts = postService.getPostsByTagId(tagid, pageNumber, TITLE_PAGING_SIZE);
+        Slice<Post> posts = postService.getPublishedPostsByTagId(tagid, pageNumber, TITLE_PAGING_SIZE);
         String result = populatePostStream(posts.getContent(), currentUser, TITLE_TEMPLATE);
         WebUtils.setSessionAttribute(request, SESSION_ATTRIBUTE_TAGPOSTTITLES, posts.getContent());
         return result;
@@ -145,7 +145,7 @@ public class PostsRestController {
 
     @RequestMapping(value = "/post/mlt/{postId}",
             produces = "text/html;charset=UTF-8")
-    public String getMoreLikeThis(@PathVariable long postId, HttpServletRequest request) {
+    public String getMoreLikeThis(@PathVariable long postId) {
 
         String result = StringUtils.EMPTY;
         if (applicationSettings.getMoreLikeThisDisplay()) {
@@ -168,7 +168,7 @@ public class PostsRestController {
                                   HttpServletRequest request,
                                   CurrentUser currentUser) {
         String template = applicationSettings.getTitleStreamDisplay() ? "title" : null;
-        Slice<Post> posts = postService.getPostsByTagId(tagid, pageNumber, POST_PAGING_SIZE);
+        Slice<Post> posts = postService.getPublishedPostsByTagId(tagid, pageNumber, POST_PAGING_SIZE);
         String result = populatePostStream(posts.getContent(), currentUser, template);
         WebUtils.setSessionAttribute(request, SESSION_ATTRIBUTE_TAGGEDPOSTS, posts.getContent());
         return result;
@@ -304,8 +304,8 @@ public class PostsRestController {
                 if (e.getClass().equals(PostNotFoundException.class))
                     logger.info("MoreLikeThis PostDoc {} to Post with title \"{}\" NOT FOUND", postDocs.get(i).getPostId(), postDocs.get(i).getPostTitle());
                 else
-                    logger.info("EXCEPTION: AppSetting MoreLikeThisNum Value too high");
-                    return StringUtils.EMPTY;
+                    logger.info("EXCEPTION: AppSetting.MoreLikeThisNum > post count");
+                    return fmService.getNoMoreLikeThisMessage();
             }
         }
 

@@ -83,7 +83,6 @@ public class PostsControllerTests extends AbstractContext {
                 .andExpect(view().name(POSTS_SEARCH_VIEW));
     }
 
-
     @Test
     public void titlesPageLoadsTitleView() throws Exception {
         this.mockMvc.perform(get("/posts/titles"))
@@ -132,7 +131,6 @@ public class PostsControllerTests extends AbstractContext {
                 .andExpect(status().isOk())
                 .andExpect(view().name(POSTS_LIKES_VIEW));
     }
-
 
     @Test
     public void loadPostAtoZView() throws Exception {

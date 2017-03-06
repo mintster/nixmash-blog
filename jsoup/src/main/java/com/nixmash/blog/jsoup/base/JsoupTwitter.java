@@ -1,7 +1,11 @@
 package com.nixmash.blog.jsoup.base;
 
+import java.io.Serializable;
+
 @SuppressWarnings("WeakerAccess")
-public class JsoupTwitter {
+public class JsoupTwitter implements Serializable{
+
+    private static final long serialVersionUID = 8862950608858186052L;
 
     public String twitterCard;
     public String twitterCreator;

@@ -24,10 +24,17 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     Post findByPostNameIgnoreCase(String postName) throws DataAccessException;
 
     @Query("select distinct p from Post p left join p.tags t where p.isPublished = true and t.tagId = ?1")
-    Page<Post> findByTagId(long tagId, Pageable pageable);
+    Page<Post> findPagedPublishedByTagId(long tagId, Pageable pageable);
 
     @Query("select distinct p from Post p left join p.tags t where p.isPublished = true and t.tagId = ?1")
+    List<Post> findAllPublishedByTagId(long tagId);
+
+    @Query("select distinct p from Post p left join p.tags t where t.tagId = ?1")
     List<Post> findAllByTagId(long tagId);
+
+
+    @Query("select distinct p from Post p left join p.category c where c.categoryId = ?1")
+    List<Post> findAllByCategoryId(long categoryId);
 
     List<Post> findAll(Sort sort);
 

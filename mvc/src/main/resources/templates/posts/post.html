@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--suppress ThymeleafMessagesResolveInspection -->
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <div th:include="fragments/head :: head" th:remove="tag">Global Header</div>
@@ -16,6 +17,7 @@
 <!--/*@thymesVar id="PostType" type="com.nixmash.blog.jpa.enums.PostType"*/-->
 <!--/*@thymesVar id="image" type="com.nixmash.blog.jpa.model.PostImage"*/-->
 <!--/*@thymesVar id="singleImage" type="com.nixmash.blog.jpa.model.PostImage"*/-->
+<!--/*@thymesVar id="moreLikeThisDisplay" type="java.lang.String"*/-->
 
 <div class="container">
     <div class="page-header" id="banner">
@@ -57,7 +59,8 @@
 
             <div th:replace="fragments/posts/postfooter :: postfooter">[POST FOOTER]</div>
 
-            <div th:replace="fragments/posts/morelikethis :: morelikethis" th:if="${moreLikeThisDisplay}">[MORE LIKE THIS]</div>
+            <div th:replace="fragments/posts/morelikethis :: morelikethis"
+                        th:if="${moreLikeThisDisplay}">[MORE LIKE THIS]</div>
 
             <div class="permalink-close">
                 <a href="/posts" class="btn btn-primary" th:text="#{posts.permalink.page.return}">[Return to Posts]</a>
