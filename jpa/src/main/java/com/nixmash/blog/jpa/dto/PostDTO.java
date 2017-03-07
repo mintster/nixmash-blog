@@ -2,6 +2,7 @@ package com.nixmash.blog.jpa.dto;
 
 import com.nixmash.blog.jpa.enums.PostDisplayType;
 import com.nixmash.blog.jpa.enums.PostType;
+import com.nixmash.blog.jpa.enums.TwitterCardType;
 import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.model.User;
 import com.nixmash.blog.jpa.utils.PostImage;
@@ -54,6 +55,9 @@ public class PostDTO implements Serializable {
     @NotNull
     private PostDisplayType displayType;
 
+    @NotNull
+    private TwitterCardType twitterCardType;
+
     private Boolean isPublished = true;
     private String postSource = "NA";
     private int clickCount = 0;
@@ -73,6 +77,13 @@ public class PostDTO implements Serializable {
 
     // region getter setters
 
+
+    public TwitterCardType getTwitterCardType() {
+        return twitterCardType;
+    }
+    public void setTwitterCardType(TwitterCardType twitterCardType) {
+        this.twitterCardType = twitterCardType;
+    }
 
     public Long getCategoryId() {
         return categoryId;
@@ -306,8 +317,8 @@ public class PostDTO implements Serializable {
                 '}';
     }
 
-    public static Builder getBuilder(Long userId, String postTitle, String postName, String postLink, String postContent, PostType postType, PostDisplayType displayType, Long categoryId) {
-        return new PostDTO.Builder(userId, postTitle, postName, postLink, postContent, postType, displayType, categoryId);
+    public static Builder getBuilder(Long userId, String postTitle, String postName, String postLink, String postContent, PostType postType, PostDisplayType displayType, Long categoryId, TwitterCardType twitterCardType) {
+        return new PostDTO.Builder(userId, postTitle, postName, postLink, postContent, postType, displayType, categoryId, twitterCardType);
     }
 
     public static Builder getUpdateFields(Long postId,
@@ -315,8 +326,9 @@ public class PostDTO implements Serializable {
                                           String postContent,
                                           Boolean isPublished,
                                           PostDisplayType displayType,
-                                          Long categoryId) {
-        return new PostDTO.Builder(postId, postTitle, postContent, isPublished, displayType, categoryId);
+                                          Long categoryId,
+                                          TwitterCardType twitterCardType) {
+        return new PostDTO.Builder(postId, postTitle, postContent, isPublished, displayType, categoryId, twitterCardType);
     }
 
 
@@ -348,7 +360,7 @@ public class PostDTO implements Serializable {
 
         private PostDTO built;
 
-        public Builder(Long userId, String postTitle, String postName, String postLink, String postContent, PostType postType, PostDisplayType displayType, Long categoryId) {
+        public Builder(Long userId, String postTitle, String postName, String postLink, String postContent, PostType postType, PostDisplayType displayType, Long categoryId, TwitterCardType twitterCardType) {
             built = new PostDTO();
             built.userId = userId;
             built.postTitle = postTitle;
@@ -358,6 +370,7 @@ public class PostDTO implements Serializable {
             built.postType = postType;
             built.displayType = displayType;
             built.categoryId = categoryId;
+            built.twitterCardType = twitterCardType;
             built.postSource = PostUtils.createPostSource(postLink);
         }
 
@@ -366,7 +379,7 @@ public class PostDTO implements Serializable {
                        String postContent,
                        Boolean isPublished,
                        PostDisplayType displayType,
-                       Long categoryId) {
+                       Long categoryId, TwitterCardType twitterCardType) {
             built = new PostDTO();
             built.postId = postId;
             built.postTitle = postTitle;
@@ -374,6 +387,7 @@ public class PostDTO implements Serializable {
             built.isPublished = isPublished;
             built.displayType = displayType;
             built.categoryId = categoryId;
+            built.twitterCardType = twitterCardType;
         }
 
         public Builder postImage(String postImage) {

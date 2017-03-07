@@ -5,6 +5,7 @@ import com.nixmash.blog.jpa.dto.PostDTO;
 import com.nixmash.blog.jpa.dto.TagDTO;
 import com.nixmash.blog.jpa.enums.PostDisplayType;
 import com.nixmash.blog.jpa.enums.PostType;
+import com.nixmash.blog.jpa.enums.TwitterCardType;
 import com.nixmash.blog.jpa.model.Category;
 import com.nixmash.blog.jpa.model.Tag;
 
@@ -24,11 +25,12 @@ public class PostTestUtils {
     public static final String POST_CONTENT = "Post content.";
     public static final PostType POST_TYPE = PostType.POST;
     public static final PostDisplayType DISPLAY_TYPE = PostDisplayType.LINK;
+    public static final TwitterCardType TWITTER_CARD_SUMMARY = TwitterCardType.SUMMARY;
 
 
     public static PostDTO createPostDTO(int i) {
         return PostDTO.getBuilder(USER_ID,
-                fieldit(POST_TITLE, i), fieldit(POST_NAME, i), POST_LINK, POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID)
+                fieldit(POST_TITLE, i), fieldit(POST_NAME, i), POST_LINK, POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID, TWITTER_CARD_SUMMARY)
                 .tags(getTestTagDTOs(2))
                 .build();
     }
@@ -40,7 +42,7 @@ public class PostTestUtils {
 
     public static PostDTO createPostDTO(String appender) {
         return PostDTO.getBuilder(USER_ID,
-                fieldit(POST_TITLE, appender), fieldit(POST_NAME, appender), POST_LINK, POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID)
+                fieldit(POST_TITLE, appender), fieldit(POST_NAME, appender), POST_LINK, POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID, TWITTER_CARD_SUMMARY)
                 .tags(getTestTagDTOs(2))
                 .build();
     }

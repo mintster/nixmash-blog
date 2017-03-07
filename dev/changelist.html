@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="shortcut icon" href="/x/pics/favicon.ico" type="image/x-icon"/>
+<link rel="stylesheet" type="text/css" href="/x/css/style.css"/>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>NixMash Blog ChangeLog</title>
+</head>
+<body>
+<a id="top"><h1>NixMash Blog Changelist</h1></a>
+
+<p class="change-intro">Most Recent Changes are displayed first. Change Entry Title format is based on the NixMash Blog Release as
+    <em>vX.X.X</em> followed by the date as <em>MMDD</em>.</p>
+<p><a href="http://nixmash.com">NixMash Blog</a><span class="link-pipe">|</span><a
+        href="https://github.com/mintster/nixmash-blog">NixMash Blog Repository on GitHub</a>
+</p>
+
+<div class="change-entry">
+    <h3>v1.0.0.0306</h3>
+    <ul>
+        <li>Categories are complete with the following rules and features:</li>
+        <li>1) One Category Per Post (unlike WordPress which supports multiple categories per post)</li>
+        <li>2) Categories can be marked INACTIVE, which simply means they do not appear on Post Edit form category selection</li>
+        <li>3) One category is marked DEFAULT which will appear first in category selection for ease of use</li>
+        <li>4) All posts require an assigned category. When a category is deleted its assigned posts are given the UNCATEGORIZED category</li>
+        <li>5) The UNCATEGORIZED category cannot be modified or removed</li>
+        <li>See <a href="http://nixmash.com/java/category-rules/">this NixMash Post</a> for more.</li>
+        <li>There are no plans for implementing a "Display Posts by Category" or similar features at this time. Categories were added primarily for completeness and because they are supported in WordPress</li>
+    </ul>
+    <p class="change-top-link"><a href="#top">[back to top]</a></p>
+</div>
+
+<div class="change-entry">
+    <h3>v1.0.0.0228</h3>
+    <ul>
+        <li><strong>MoreLikeThis</strong> display added to Posts. Using Solr's <a href="https://wiki.apache.org/solr/MoreLikeThis"><strong>MoreLikeThis</strong>
+            handler</a>. An <samp>/MLT</samp> Handler was added to <samp>SolrConfig.xml</samp> and termVector properties added in the Solr Collection
+            <samp>schema.xml</samp>. Updated Solr .XML files are located in <samp>/install/solr</samp>.</li>
+        <li>Two NixMash posts cover the <strong>MoreLikeThis</strong> Implementation:</li>
+        <li><a href="http://nixmash.com/java/morelikethis-queries-with-spring-data-solr/">MoreLikeThis Queries with Spring Data Solr</a></li>
+        <li><a href="http://nixmash.com/java/morelikethis-post-display-with-spring-mvc-thymeleaf-and-freemarker/">MoreLikeThis Post Display with Spring MVC, Thymeleaf and FreeMarker</a></li>
+    </ul>
+    <p class="change-top-link"><a href="#top">[back to top]</a></p>
+</div>
+
+
+<div class="change-entry">
+    <h3>v1.0.0.0224</h3>
+    <ul>
+        <li>Permalink Post routing methods in a new <samp>PermalinkPostController</samp> class</li>
+        <li>The Permalink Post Url is in the format <samp>/post/{postname}</samp> (No category)</li>
+        <li><strong>Details: </strong> Those are for users who migrate WordPress blogs with url <samp>/{category}/{postname}</samp></li>
+        <li>Two methods, one with active categories with auto rerouting to <samp>/post/{postname}</samp>.</li>
+        <li>Second method throws an <samp>CategoryNotSupported</samp> Exception and displays a page with some verbage and link to the post</li>
+    </ul>
+    <p class="change-top-link"><a href="#top">[back to top]</a></p>
+</div>
+
+<div class="change-entry">
+    <h3>v1.0.0.0220</h3>
+    <ul>
+        <li>Google Analytics tracking display has been improved so that the activity of users in <samp>ROLE_POSTS</samp>
+            (bloggers) and
+            <samp>ROLE_ADMIN</samp> are not tracked
+        </li>
+    </ul>
+    <p class="change-top-link"><a href="#top">[back to top]</a></p>
+</div>
+
+
+<div class="change-entry">
+    <h3>v1.0.0.0210</h3>
+    <ul>
+        <li>Page Size for Posts and Post Title streams are now external <samp>blog.properties</samp> and accessed through <samp>applicationSettings</samp> bean.</li>
+        <li>For more flexibility between <strong>Nixmash.com</strong> and other sites, a new <em><strong>isNixmashSite</strong></em> <samp>blog.properties</samp> property was added.</li>
+        <li>Sidebar TagCloud was not retrieving tags by popularity before reducing the number of tags for display. Fixed.</li>
+    </ul>
+    <p class="change-top-link"><a href="#top">[back to top]</a></p>
+</div>
+
+</body>
+</html>

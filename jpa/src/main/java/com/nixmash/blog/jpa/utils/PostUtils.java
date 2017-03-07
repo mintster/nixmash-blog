@@ -62,7 +62,7 @@ public class PostUtils {
                 post.getPostContent(),
                 post.getPostType(),
                 post.getDisplayType(),
-                post.getCategory().getCategoryId())
+                post.getCategory().getCategoryId(), post.getPostMeta().getTwitterCardType())
                 .isPublished(post.getIsPublished())
                 .postSource(post.getPostSource())
                 .postImage(post.getPostImage())

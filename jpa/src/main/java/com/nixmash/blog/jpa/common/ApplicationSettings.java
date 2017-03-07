@@ -73,16 +73,33 @@ public class ApplicationSettings  implements Serializable {
 	private Boolean moreLikeThisDisplay;
 	private int moreLikeThisNum;
 	private String twitterSite;
+	private String twitterCreator;
+	private String twitterImage;
 
 	// endregion
 
 	// region Getters Setters
+
+	public String getTwitterImage() {
+		return twitterImage;
+	}
+	public void setTwitterImage(String twitterImage) {
+		this.twitterImage = twitterImage;
+	}
 
 	public String getTwitterSite() {
 		return twitterSite;
 	}
 	public void setTwitterSite(String twitterSite) {
 		this.twitterSite = twitterSite;
+	}
+
+	public String getTwitterCreator() {
+		return twitterCreator;
+	}
+
+	public void setTwitterCreator(String twitterCreator) {
+		this.twitterCreator = twitterCreator;
 	}
 
 	public Boolean getLoginEnabled() {

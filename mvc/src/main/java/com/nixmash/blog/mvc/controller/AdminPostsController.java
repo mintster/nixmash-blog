@@ -5,6 +5,7 @@ import com.nixmash.blog.jpa.dto.PostDTO;
 import com.nixmash.blog.jpa.dto.TagDTO;
 import com.nixmash.blog.jpa.enums.PostDisplayType;
 import com.nixmash.blog.jpa.enums.PostType;
+import com.nixmash.blog.jpa.enums.TwitterCardType;
 import com.nixmash.blog.jpa.exceptions.DuplicatePostNameException;
 import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
 import com.nixmash.blog.jpa.model.Category;
@@ -567,12 +568,14 @@ public class AdminPostsController {
     // region postDTO Utilities
 
     private PostDTO getUpdatedPostDTO(Post post) {
+
         return PostDTO.getUpdateFields(post.getPostId(),
                 post.getPostTitle(),
                 post.getPostContent(),
                 post.getIsPublished(),
                 post.getDisplayType(),
-                post.getCategory().getCategoryId())
+                post.getCategory().getCategoryId(),
+                post.getPostMeta().getTwitterCardType())
                 .tags(PostUtils.tagsToTagDTOs(post.getTags()))
                 .build();
     }
@@ -602,7 +605,7 @@ public class AdminPostsController {
                 postDescriptionHtml,
                 PostType.LINK,
                 null,
-                1L)
+                1L, TwitterCardType.SUMMARY)
                 .postImage(tmpDTO.getPostImage())
                 .hasImages(tmpDTO.getHasImages())
                 .build();
