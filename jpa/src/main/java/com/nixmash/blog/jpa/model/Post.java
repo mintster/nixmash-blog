@@ -1,4 +1,4 @@
-package com.nixmash.blog.jpa.model;
+ package com.nixmash.blog.jpa.model;
 
 import com.nixmash.blog.jpa.enums.PostDisplayType;
 import com.nixmash.blog.jpa.enums.PostType;

@@ -276,6 +276,8 @@ public class PostDTO implements Serializable {
         return hasImages;
     }
 
+    public boolean isLink() { return  (this.getPostType().equals(PostType.LINK));}
+
     public void setHasImages(Boolean hasImages) {
         this.hasImages = hasImages;
     }

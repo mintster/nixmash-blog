@@ -1,5 +1,7 @@
 package com.nixmash.blog.jsoup.service;
 
+import com.nixmash.blog.jpa.dto.PostDTO;
+import com.nixmash.blog.jpa.model.PostMeta;
 import com.nixmash.blog.jsoup.dto.PagePreviewDTO;
 
 /**
@@ -7,4 +9,6 @@ import com.nixmash.blog.jsoup.dto.PagePreviewDTO;
  */
 public interface JsoupService {
     PagePreviewDTO getPagePreview(String url);
+
+    PostMeta buildPostMetaToSave(PostDTO postDTO);
 }
