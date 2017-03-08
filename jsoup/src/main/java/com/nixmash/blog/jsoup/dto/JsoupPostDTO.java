@@ -1,5 +1,6 @@
 package com.nixmash.blog.jsoup.dto;
 
+import com.nixmash.blog.jpa.enums.PostDisplayType;
 import com.nixmash.blog.jsoup.annotations.DocText;
 import com.nixmash.blog.jsoup.annotations.ImageSelector;
 import com.nixmash.blog.jsoup.base.JsoupImage;
@@ -27,9 +28,17 @@ public class JsoupPostDTO implements Serializable {
 
     public String twitterImagePath;
     public String twitterDescription;
+    public PostDisplayType postDisplayType;
 
     // region getters setters
 
+
+    public PostDisplayType getPostDisplayType() {
+        return postDisplayType;
+    }
+    public void setPostDisplayType(PostDisplayType postDisplayType) {
+        this.postDisplayType = postDisplayType;
+    }
 
     public List<JsoupImage> getImagesInContent() {
         return imagesInContent;

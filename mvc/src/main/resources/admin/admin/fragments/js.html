@@ -33,11 +33,13 @@
     <script th:src="@{/js/bootstrap3-typeahead.js}"></script>
     <script th:src="@{/js/bootstrap-tagsinput.js}"></script>
 
+    <!--yousa!-->
+
     <script type="text/javascript">
-        // yousa!
 
         $('#tag-select').tagsinput({
             tagClass: 'label label-default',
+            confirmKeys: [10],
             typeahead: {
                 source: function (query) {
                     return $.get('/json/posts/tagvalues');

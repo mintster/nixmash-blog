@@ -9,10 +9,7 @@ import com.nixmash.blog.jpa.exceptions.CategoryNotFoundException;
 import com.nixmash.blog.jpa.exceptions.DuplicatePostNameException;
 import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
 import com.nixmash.blog.jpa.exceptions.TagNotFoundException;
-import com.nixmash.blog.jpa.model.Category;
-import com.nixmash.blog.jpa.model.Post;
-import com.nixmash.blog.jpa.model.PostImage;
-import com.nixmash.blog.jpa.model.Tag;
+import com.nixmash.blog.jpa.model.*;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +26,8 @@ public interface PostService {
     Post add(PostDTO postDTO) throws DuplicatePostNameException;
 
     Post getPost(String postName) throws PostNotFoundException;
+
+    PostMeta getPostMetaById(Long postId);
 
     Page<Post> getPosts(Integer pageNumber, Integer pageSize);
 

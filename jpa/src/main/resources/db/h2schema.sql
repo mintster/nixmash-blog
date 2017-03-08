@@ -228,9 +228,9 @@ CREATE TABLE post_meta
 (
   post_id BIGINT(20) PRIMARY KEY NOT NULL,
   twitter_card VARCHAR(25) NOT NULL,
-  twitter_creator VARCHAR(50) NOT NULL,
-  twitter_image VARCHAR(200) NOT NULL,
-  twitter_description VARCHAR(500) NOT NULL,
+  twitter_creator VARCHAR(50) NULL,
+  twitter_image VARCHAR(200) NULL,
+  twitter_description VARCHAR(500) NULL,
   PRIMARY KEY (post_id),
   CONSTRAINT post_meta_posts_post_id_fk FOREIGN KEY (post_id) REFERENCES posts (post_id)
 );

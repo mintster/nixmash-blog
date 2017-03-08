@@ -8,7 +8,9 @@ import com.nixmash.blog.jsoup.dto.PagePreviewDTO;
  * Created by daveburke on 5/29/16.
  */
 public interface JsoupService {
-    PagePreviewDTO getPagePreview(String url);
 
-    PostMeta buildPostMetaToSave(PostDTO postDTO);
+    PagePreviewDTO getPagePreview(String url);
+    PostMeta createPostMeta(PostDTO postDTO);
+    PostMeta updatePostMeta(PostDTO postDTO);
+
 }

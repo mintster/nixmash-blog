@@ -7,8 +7,8 @@
     <script src="/js/ckeditor/config.js"></script>
     <script src="/js/ckeditor/styles.js"></script>
 
-    <div th:include="fragments/editor :: ckeditorJS" th:remove="tag">[CKEditor Javascript]</div>
-    <div th:include="fragments/editor :: genericEditorJS" th:remove="tag">[Generic Editor Javascript]</div>
+    <div th:include="admin/fragments/editor :: ckeditorJS" th:remove="tag">[CKEditor Javascript]</div>
+    <div th:include="admin/fragments/editor :: genericEditorJS" th:remove="tag">[Generic Editor Javascript]</div>
 
     <link rel="stylesheet" type="text/css" href="/css/editor.css" />
 
@@ -30,6 +30,7 @@
 
 <div th:fragment="genericEditorJS">
 
+    <!-- IN GENERICEDITORJS!!! -->
 <script th:src="@{/js/bootstrap3-typeahead.js}"></script>
 <script th:src="@{/js/bootstrap-tagsinput.js}"></script>
 
@@ -37,6 +38,7 @@
 
     $('#tag-select').tagsinput({
         tagClass: 'label label-default',
+        confirmKeys: [10],
         typeahead: {
             source: function (query) {
                 return $.get('/json/posts/tagvalues');
@@ -47,6 +49,10 @@
 
     function saveDraftDialog() {
         showDialog("Save Posterino!", "Please save a draft of your post before adding images or attachments.");
+    }
+
+    function showTagsHelp() {
+        showDialog("Tag Entry Tip", "Use CTRL-ENTER when adding new tags, TAB key to autocomplete.");
     }
 
     function toggleImageUploads() {

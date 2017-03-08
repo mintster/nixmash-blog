@@ -132,12 +132,6 @@ public class FmServiceTests extends MailContext {
         assertThat(result, containsString(linkTitle));
     }
 
-    @Test
-    public void nixmashLinkTemplate() {
-        String result = fmService.createPostHtml(link, "nixmash_post");
-        assertThat(result, containsString(linkTitle));
-    }
-
     // endregion
 
     // region Utility Templates

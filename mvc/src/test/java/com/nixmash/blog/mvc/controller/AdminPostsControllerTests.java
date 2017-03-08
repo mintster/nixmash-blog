@@ -2,16 +2,19 @@ package com.nixmash.blog.mvc.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nixmash.blog.jpa.common.ApplicationSettings;
+import com.nixmash.blog.jpa.enums.PostDisplayType;
+import com.nixmash.blog.jpa.enums.TwitterCardType;
 import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
 import com.nixmash.blog.jpa.model.Category;
 import com.nixmash.blog.jpa.model.Post;
+import com.nixmash.blog.jpa.model.PostMeta;
 import com.nixmash.blog.jpa.model.Tag;
 import com.nixmash.blog.jpa.service.PostService;
+import com.nixmash.blog.jpa.utils.PostTestUtils;
 import com.nixmash.blog.mvc.AbstractContext;
 import com.nixmash.blog.mvc.MvcTestUtil;
 import com.nixmash.blog.mvc.annotations.WithAdminUser;
 import com.nixmash.blog.mvc.dto.JsonPostDTO;
-import com.nixmash.blog.solr.model.PostDoc;
 import com.nixmash.blog.solr.service.PostDocService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,9 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.core.env.Environment;
 import org.springframework.data.solr.core.SolrOperations;
-import org.springframework.data.solr.core.query.Query;
-import org.springframework.data.solr.core.query.SimpleQuery;
-import org.springframework.data.solr.core.query.SimpleStringCriteria;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -38,7 +38,6 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.servlet.ServletException;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.nixmash.blog.mvc.controller.AdminPostsController.*;
 import static com.nixmash.blog.mvc.security.SecurityRequestPostProcessors.csrf;
@@ -64,6 +63,8 @@ public class AdminPostsControllerTests  extends AbstractContext{
     private static final Logger logger = LoggerFactory.getLogger(AdminPostsControllerTests.class);
 
     private static final String POST_CONSTANT = "POST";
+    private static final String TWITTER_SUMMARY = "SUMMARY";
+    private static final String SUMMARY_LARGE_IMAGE = "SUMMARY_LARGE_IMAGE";
     private static final String LINK_CONSTANT = "LINK";
     private static final String GOOD_URL = "http://nixmash.com/some-post/";
 
@@ -111,12 +112,6 @@ public class AdminPostsControllerTests  extends AbstractContext{
         mvc = webAppContextSetup(wac)
                 .apply(springSecurity())
                 .build();
-
-        Query query = new SimpleQuery(new SimpleStringCriteria("doctype:post"));
-        solrOperations.delete(query);
-        solrOperations.commit();
-        List<Post> posts = postService.getAllPublishedPosts();
-        postDocService.addAllToIndex(posts);
 
         azTestFileName = applicationSettings.getPostAtoZFilePath() +
                 environment.getProperty("posts.az.file.name");
@@ -181,6 +176,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
                 .param("postId", "1")
                 .param("displayType", String.valueOf(post.getDisplayType()))
                 .param("postContent", post.getPostContent())
+                .param("twitterCardType", post.getPostMeta().getTwitterCardType().name())
                 .param("postTitle", newTitle)
                 .param("tags", "updatePostWithValidData1, updatePostWithValidData2")
                 .with(csrf());
@@ -205,6 +201,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
                 .param("displayType", String.valueOf(post.getDisplayType()))
                 .param("postContent", post.getPostContent())
                 .param("postTitle", newTitle)
+                .param("twitterCardType", TWITTER_SUMMARY)
                 .param("tags", "one, two")
                 .with(csrf());
 
@@ -288,35 +285,6 @@ public class AdminPostsControllerTests  extends AbstractContext{
     }
 
     @Test
-    public void newPostRecordContainsUpdatedCategory() throws Exception {
-        mvc.perform(solrCategoryRequest("solrCategory"));
-        Post post = postService.getPost("my-title-solrcategory");
-        assertEquals(post.getCategory().getCategoryValue().toLowerCase(), "solr");
-    }
-
-    @Test
-    public void updatedPostContainsNewCategory() throws Exception {
-
-        Post post = postService.getPostById(1L);
-        assert(post.getCategory().getCategoryId().equals(1L));
-
-        RequestBuilder request = post("/admin/posts/update")
-                .param("postId", "1")
-                .param("displayType", String.valueOf(post.getDisplayType()))
-                .param("postContent", post.getPostContent())
-                .param("postTitle", post.getPostTitle())
-                .param("tags", "one, two")
-                .param("categoryId", "3")
-                .with(csrf());
-
-        mvc.perform(request);
-
-        post = postService.getPostById(1L);
-        assert(post.getCategory().getCategoryId().equals(3L));
-
-    }
-
-    @Test
     public void newPublishedPostRedirectsToPostList() throws Exception {
         mvc.perform(addPostRequest("redirectsToPostList"))
                 .andExpect(redirectedUrl("/admin/posts"));
@@ -324,7 +292,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
 
     @Test
     public void newUnpublishedPostReturnsPostAddView() throws Exception {
-        mvc.perform(addPostRequest("returnsPostAddView", false, false))
+        mvc.perform(addPostRequest("returnsPostAddView", false, false, TwitterCardType.SUMMARY))
                 .andExpect(view().name(ADMIN_POST_ADD_VIEW));
     }
 
@@ -341,6 +309,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
                 .param("displayType", String.valueOf(post.getDisplayType()))
                 .param("postContent", post.getPostContent())
                 .param("postTitle", post.getPostTitle())
+                .param("twitterCardType", TWITTER_SUMMARY)
                 .param("tags", "removingTag1")
                 .param("categoryId", "1")
                 .with(csrf()));
@@ -355,102 +324,93 @@ public class AdminPostsControllerTests  extends AbstractContext{
 
     // endregion
 
-    // region Solr
-
+    // region Post Categories
 
     @Test
-    public void addNewPublishedPost_IncreasesPostAndPostDocSize() throws Exception {
-
-        // Adding a Published Post increases the PostCount and PostDocCount by 1
-
-        String TITLE = "addNewPublishedPost";
-        String SOLR_TITLE = "title:addNewPublishedPost";
-
-        int postStartCount = postService.getAllPosts().size();
-        int postDocStartCount = postDocService.getAllPostDocuments().size();
-
-        mvc.perform(addPostRequest(TITLE));
-
-        int postEndCount = postService.getAllPosts().size();
-        assertEquals(postStartCount + 1, postEndCount);
-
-        int postDocEndCount = postDocService.getAllPostDocuments().size();
-        assertEquals(postDocStartCount + 1, postDocEndCount);
-        postDocService.removeFromIndex(SOLR_TITLE);
-
+    public void newPostRecordContainsUpdatedCategory() throws Exception {
+        mvc.perform(solrCategoryRequest("solrCategory"));
+        Post post = postService.getPost("my-title-solrcategory");
+        assertEquals(post.getCategory().getCategoryValue().toLowerCase(), "solr");
     }
 
     @Test
-    public void addingUnPublishedPost_NoChangeInPostDocSize() throws Exception {
-
-        // Adding a Published Post increases the PostCount and PostDocCount by 1
-
-        String TITLE = "addingUnPublishedPost";
-        String SOLR_TITLE = "title:addingUnPublishedPost";
-
-        int postDocStartCount = postDocService.getAllPostDocuments().size();
-
-        mvc.perform(addPostRequest(TITLE, false, false));
-
-        int postDocEndCount = postDocService.getAllPostDocuments().size();
-        assertEquals(postDocStartCount, postDocEndCount);
-        postDocService.removeFromIndex(SOLR_TITLE);
-
-    }
-
-    @Test
-    public void updatingPostUpdatesItsSolrPostDocument() throws Exception {
-
-        List<PostDoc> postDocs = postDocService.getAllPostDocuments();
-        int postDocCount= postDocs.size();
+    public void updatedPostContainsNewCategory() throws Exception {
 
         Post post = postService.getPostById(1L);
-        String originalTitle = post.getPostTitle();
-        String newTitle = "updatingPostUpdatesItsSolrPostDocument";
+        post.setCategory(PostTestUtils.getUncategorizedCategory());
+        assert(post.getCategory().getCategoryId().equals(1L));
 
-        mvc.perform(post("/admin/posts/update")
+        RequestBuilder request = post("/admin/posts/update")
                 .param("postId", "1")
                 .param("displayType", String.valueOf(post.getDisplayType()))
                 .param("postContent", post.getPostContent())
-                .param("postTitle", newTitle)
-                .param("tags", "removingTag1")
-                .with(csrf()));
-
-        // size of PostDocuments in Solr Index Unchanged
-        assertEquals(postDocCount, postDocService.getAllPostDocuments().size());
-
-        Post verifyPost = postService.getPostById(1L);
-        assertEquals(verifyPost.getPostTitle(), newTitle);
-
-        List<PostDoc> verifyPostDocs = postDocService.getPostsWithUserQuery(newTitle);
-        assertEquals(verifyPostDocs.size(), 1);
-
-    }
-
-    @Test
-    public void reindexPageLoads() throws Exception {
-        RequestBuilder request = get("/admin/posts/solr/reindex").with(csrf());
-        mvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(view().name(ADMIN_POSTS_REINDEX_VIEW));
-    }
-
-    @Test
-    public void reindexResetsSolrPosts() throws Exception {
-        RequestBuilder request = get("/admin/posts/solr/reindex")
-                .param("reindex", "doit")
+                .param("postTitle", post.getPostTitle())
+                .param("twitterCardType", post.getPostMeta().getTwitterCardType().name())
+                .param("tags", "one, two")
+                .param("categoryId", "3")
                 .with(csrf());
 
-        int originalPostDocCount = postDocService.getAllPostDocuments().size();
-        postDocService.removeFromIndex(postDocService.getPostDocByPostId(1L));
-       assertThat(postDocService.getAllPostDocuments().size(), is(lessThan(originalPostDocCount)));
+        mvc.perform(request);
 
-        mvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(model().attributeExists("hasPostDocCount"))
-                .andExpect(view().name(ADMIN_POSTS_REINDEX_VIEW));
+        post = postService.getPostById(1L);
+        assert(post.getCategory().getCategoryId().equals(3L));
 
-        assertEquals(postDocService.getAllPostDocuments().size(), originalPostDocCount);
+    }
+
+    // endregion
+
+    // region Post MetaData
+
+    @Test
+    public void newPostContainsTwitterCardInfo() throws Exception {
+        mvc.perform(addTwitterCardPostRequest("bigtwitter", TwitterCardType.SUMMARY_LARGE_IMAGE, PostDisplayType.POST));
+        Post post = postService.getPost("my-title-bigtwitter");
+        assertEquals(post.getPostMeta().getTwitterCardType(), TwitterCardType.SUMMARY_LARGE_IMAGE);
+
+        PostMeta postMeta = postService.getPostMetaById(post.getPostId());
+        assertNotNull(postMeta);
+    }
+
+    @Test
+    public void newPostWithTwitterCardType_None_Saved() throws Exception {
+        mvc.perform(addTwitterCardPostRequest("notwitter", TwitterCardType.NONE, PostDisplayType.POST));
+        Post post = postService.getPost("my-title-notwitter");
+        assertEquals(post.getPostMeta().getTwitterCardType(), TwitterCardType.NONE);
+
+        PostMeta postMeta = postService.getPostMetaById(post.getPostId());
+        assertNotNull(postMeta);
+    }
+
+
+    @Test
+    public void multiPhotoPostCardOkay() throws Exception {
+        mvc.perform(addTwitterCardPostRequest("multiphoto twitter post", TwitterCardType.SUMMARY, PostDisplayType.MULTIPHOTO_POST));
+        Post post = postService.getPost("my-title-multiphoto-twitter-post");
+        assertEquals(post.getPostMeta().getTwitterCardType(), TwitterCardType.SUMMARY);
+
+        PostMeta postMeta = postService.getPostMetaById(post.getPostId());
+        assertNotNull(postMeta);
+    }
+
+    @Test
+    public void updatedPostUpdatesTwitterCardInfo() throws Exception {
+        Post post = postService.getPostById(1L);
+        assert(post.getPostMeta().getTwitterCardType().equals(TwitterCardType.SUMMARY));
+
+        RequestBuilder request = post("/admin/posts/update")
+                .param("postId", "1")
+                .param("displayType", String.valueOf(post.getDisplayType()))
+                .param("postContent", post.getPostContent())
+                .param("postTitle", post.getPostTitle())
+                .param("twitterCardType", TwitterCardType.SUMMARY_LARGE_IMAGE.name())
+                .param("tags", "one, two")
+                .param("categoryId", "3")
+                .with(csrf());
+
+        mvc.perform(request);
+
+        post = postService.getPostById(1L);
+        assert(post.getPostMeta().getTwitterCardType().equals(TwitterCardType.SUMMARY_LARGE_IMAGE));
     }
 
     // endregion
@@ -625,24 +585,41 @@ public class AdminPostsControllerTests  extends AbstractContext{
     // region Utility Methods
 
     private RequestBuilder addPostRequest(String s) {
-        return addPostRequest(s, true, false);
+        return addPostRequest(s, true, false, TwitterCardType.SUMMARY);
     }
 
     private RequestBuilder solrCategoryRequest(String s) {
-        return addPostRequest(s, true, true);
+        return addPostRequest(s, true, true, TwitterCardType.SUMMARY);
     }
 
     private RequestBuilder addUnpublishedPostRequest(String s) {
-        return addPostRequest(s, false, false);
+        return addPostRequest(s, false, false, TwitterCardType.SUMMARY);
     }
 
-    private RequestBuilder addPostRequest(String s, Boolean isPublished, Boolean addSolrCategory) {
+    private RequestBuilder addTwitterCardPostRequest(String s, TwitterCardType twitterCardType, PostDisplayType postDisplayType) {
+        return post("/admin/posts/add/post")
+                .param("post", POST_PUBLISH )
+                .param("postTitle", "my title " + s)
+                .param("hasPost", "true")
+                .param("postLink", StringUtils.EMPTY)
+                .param("postType", POST_CONSTANT)
+                .param("twitterCardType", twitterCardType.name())
+                .param("displayType", postDisplayType.name())
+                .param("postContent", "My Post Content must be longer so I don't trigger a new contraint addition!")
+                .param("isPublished", "true")
+                .param("tags", String.format("req%s, req%s%s", s, s, 1))
+                .param("categoryId", "1")
+                .with(csrf());
+    }
+
+    private RequestBuilder addPostRequest(String s, Boolean isPublished, Boolean addSolrCategory, TwitterCardType twitterCardType) {
         return post("/admin/posts/add/post")
                 .param("post", isPublished ? POST_PUBLISH : POST_DRAFT)
                 .param("postTitle", "my title " + s)
                 .param("hasPost", "true")
                 .param("postLink", StringUtils.EMPTY)
                 .param("postType", POST_CONSTANT)
+                .param("twitterCardType", twitterCardType.name())
                 .param("displayType", POST_CONSTANT)
                 .param("postContent", "My Post Content must be longer so I don't trigger a new contraint addition!")
                 .param("isPublished", isPublished.toString())
@@ -660,6 +637,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
                 .param("postDescription", "my description")
                 .param("postType", LINK_CONSTANT)
                 .param("displayType", LINK_CONSTANT)
+                .param("twitterCardType", TWITTER_SUMMARY)
                 .param("postContent", "My Post Content must be longer so I don't trigger a new contraint addition!")
                 .param("isPublished", "true")
                 .param("tags", String.format("req%s, req%s%s", s, s, 1))

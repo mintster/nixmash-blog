@@ -101,12 +101,23 @@ public class PostMeta implements Serializable {
         this.twitterSite = twitterSite;
     }
 
+    public void update(String twitterImage, String twitterCreator, String twitterDescription, TwitterCardType twitterCardType) {
+        this.twitterImage = twitterImage;
+        this.twitterCreator = twitterCreator;
+        this.twitterDescription = twitterDescription;
+        this.twitterCardType = twitterCardType;
+    }
+
     public static Builder getBuilder(TwitterCardType twitterCardType, String twitterTitle, String twitterSite, String twitterCreator) {
         return new PostMeta.Builder(twitterCardType, twitterTitle, twitterSite, twitterCreator);
     }
 
     public static Builder getUpdated(TwitterCardType twitterCardType, String twitterImage, String twitterDescription) {
         return new PostMeta.Builder(twitterCardType, twitterImage, twitterDescription);
+    }
+
+    public static Builder getEmpty(Long postId, TwitterCardType twitterCardType) {
+        return new PostMeta.Builder(postId, twitterCardType);
     }
 
     public static class Builder {
@@ -128,9 +139,21 @@ public class PostMeta implements Serializable {
             built.twitterDescription = twitterDescription;
         }
 
+        public Builder(Long postId, TwitterCardType twitterCardType) {
+            built = new PostMeta();
+            built.postId = postId;
+            built.twitterCardType = twitterCardType;
+        }
+
         public Builder twitterCreator(String creator)
         {
             built.twitterCreator= creator;
+            return this;
+        }
+
+        public Builder postId(Long postId)
+        {
+            built.postId= postId;
             return this;
         }
 

@@ -71,6 +71,10 @@ public class PostTestUtils {
         return new Category(2L, "Java", true, true);
     }
 
+    public static Category getUncategorizedCategory() {
+        return new Category(1L, "Uncategorized", true, true);
+    }
+
     private static String fieldit(String field, String appender) {
         return String.format("%s-%s", field, appender);
     }

@@ -1,5 +1,6 @@
 package com.nixmash.blog.jsoup;
 
+import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.jsoup.base.JsoupHtmlParser;
 import com.nixmash.blog.jsoup.base.JsoupImage;
 import com.nixmash.blog.jsoup.dto.JsoupPostDTO;
@@ -20,7 +21,7 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class JsoupPostMetaTests extends JsoupContext {
@@ -36,6 +37,9 @@ public class JsoupPostMetaTests extends JsoupContext {
     @Autowired
     @Qualifier("jsoupPostParser")
     JsoupHtmlParser<JsoupPostDTO> jsoupPostParser;
+
+    @Autowired
+    private ApplicationSettings applicationSettings;
 
     @Before
     public void setup() throws IOException {
@@ -61,6 +65,7 @@ public class JsoupPostMetaTests extends JsoupContext {
 
         List<JsoupImage> images = jsoupPostDTOWithImages.getImagesInContent();
         assertNotNull(images);
+        assertTrue(jsoupPostDTOWithImages.hasImages());
         JsoupImage img = jsoupPostDTOWithImages.getImagesInContent().get(0);
         assertThat(img.getSrc()).isEqualTo("http://nixmash.com/x/blog/2017/dd0120a.png");
     }
@@ -68,6 +73,7 @@ public class JsoupPostMetaTests extends JsoupContext {
     @Test
     public void processContentWithNoImage() throws IOException {
         List<JsoupImage> images = jsoupPostDTONoImages.getImagesInContent();
+        assertFalse(jsoupPostDTONoImages.hasImages());
         assertThat(images.size()).isEqualTo(0);
         assertThat(images).isEmpty();
     }

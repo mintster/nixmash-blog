@@ -1,5 +1,6 @@
 package com.nixmash.blog.mvc;
 
+import com.nixmash.blog.jpa.enums.TwitterCardType;
 import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.mvc.dto.JsonPostDTO;
 import org.springframework.http.MediaType;
@@ -22,7 +23,7 @@ public class MvcTestUtil {
                 tags, post.getPostTitle(),
                 post.getPostContent(),
                 post.getIsPublished(),
-                String.valueOf(post.getDisplayType()));
+                String.valueOf(post.getDisplayType()), TwitterCardType.SUMMARY);
     }
 
 

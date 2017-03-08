@@ -2,7 +2,12 @@ package com.nixmash.blog.jsoup.service;
 
 import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.jpa.dto.PostDTO;
+import com.nixmash.blog.jpa.enums.PostDisplayType;
+import com.nixmash.blog.jpa.enums.TwitterCardType;
+import com.nixmash.blog.jpa.model.PostImage;
 import com.nixmash.blog.jpa.model.PostMeta;
+import com.nixmash.blog.jpa.repository.PostMetaRepository;
+import com.nixmash.blog.jpa.service.PostService;
 import com.nixmash.blog.jsoup.base.JsoupHtmlParser;
 import com.nixmash.blog.jsoup.dto.JsoupPostDTO;
 import com.nixmash.blog.jsoup.dto.PagePreviewDTO;
@@ -19,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 
 @Service
 @Transactional
@@ -31,9 +37,13 @@ public class JsoupServiceImpl implements JsoupService {
     private String userAgent;
 
     private final ApplicationSettings applicationSettings;
+    private final PostMetaRepository postMetaRepository;
+    private final PostService postService;
 
-    public JsoupServiceImpl(ApplicationSettings applicationSettings) {
+    public JsoupServiceImpl(ApplicationSettings applicationSettings, PostMetaRepository postMetaRepository, PostService postService) {
         this.applicationSettings = applicationSettings;
+        this.postMetaRepository = postMetaRepository;
+        this.postService = postService;
     }
 
     // region PagePreview
@@ -91,24 +101,46 @@ public class JsoupServiceImpl implements JsoupService {
     // region TwitterCards
 
     @Override
-    public PostMeta buildPostMetaToSave(PostDTO postDTO) {
+    public PostMeta createPostMeta(PostDTO postDTO) {
+        PostMeta postMeta = buildPostMetaToSave(postDTO);
+        return postMetaRepository.save(postMeta);
+    }
 
-        String twitterCreator = applicationSettings.getTwitterCreator();
+    @Override
+    public PostMeta updatePostMeta(PostDTO postDTO) {
 
-        JsoupPostDTO jsoupPostDTO = getJsoupPostDTO(postDTO);
-        String twitterImage = jsoupPostDTO.getTwitterImagePath();
-        String twitterDescription = jsoupPostDTO.getTwitterDescription();
+        PostMeta postMeta = buildPostMetaToSave(postDTO);
+        PostMeta updated = postMetaRepository.findByPostId(postDTO.getPostId());
 
-        return PostMeta.getUpdated(postDTO.getTwitterCardType(),
-                twitterImage, twitterDescription)
-                .twitterCreator(twitterCreator)
-                .build();
+        updated.update(postMeta.getTwitterImage(),
+                postMeta.getTwitterCreator(),
+                postMeta.getTwitterDescription(),
+                postMeta.getTwitterCardType());
+        return updated;
+    }
 
+
+    private PostMeta buildPostMetaToSave(PostDTO postDTO) {
+
+        if (!postDTO.getTwitterCardType().equals(TwitterCardType.NONE)) {
+            String twitterCreator = applicationSettings.getTwitterCreator();
+            JsoupPostDTO jsoupPostDTO = getJsoupPostDTO(postDTO);
+            String twitterImage = jsoupPostDTO.getTwitterImagePath();
+            String twitterDescription = jsoupPostDTO.getTwitterDescription();
+
+            return PostMeta.getUpdated(postDTO.getTwitterCardType(), twitterImage, twitterDescription)
+                    .twitterCreator(twitterCreator)
+                    .postId(postDTO.getPostId())
+                    .build();
+        } else
+            return PostMeta
+                    .getEmpty(postDTO.getPostId(), TwitterCardType.NONE)
+                    .build();
     }
 
     private JsoupPostDTO getJsoupPostDTO(PostDTO postDTO) {
 
-        Document doc =  Jsoup.parse(postDTO.getPostContent());
+        Document doc = Jsoup.parse(postDTO.getPostContent());
         JsoupPostDTO jsoupPostDTO = jsoupPostParser.parse(doc);
         if (jsoupPostDTO.hasImages()) {
             String imageUrl = jsoupPostDTO.getImagesInContent().get(0).getSrc();
@@ -117,20 +149,23 @@ public class JsoupServiceImpl implements JsoupService {
             } catch (MalformedURLException e) {
                 jsoupPostDTO.setTwitterImagePath(applicationSettings.getTwitterImage());
             }
-        }
-        else
-            jsoupPostDTO.setTwitterImagePath(applicationSettings.getTwitterImage());
+        } else
+            jsoupPostDTO.setTwitterImagePath(getTwitterImage(postDTO));
 
         jsoupPostDTO.setTwitterDescription(JsoupUtil.getTwitterDescription(jsoupPostDTO.getBodyText()));
         return jsoupPostDTO;
     }
 
     private String getTwitterImage(PostDTO postDTO) {
-        String twitterImage = null;
-        if (postDTO.isLink())
-            twitterImage = applicationSettings.getTwitterImage();
-        else {
-            twitterImage = "something";
+        String twitterImage = applicationSettings.getTwitterImage();
+        PostDisplayType postDisplayType = postDTO.getDisplayType();
+        if (postDisplayType == PostDisplayType.MULTIPHOTO_POST ||
+                postDisplayType == PostDisplayType.SINGLEPHOTO_POST) {
+            List<PostImage> postImages = postService.getPostImages(postDTO.getPostId());
+            if (!postImages.isEmpty()) {
+                PostImage postImage = postImages.get(0);
+                twitterImage = postImage.getUrl() + postImage.getNewFilename();
+            }
         }
         return twitterImage;
     }
