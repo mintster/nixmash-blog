@@ -5,7 +5,9 @@ import com.nixmash.blog.jpa.dto.PostDTO;
 import com.nixmash.blog.jpa.dto.TagDTO;
 import com.nixmash.blog.jpa.enums.PostDisplayType;
 import com.nixmash.blog.jpa.enums.PostType;
+import com.nixmash.blog.jpa.enums.TwitterCardType;
 import com.nixmash.blog.jpa.model.Category;
+import com.nixmash.blog.jpa.model.PostMeta;
 import com.nixmash.blog.jpa.model.Tag;
 
 import java.util.LinkedHashSet;
@@ -24,11 +26,12 @@ public class PostTestUtils {
     public static final String POST_CONTENT = "Post content.";
     public static final PostType POST_TYPE = PostType.POST;
     public static final PostDisplayType DISPLAY_TYPE = PostDisplayType.LINK;
+    public static final TwitterCardType TWITTER_CARD_SUMMARY = TwitterCardType.SUMMARY;
 
 
     public static PostDTO createPostDTO(int i) {
         return PostDTO.getBuilder(USER_ID,
-                fieldit(POST_TITLE, i), fieldit(POST_NAME, i), POST_LINK, POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID)
+                fieldit(POST_TITLE, i), fieldit(POST_NAME, i), POST_LINK, POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID, TWITTER_CARD_SUMMARY)
                 .tags(getTestTagDTOs(2))
                 .build();
     }
@@ -40,7 +43,7 @@ public class PostTestUtils {
 
     public static PostDTO createPostDTO(String appender) {
         return PostDTO.getBuilder(USER_ID,
-                fieldit(POST_TITLE, appender), fieldit(POST_NAME, appender), POST_LINK, POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID)
+                fieldit(POST_TITLE, appender), fieldit(POST_NAME, appender), POST_LINK, POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID, TWITTER_CARD_SUMMARY)
                 .tags(getTestTagDTOs(2))
                 .build();
     }
@@ -69,7 +72,21 @@ public class PostTestUtils {
         return new Category(2L, "Java", true, true);
     }
 
+    public static Category getUncategorizedCategory() {
+        return new Category(1L, "Uncategorized", true, true);
+    }
+
     private static String fieldit(String field, String appender) {
         return String.format("%s-%s", field, appender);
+    }
+
+    public static PostMeta createPostMeta() {
+        return PostMeta.getBuilder(TwitterCardType.SUMMARY,
+                "Test Title", "@testsite", "@testblogger")
+                .twitterDescription("This is a test card")
+                .postId(1L)
+                .twitterImage("http://testsite.com/x/test/myimage.png")
+                .twitterUrl("http://testsite.com/post/test-post")
+                .build();
     }
 }

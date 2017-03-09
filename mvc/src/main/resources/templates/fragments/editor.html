@@ -7,8 +7,8 @@
     <script src="/js/ckeditor/config.js"></script>
     <script src="/js/ckeditor/styles.js"></script>
 
-    <div th:include="fragments/editor :: ckeditorJS" th:remove="tag">[CKEditor Javascript]</div>
-    <div th:include="fragments/editor :: genericEditorJS" th:remove="tag">[Generic Editor Javascript]</div>
+    <div th:include="admin/fragments/editor :: ckeditorJS" th:remove="tag">[CKEditor Javascript]</div>
+    <div th:include="admin/fragments/editor :: genericEditorJS" th:remove="tag">[Generic Editor Javascript]</div>
 
     <link rel="stylesheet" type="text/css" href="/css/editor.css" />
 
@@ -37,6 +37,7 @@
 
     $('#tag-select').tagsinput({
         tagClass: 'label label-default',
+        confirmKeys: [10],
         typeahead: {
             source: function (query) {
                 return $.get('/json/posts/tagvalues');
@@ -48,6 +49,7 @@
     function saveDraftDialog() {
         showDialog("Save Post", "Please save a draft of your post before adding images or attachments.");
     }
+
 
     function toggleImageUploads() {
         {

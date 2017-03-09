@@ -10,6 +10,7 @@ import com.nixmash.blog.jpa.dto.TagDTO;
 import com.nixmash.blog.jpa.enums.ContentType;
 import com.nixmash.blog.jpa.enums.PostDisplayType;
 import com.nixmash.blog.jpa.enums.PostType;
+import com.nixmash.blog.jpa.enums.TwitterCardType;
 import com.nixmash.blog.jpa.exceptions.CategoryNotFoundException;
 import com.nixmash.blog.jpa.exceptions.DuplicatePostNameException;
 import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
@@ -46,30 +47,39 @@ import static java.util.Comparator.comparing;
 @CacheConfig(cacheNames = "posts")
 public class PostServiceImpl implements PostService {
 
+    // region Beans
+
     private static final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
 
     private PostRepository postRepository;
     private TagRepository tagRepository;
     private LikeRepository likeRepository;
     private PostImageRepository postImageRepository;
+    private PostMetaRepository postMetaRepository;
     private CategoryRepository categoryRepository;
-
     private ApplicationSettings applicationSettings;
     private CacheManager cacheManager;
 
+    @PersistenceContext
+    private EntityManager em;
+
+    // endregion
+
+    // region Constructor
+
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, TagRepository tagRepository, LikeRepository likeRepository, PostImageRepository postImageRepository, CategoryRepository categoryRepository, ApplicationSettings applicationSettings, CacheManager cacheManager) {
+    public PostServiceImpl(PostRepository postRepository, TagRepository tagRepository, LikeRepository likeRepository, PostImageRepository postImageRepository, PostMetaRepository postMetaRepository, CategoryRepository categoryRepository, ApplicationSettings applicationSettings, CacheManager cacheManager) {
         this.postRepository = postRepository;
         this.tagRepository = tagRepository;
         this.likeRepository = likeRepository;
         this.postImageRepository = postImageRepository;
+        this.postMetaRepository = postMetaRepository;
         this.categoryRepository = categoryRepository;
         this.applicationSettings = applicationSettings;
         this.cacheManager = cacheManager;
     }
 
-    @PersistenceContext
-    private EntityManager em;
+    // endregion
 
     //region Add / UpdatePost
 
@@ -176,7 +186,7 @@ public class PostServiceImpl implements PostService {
 
     // endregion
 
-    //region Get Posts
+    // region PermaPost
 
     @Transactional(readOnly = true)
     @Override
@@ -211,6 +221,40 @@ public class PostServiceImpl implements PostService {
 
         return found;
     }
+
+    // endregion
+
+    // region MetaPosts
+
+    @Override
+    public PostMeta getPostMetaById(Long postId) {
+        return postMetaRepository.findByPostId(postId);
+    }
+
+    @Override
+    public PostMeta buildTwitterMetaTags(Post post) {
+        PostMeta postMeta = post.getPostMeta();
+        if (!postMeta.getTwitterCardType().equals(TwitterCardType.NONE)) {
+            String twitterSite = applicationSettings.getTwitterSite();
+            String twitterUrl = String.format("%s/post/%s", applicationSettings.getBaseUrl(), post.getPostName());
+            String twitterImage = String.format("%s%s", applicationSettings.getBaseUrl(), postMeta.getTwitterImage());
+            return PostMeta.getBuilder(
+                    postMeta.getTwitterCardType(),
+                    post.getPostTitle(),
+                    twitterSite,
+                    postMeta.getTwitterCreator())
+                    .twitterDescription(postMeta.getTwitterDescription())
+                    .twitterImage(twitterImage)
+                    .twitterUrl(twitterUrl)
+                    .build();
+        }
+                else
+                    return null;
+    }
+
+    // endregion
+
+    //region Get Posts
 
     @Transactional(readOnly = true)
     @Override

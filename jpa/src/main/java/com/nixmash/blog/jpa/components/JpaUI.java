@@ -10,6 +10,7 @@ import com.nixmash.blog.jpa.dto.SiteOptionDTO;
 import com.nixmash.blog.jpa.enums.BatchJobName;
 import com.nixmash.blog.jpa.enums.PostDisplayType;
 import com.nixmash.blog.jpa.enums.PostType;
+import com.nixmash.blog.jpa.enums.TwitterCardType;
 import com.nixmash.blog.jpa.exceptions.DuplicatePostNameException;
 import com.nixmash.blog.jpa.exceptions.SiteOptionNotFoundException;
 import com.nixmash.blog.jpa.model.BatchJob;
@@ -169,7 +170,8 @@ public class JpaUI {
                 "This is the post content",
                 PostType.LINK,
                 PostDisplayType.LINK_FEATURE,
-                1L
+                1L,
+                TwitterCardType.SUMMARY
         ).build();
         postService.add(postDTO);
     }

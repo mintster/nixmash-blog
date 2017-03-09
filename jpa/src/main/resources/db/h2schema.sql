@@ -213,16 +213,31 @@ CREATE TABLE categories
   PRIMARY KEY (category_id)
 );
 
+DROP TABLE IF EXISTS post_category_ids;
 CREATE TABLE post_category_ids
 (
-  post_category_id BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  post_category_id BIGINT(20) PRIMARY KEY NOT NULL,
   post_id BIGINT(20) NOT NULL,
   category_id BIGINT(20) NOT NULL,
   CONSTRAINT fk_categories_post_id FOREIGN KEY (post_id) REFERENCES posts (post_id),
   CONSTRAINT fk_categories_category_id FOREIGN KEY (category_id) REFERENCES categories (category_id)
 );
-CREATE INDEX fk_categories_category_id ON post_category_ids (category_id);
-CREATE INDEX fk_categories_post_id ON post_category_ids (post_id);
+CREATE INDEX categories_category_id_uindex ON post_category_ids (category_id);
+CREATE INDEX categories_post_id_uindex ON post_category_ids (post_id);
+
+DROP TABLE IF EXISTS post_meta;
+CREATE TABLE post_meta
+(
+  post_id BIGINT(20) PRIMARY KEY NOT NULL,
+  twitter_card VARCHAR(25) NOT NULL,
+  twitter_creator VARCHAR(50) NULL,
+  twitter_image VARCHAR(200) NULL,
+  twitter_description VARCHAR(500) NULL,
+  PRIMARY KEY (post_id),
+  CONSTRAINT post_meta_posts_post_id_fk FOREIGN KEY (post_id) REFERENCES posts (post_id)
+);
+CREATE INDEX post_metadata_post_id_uindex ON post_meta (post_id);
+
 
 CREATE TABLE user_likes (
   like_id bigint(20) NOT NULL AUTO_INCREMENT,

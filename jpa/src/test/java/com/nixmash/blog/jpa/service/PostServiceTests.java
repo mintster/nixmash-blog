@@ -101,28 +101,28 @@ public class PostServiceTests extends SpringDataTests {
     @Test
     public void builderShouldReturn_Null_ForMalformedLink() {
         PostDTO postDTO = PostDTO.getBuilder(USER_ID,
-                POST_TITLE, POST_NAME, "malformed.link", POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID).build();
+                POST_TITLE, POST_NAME, "malformed.link", POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID, TWITTER_CARD_SUMMARY).build();
         assertEquals(postDTO.getPostSource(), null);
     }
 
     @Test
     public void builderShouldReturnDomainAsPostSourceFromLink() {
         PostDTO postDTO = PostDTO.getBuilder(USER_ID,
-                POST_TITLE, POST_NAME, "http://wellformed.link", POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID).build();
+                POST_TITLE, POST_NAME, "http://wellformed.link", POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID, TWITTER_CARD_SUMMARY).build();
         assertEquals(postDTO.getPostSource(), "wellformed.link");
     }
 
     @Test
     public void builderShouldReturn_Null_ForNullLink() {
         PostDTO postDTO = PostDTO.getBuilder(USER_ID,
-                POST_TITLE, POST_NAME, null, POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID).build();
+                POST_TITLE, POST_NAME, null, POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID, TWITTER_CARD_SUMMARY).build();
         assertEquals(postDTO.getPostSource(), null);
     }
 
     @Test
     public void postDtoToPostShouldRetainPostSource() {
         PostDTO postDTO = PostDTO.getBuilder(USER_ID,
-                POST_TITLE, POST_NAME, "http://wellformed.link", POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID).build();
+                POST_TITLE, POST_NAME, "http://wellformed.link", POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID, TWITTER_CARD_SUMMARY).build();
         assertEquals(postDTO.getPostSource(), "wellformed.link");
         Post post = postDtoToPost(postDTO);
         assertEquals(post.getPostSource(), "wellformed.link");
@@ -131,7 +131,7 @@ public class PostServiceTests extends SpringDataTests {
     @Test
     public void postDtoToPostShouldRetainPostSourceOf_NA_ForNullLink() {
         PostDTO postDTO = PostDTO.getBuilder(USER_ID,
-                POST_TITLE, POST_NAME, null, POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID).build();
+                POST_TITLE, POST_NAME, null, POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID, TWITTER_CARD_SUMMARY).build();
         assertEquals(postDTO.getPostSource(), null);
         Post post = postDtoToPost(postDTO);
         assertEquals(post.getPostSource(), null);

@@ -2,9 +2,11 @@ package com.nixmash.blog.mail;
 
 import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
 import com.nixmash.blog.jpa.model.Post;
+import com.nixmash.blog.jpa.model.PostMeta;
 import com.nixmash.blog.jpa.model.User;
 import com.nixmash.blog.jpa.service.PostService;
 import com.nixmash.blog.jpa.service.UserService;
+import com.nixmash.blog.jpa.utils.PostTestUtils;
 import com.nixmash.blog.mail.components.MailUI;
 import com.nixmash.blog.mail.service.FmService;
 import org.junit.Before;
@@ -16,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 public class FmServiceTests extends MailContext {
@@ -62,9 +65,48 @@ public class FmServiceTests extends MailContext {
 
     // endregion
 
+    @Test
+    public void twitterTemplate() {
+        String result = fmService.getTwitterTemplate(PostTestUtils.createPostMeta());
+        assertThat(result, containsString("@testblogger"));
+    }
+
+    @Test
+    public void twitterSummaryTemplate() throws PostNotFoundException {
+        Post post = postService.getPostById(1L);
+        PostMeta postMeta = postService.buildTwitterMetaTags(post);
+        String result = fmService.getTwitterTemplate(postMeta);
+        assertThat(result, containsString("summary"));
+    }
+
+
+    @Test
+    public void twitterSummaryLargeImageTemplate() throws PostNotFoundException {
+        // H2 Post 10L SolrRama is SUMMARY_LARGE_IMAGE
+        Post post = postService.getPostById(10L);
+        PostMeta postMeta = postService.buildTwitterMetaTags(post);
+        String result = fmService.getTwitterTemplate(postMeta);
+        assertThat(result, containsString("summary_large_image"));
+    }
+
+    @Test
+    public void noneTwitterTypeTemplateIsNull() throws PostNotFoundException {
+        // H2 POST 9L is twitterCardType=NONE
+        // postService.buildTwitterMetaTags(post) returns NULL PostMeta object
+        Post post = postService.getPostById(9L);
+        PostMeta postMeta = postService.buildTwitterMetaTags(post);
+        assertNull(postMeta);
+    }
+
+    // region PostMeta tags
+
+
+    // endregion
+
     // region Posts
 
     @Test
+
     public void noLikesTemplate() {
         String result = fmService.getNoLikesMessage();
         assertThat(result, containsString("No Liked Posts Selected"));
@@ -129,12 +171,6 @@ public class FmServiceTests extends MailContext {
     @Test
     public void linkFeatureTemplate() {
         String result = fmService.createPostHtml(link, "link_feature");
-        assertThat(result, containsString(linkTitle));
-    }
-
-    @Test
-    public void nixmashLinkTemplate() {
-        String result = fmService.createPostHtml(link, "nixmash_post");
         assertThat(result, containsString(linkTitle));
     }
 

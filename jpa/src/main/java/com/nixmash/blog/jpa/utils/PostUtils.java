@@ -62,7 +62,7 @@ public class PostUtils {
                 post.getPostContent(),
                 post.getPostType(),
                 post.getDisplayType(),
-                post.getCategory().getCategoryId())
+                post.getCategory().getCategoryId(), post.getPostMeta().getTwitterCardType())
                 .isPublished(post.getIsPublished())
                 .postSource(post.getPostSource())
                 .postImage(post.getPostImage())
@@ -125,13 +125,6 @@ public class PostUtils {
                 break;
             case LINK_FEATURE:
                 content = StringUtils.appendIfMissing(content, feature);
-                break;
-            case NIXMASH_POST:
-                content = StringUtils.appendIfMissing(content, feature);
-                String nixMashHtml = "<div class=\"nixmash-tag\">" +
-                        "<a href=\"http://nixmash.com\" target=\"_blank\">\n" +
-                        "<img src=\"/images/posts/nixmashtag.png\" alt=\"\"/></a></div>";
-                content = StringUtils.appendIfMissing(content, nixMashHtml);
                 break;
             case LINK:
                 break;

@@ -1,6 +1,7 @@
 package com.nixmash.blog.mail.service;
 
 import com.nixmash.blog.jpa.model.Post;
+import com.nixmash.blog.jpa.model.PostMeta;
 import com.nixmash.blog.jpa.model.User;
 
 public interface FmService {
@@ -24,4 +25,6 @@ public interface FmService {
     String getFileUploadingScript();
 
     String getFileUploadedScript();
+
+    String getTwitterTemplate(PostMeta postMeta);
 }

@@ -39,7 +39,7 @@
     <tr class="tr-tag-row" th:classappend="${#fields.hasErrors('tags')} ? 'has-error'">
         <td class="col-sm-1">
             <div class="control-group" th:classappend="${#fields.hasErrors('tags')} ? 'error'">
-                <label class="control-label">Tags</label>
+                <label class="control-label">Tags <i class="glyphicon glyphicon-question-sign" onclick="showTagsHelp();"></i></label>
             </div>
         </td>
         <td class="col-sm-5">

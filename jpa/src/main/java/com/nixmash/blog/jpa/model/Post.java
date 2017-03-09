@@ -1,4 +1,4 @@
-package com.nixmash.blog.jpa.model;
+ package com.nixmash.blog.jpa.model;
 
 import com.nixmash.blog.jpa.enums.PostDisplayType;
 import com.nixmash.blog.jpa.enums.PostType;
@@ -113,6 +113,11 @@ public class Post implements Serializable {
                     nullable = false))
     public Category category;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "post_id",
+            referencedColumnName = "post_id", insertable = false, updatable = false)
+    public PostMeta postMeta;
+
     @Transient
     public List<PostImage> postImages;
 
@@ -154,6 +159,14 @@ public class Post implements Serializable {
     // endregion
 
     //region Getter Setters
+
+
+    public PostMeta getPostMeta() {
+        return postMeta;
+    }
+    public void setPostMeta(PostMeta postMeta) {
+        this.postMeta = postMeta;
+    }
 
     public PostImage getSingleImage() {
         return singleImage;

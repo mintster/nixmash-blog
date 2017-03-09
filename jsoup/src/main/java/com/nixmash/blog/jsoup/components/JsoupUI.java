@@ -50,6 +50,9 @@ public class JsoupUI {
         pagePreviewDTOFromUrl();
     }
 
+
+    // region PagePreview
+
     private void pagePreviewDTOFromUrl() {
         printPagePreviewDTO(jsoupService.getPagePreview(STACKOVERFLOW_URL));
     }
@@ -75,6 +78,8 @@ public class JsoupUI {
         System.out.println("Keywords: " + pagePreviewDTO.getKeywords());
         System.out.println("\n\n");
     }
+
+    // endregion
 
     // region non-used demos
 

@@ -1,6 +1,8 @@
 package com.nixmash.blog.jsoup;
 
 
+import com.nixmash.blog.jpa.common.ApplicationSettings;
+import com.nixmash.blog.jpa.service.PostService;
 import com.nixmash.blog.jsoup.dto.PagePreviewDTO;
 import com.nixmash.blog.jsoup.service.JsoupService;
 import org.junit.Test;
@@ -14,14 +16,17 @@ import java.io.IOException;
 public class JsoupServiceTests extends JsoupContext {
 
     @Autowired
-    JsoupService jsoupService;
+    private JsoupService jsoupService;
+
+    @Autowired
+    private PostService postService;
+
+    @Autowired
+    private ApplicationSettings applicationSettings;
 
     private static final String REPO_URL = "https://github.com/mintster/spring-data";
 
-//    @Before
-//    public void setup() throws IOException {
-//    }
-
+// region PagePreview Tests
 
     @Test
     public void throwIOExceptionWithBadUrl() throws IOException {
@@ -33,4 +38,6 @@ public class JsoupServiceTests extends JsoupContext {
     public void retrievePagePreviewDTOWithValidUrl() {
         assert (jsoupService.getPagePreview(REPO_URL) != null);
     }
+
+    // endregion
 }

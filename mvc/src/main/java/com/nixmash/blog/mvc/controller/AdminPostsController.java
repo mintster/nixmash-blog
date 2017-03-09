@@ -5,12 +5,10 @@ import com.nixmash.blog.jpa.dto.PostDTO;
 import com.nixmash.blog.jpa.dto.TagDTO;
 import com.nixmash.blog.jpa.enums.PostDisplayType;
 import com.nixmash.blog.jpa.enums.PostType;
+import com.nixmash.blog.jpa.enums.TwitterCardType;
 import com.nixmash.blog.jpa.exceptions.DuplicatePostNameException;
 import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
-import com.nixmash.blog.jpa.model.Category;
-import com.nixmash.blog.jpa.model.CurrentUser;
-import com.nixmash.blog.jpa.model.Post;
-import com.nixmash.blog.jpa.model.Tag;
+import com.nixmash.blog.jpa.model.*;
 import com.nixmash.blog.jpa.service.PostService;
 import com.nixmash.blog.jpa.utils.PostUtils;
 import com.nixmash.blog.jsoup.dto.PagePreviewDTO;
@@ -140,7 +138,7 @@ public class AdminPostsController {
         return mav;
     }
 
-    @RequestMapping(value = "/solr/reindex", params = "reindex",method = GET)
+    @RequestMapping(value = "/solr/reindex", params = "reindex", method = GET)
     public ModelAndView reindexSolrPosts() {
         ModelAndView mav = new ModelAndView();
         List<Post> posts = postService.getAllPublishedPosts();
@@ -255,6 +253,9 @@ public class AdminPostsController {
                 request.setAttribute("postTitle", postDTO.getPostTitle());
                 Post post = postService.add(postDTO);
 
+                postDTO.setPostId(post.getPostId());
+                post.setPostMeta(jsoupService.createPostMeta(postDTO));
+
                 // All links are saved as PUBLISHED so no _isPublished_ status check on new Links
                 postDocService.addToIndex(post);
 
@@ -276,8 +277,8 @@ public class AdminPostsController {
 
     @RequestMapping(value = "/add/post", method = POST)
     public String createPost(@Valid PostDTO postDTO, BindingResult result,
-                                 CurrentUser currentUser, RedirectAttributes attributes, Model model,
-                                 HttpServletRequest request) throws DuplicatePostNameException, PostNotFoundException {
+                             CurrentUser currentUser, RedirectAttributes attributes, Model model,
+                             HttpServletRequest request) throws DuplicatePostNameException, PostNotFoundException {
 
         String saveAction = request.getParameter("post");
 
@@ -300,6 +301,8 @@ public class AdminPostsController {
                 postDTO.setUserId(currentUser.getId());
                 postDTO.setPostContent(cleanContentTailHtml(postDTO.getPostContent()));
                 postDTO.setIsPublished(saveAction.equals(POST_PUBLISH));
+                postDTO.setTwitterCardType(postDTO.getTwitterCardType());
+                postDTO.setCategoryId(postDTO.getCategoryId());
 
                 request.setAttribute("postTitle", postDTO.getPostTitle());
                 Post saved;
@@ -312,6 +315,12 @@ public class AdminPostsController {
                 }
 
                 postDTO.setPostId(saved.getPostId());
+
+                if (sessionPost == null)
+                    saved.setPostMeta(jsoupService.createPostMeta(postDTO));
+                else
+                    saved.setPostMeta(jsoupService.updatePostMeta(postDTO));
+
                 WebUtils.setSessionAttribute(request, SESSION_ATTRIBUTE_NEWPOST, saved);
 
                 if (saveAction.equals(POST_PUBLISH)) {
@@ -330,6 +339,7 @@ public class AdminPostsController {
                     model.addAttribute("hasImageUploads", true);
                     model.addAttribute("canPreview", true);
                     model.addAttribute("postName", saved.getPostName());
+                    model.addAttribute("categories", postService.getAdminSelectionCategories());
                     return ADMIN_POST_ADD_VIEW;
                 }
             }
@@ -380,17 +390,21 @@ public class AdminPostsController {
             return ADMIN_POSTLINK_UPDATE_VIEW;
         } else {
             postDTO.setPostContent(cleanContentTailHtml(postDTO.getPostContent()));
+
             Post post = postService.update(postDTO);
 
             PostDoc postDoc = postDocService.getPostDocByPostId(post.getPostId());
             boolean postIsIndexed = postDoc != null;
             if (post.getIsPublished()) {
+
+                post.setPostMeta(jsoupService.updatePostMeta(postDTO));
+
                 if (postIsIndexed)
                     postDocService.updatePostDocument(post);
                 else
                     postDocService.addToIndex(post);
 
-                 fmService.createPostAtoZs();
+                fmService.createPostAtoZs();
             } else {
                 // remove postDocument from Solr Index if previously marked "Published", now marked "Draft"
                 if (postIsIndexed)
@@ -443,9 +457,9 @@ public class AdminPostsController {
 
     @RequestMapping(value = "/tags/new", method = RequestMethod.POST)
     public String addTag(@Valid TagDTO tagDTO,
-                          BindingResult result,
-                          SessionStatus status,
-                          RedirectAttributes attributes) {
+                         BindingResult result,
+                         SessionStatus status,
+                         RedirectAttributes attributes) {
         if (result.hasErrors()) {
             return ADMIN_TAGS_VIEW;
         } else {
@@ -462,7 +476,7 @@ public class AdminPostsController {
 
     @RequestMapping(value = "/tags/update", method = RequestMethod.POST)
     public String updateTag(@Valid @ModelAttribute(value = "tag") TagDTO tagDTO, BindingResult result,
-                             RedirectAttributes attributes) {
+                            RedirectAttributes attributes) {
         if (result.hasErrors()) {
             webUI.addFeedbackMessage(attributes, FEEDBACK_MESSAGE_TAG_ERROR);
             return "redirect:/admin/posts/tags";
@@ -475,7 +489,7 @@ public class AdminPostsController {
 
     @RequestMapping(value = "/tags/update", params = {"deleteTag"}, method = RequestMethod.POST)
     public String deleteTag(@Valid @ModelAttribute(value = "tag") TagDTO tagDTO, BindingResult result,
-                             RedirectAttributes attributes) {
+                            RedirectAttributes attributes) {
         if (result.hasErrors()) {
             webUI.addFeedbackMessage(attributes, FEEDBACK_MESSAGE_TAG_ERROR);
             return "redirect:/admin/posts/tags";
@@ -506,9 +520,9 @@ public class AdminPostsController {
 
     @RequestMapping(value = "/categories/new", method = RequestMethod.POST)
     public String addCategory(@Valid CategoryDTO categoryDTO,
-                          BindingResult result,
-                          SessionStatus status,
-                          RedirectAttributes attributes) {
+                              BindingResult result,
+                              SessionStatus status,
+                              RedirectAttributes attributes) {
         if (result.hasErrors()) {
             return ADMIN_CATEGORIES_VIEW;
         } else {
@@ -525,7 +539,7 @@ public class AdminPostsController {
 
     @RequestMapping(value = "/categories/update", method = RequestMethod.POST)
     public String updateCategory(@Valid @ModelAttribute(value = "category") CategoryDTO categoryDTO, BindingResult result,
-                             RedirectAttributes attributes) {
+                                 RedirectAttributes attributes) {
         if (categoryDTO.getCategoryId().equals(1L)) {
             webUI.addFeedbackMessage(attributes, UNCATEGORIZED_CANNOT_BE_UPDATED);
             return "redirect:/admin/posts/categories";
@@ -563,16 +577,17 @@ public class AdminPostsController {
 
     // endregion
 
-
     // region postDTO Utilities
 
     private PostDTO getUpdatedPostDTO(Post post) {
+
         return PostDTO.getUpdateFields(post.getPostId(),
                 post.getPostTitle(),
                 post.getPostContent(),
                 post.getIsPublished(),
                 post.getDisplayType(),
-                post.getCategory().getCategoryId())
+                post.getCategory().getCategoryId(),
+                post.getPostMeta().getTwitterCardType())
                 .tags(PostUtils.tagsToTagDTOs(post.getTags()))
                 .build();
     }
@@ -602,7 +617,7 @@ public class AdminPostsController {
                 postDescriptionHtml,
                 PostType.LINK,
                 null,
-                1L)
+                1L, TwitterCardType.SUMMARY)
                 .postImage(tmpDTO.getPostImage())
                 .hasImages(tmpDTO.getHasImages())
                 .build();

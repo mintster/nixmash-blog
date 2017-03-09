@@ -224,8 +224,24 @@ CREATE TABLE post_category_ids
   CONSTRAINT fk_categories_post_id FOREIGN KEY (post_id) REFERENCES posts (post_id),
   CONSTRAINT fk_categories_category_id FOREIGN KEY (category_id) REFERENCES categories (category_id)
 );
-CREATE INDEX fk_categories_category_id ON post_category_ids (category_id);
-CREATE INDEX fk_categories_post_id ON post_category_ids (post_id);
+CREATE INDEX categories_category_id_uindex ON post_category_ids (category_id);
+CREATE INDEX categories_post_id_uindex ON post_category_ids (post_id);
+
+-- ----------------------------
+-- Table structure for post_meta
+-- ----------------------------
+
+CREATE TABLE post_meta
+(
+  post_id BIGINT(20) PRIMARY KEY NOT NULL,
+  twitter_card VARCHAR(25) NOT NULL,
+  twitter_creator VARCHAR(50) NULL,
+  twitter_image VARCHAR(200) NULL,
+  twitter_description VARCHAR(500) NULL,
+  CONSTRAINT post_meta_posts_post_id_fk FOREIGN KEY (post_id) REFERENCES posts (post_id)
+);
+CREATE UNIQUE INDEX post_metadata_post_id_uindex ON post_meta (post_id);
+
 
 -- ----------------------------
 -- Table structure for user_likes

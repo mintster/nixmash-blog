@@ -35,6 +35,10 @@ public class JsoupHtmlParser<T> {
 
                 // selections and meta keys
 
+                if (f.isAnnotationPresent(DocText.class)) {
+                    value = convertToText();
+                }
+
                 if (f.isAnnotationPresent(Selector.class)) {
                     value = parseSelector(f);
                 }
@@ -240,6 +244,10 @@ public class JsoupHtmlParser<T> {
             return element.attr("content");
 
         return null;
+    }
+
+    private String convertToText() {
+        return doc.text();
     }
 
     private String parseSelector(Field f) {

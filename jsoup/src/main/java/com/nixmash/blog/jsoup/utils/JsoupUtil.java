@@ -1,5 +1,7 @@
 package com.nixmash.blog.jsoup.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -32,6 +34,25 @@ public class JsoupUtil {
         return baseUri;
     }
 
+    public static String removeBaseUri(String url) throws MalformedURLException {
+        String path = null;
+        if (url.startsWith("http")) {
+            try {
+                URL imageURL = new URL(url);
+                path = imageURL.getPath();
+            } catch (MalformedURLException ignored) {
+                path = null;
+            }
+        } else {
+            path = url;
+        }
+        return path;
+    }
+
+    public static String getTwitterDescription(String text) {
+        return StringUtils.abbreviate(text, 200);
+    }
+
     /**
      * Create a new absolute URL, from a provided existing absolute URL and a relative URL component.
      *
@@ -39,6 +60,7 @@ public class JsoupUtil {
      * @param relUrl  the relative URL to resolve. (If it's already absolute, it will be returned)
      * @return an absolute URL if one was able to be generated, or the empty string if not
      */
+
     public static String resolve(final String baseUrl, final String relUrl) {
         URL base;
         try {

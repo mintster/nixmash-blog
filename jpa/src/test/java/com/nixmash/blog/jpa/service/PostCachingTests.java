@@ -1,9 +1,7 @@
 package com.nixmash.blog.jpa.service;
 
 import com.nixmash.blog.jpa.SpringDataTests;
-import com.nixmash.blog.jpa.config.ApplicationConfig;
 import com.nixmash.blog.jpa.dto.PostDTO;
-import com.nixmash.blog.jpa.enums.DataConfigProfile;
 import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.utils.PostTestUtils;
 import com.nixmash.blog.jpa.utils.PostUtils;
@@ -12,11 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 

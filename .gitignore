@@ -28,7 +28,7 @@ out
 bin
 .externalToolBuilders
 
-
+/dev
 /.nb-gradle/private/
 testdb.*
 *.log

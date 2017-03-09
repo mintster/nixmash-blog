@@ -143,7 +143,7 @@ public class UserController {
         userDTO.setSignInProvider(SignInProvider.SITE);
         userDTO.setAuthorities(Lists.newArrayList(new Authority("ROLE_USER")));
 
-        // todo: test for SiteOptions.AuthenticationType before setEnabled(false)
+        // todo: Add SiteOptions.AuthenticationType for optional setEnabled(false)
         userDTO.setEnabled(false);
 
         User user = userService.create(userDTO);

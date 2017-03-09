@@ -1,0 +1,29 @@
+<p>We&#39;ve had separate datasources in <a href="https://github.com/mintster/spring-data">our NixMash Spring project</a> for a long time now, a MySQL Datasource for development and an H2 Datasource for Tests. I blogged a bit about that configuration <a href="http://nixmash.com/java/a-spring-jpa-configuration-for-multiple-profiles/">in this NixMash post</a> and you can find the source <a href="https://github.com/mintster/spring-data">on GitHub</a>.</p>
+    <p>What we&#39;re talking about today is not just two datasources which conform to two separate Spring Profiles (<em>&#8220;mysql&#8221;</em> and <em>&#8220;h2&#8221;</em> in our case), but two datasources for development and two <em>different</em> datasources for testing. Four datasources, four Entity Managers, four Transaction Managers.</p>
+    <p>It will help if I quickly describe the new project for which this Spring JPA configuration was designed. We&#39;re building a new app (perhaps complete by the time you read this) which migrates WordPress Blog data to NixMash Spring. It&#39;s <a href="https://github.com/mintster/wp-nixmashspring-migrator">on GitHub here</a>, the <strong>WP to NixMash Spring Migrator</strong>. Our four datasources then, are:</p>
+    <p><strong>For Development</strong></p>
+    <ol>
+        <li>The WordPress MySQL Database from where we&#39;re exporting the data</li>
+        <li>The NixMash Spring MySQL Database destination</li>
+    </ol>
+    <p><strong>For Testing</strong></p>
+    <ol>
+        <li>A WordPress MySQL Database to retrieve the test data</li>
+        <li>An H2 Database we&#39;ll create and drop on each Test Launch</li>
+    </ol>
+    <p>Our <samp>JpaConfig</samp> is where the action is, of course. We have a separate <samp>JpaTestConfig</samp> class in our test classes. You&#39;ll see that the <samp>JpaConfig</samp> class has a <samp>@Profile(&#8220;mysql&#8221;)</samp> annotation, so it&#39;s as easy as that to determine the JPA Configuration file at runtime. The folded <samp>JpaConfig</samp> class below lists the areas we&#39;ll touch on in this post: <em>Datasources, EntityManagerFactories, PlatformTransactionManagers, </em>and two static <em>JpaRepository Configuration classes</em>.</p>
+    <h3>Persistence Units</h3>
+    <p>Persistence Units play an important part when using multiple datasources, entity and transaction managers. They are defined here, where you see we&#39;re using <strong><em>WP</em></strong> for the WordPress MySQL database and <strong><em>LOCAL</em></strong> for the destination database.</p>
+    <h3>Data Sources</h3>
+    <p>Even with multiple datasources, leveraging Spring&#39;s <samp>DataSourceBuilder</samp> and supported property names in <samp>application.properties</samp> requires little code. It&#39;s important to note the <samp>@Primary</samp> designation on the default datasource, which is our <strong><em>LOCAL</em></strong> MySQL destination database.</p>
+    <p>I mentioned the supported property names in <samp>application.properties</samp>. Here are the above properties with <samp>@ConfigurationProperties</samp> in play.</p>
+    <h3>Entity Manager Factories</h3>
+    <p>Our Entity Managers are defined next. We&#39;re using the <samp>@Primary</samp> designation again, defining the Persistence Unit and Datasource for each, and are separating the two by package location.</p>
+    <h3>Transaction Managers</h3>
+    <p>We&#39;re going to setup a standard <samp>JpaTransactionManager</samp> Bean for our <samp>@Primary</samp> Transaction Manager, but you&#39;ll notice we use the <samp>PlatformTransactionManager</samp> Interface for our secondary WP Transaction Manager.</p>
+    <h3>JPA Repository Configuration Classes</h3>
+    <p>We&#39;re adding two inner static Configuration Classes to the mix where we designate the Entity and Transaction Managers and Base Packages for the Repositories. You&#39;ll notice we don&#39;t have to include the <samp>entityManagerFactoryRef</samp> and <samp>transactionManagerRefs</samp> to our default Repository since they will use the default object names of <em>&#8220;entityManagerFactory&#8221;</em> and <em>&#8220;transactionManager.&#8221;</em> IntelliJ is Spring-savvy enough to point that out to you, which is one pretty darn smart IDE.</p>
+    <h3>Usage Notes</h3>
+    <p>Separation of the Persistence Unit objects is a good idea. That separation is shown in the application package structure below. <em>&#8220;migrator.db.local.*&#8221;</em> and <em>&#8220;migrator.db.wp.*&#8221;</em>.</p>
+    <p>Using the Persistence Unit Name is shown below on a <strong><em>WP</em></strong> Service class. With the class marked with <samp>@Transactional</samp> you can apply Transactions to the methods or to an EntityManager as you see here.</p>
+    <p>Those are the main points of a dual-environment, multi-datasource configuration. Grab the source <a href="https://github.com/mintster/wp-nixmashspring-migrator">on GitHub</a> for the details.</p>

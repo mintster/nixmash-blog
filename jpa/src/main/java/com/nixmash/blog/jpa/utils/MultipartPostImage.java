@@ -2,7 +2,7 @@ package com.nixmash.blog.jpa.utils;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class PostImage {
+public class MultipartPostImage {
 
     private MultipartFile file;
 
