@@ -274,5 +274,9 @@ INSERT INTO github_stats (forks, stars, subscribers, followers, stat_date) VALUE
 INSERT INTO github_stats (forks, stars, subscribers, followers, stat_date) VALUES (21, 102, 27, 18, '2016-12-02');
 INSERT INTO github_stats (forks, stars, subscribers, followers, stat_date) VALUES (22, 105, 31, 19, '2016-12-03');
 
-insert into post_meta select post_id, 'SUMMARY', '@daveburkevt', '/x/pics/twitter120x120.jpg', 'na'
+insert into post_meta select post_id, 'SUMMARY', '@awesomeblogger', '/x/pics/twitter120x120.jpg', 'na'
                       from posts;
+
+update post_meta set twitter_card = 'SUMMARY_LARGE_IMAGE' where post_id = 10;
+
+update post_meta set twitter_card = 'NONE' where post_id = 9;

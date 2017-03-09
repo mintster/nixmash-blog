@@ -11,9 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 
 import static com.nixmash.blog.mvc.controller.PermaPostsController.POSTS_PERMALINK_VIEW;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -80,6 +84,38 @@ public class PermaPostsControllerTests extends AbstractContext {
         mockMvc.perform(get("/post/" + badName))
                 .andExpect(status().isOk())
                 .andExpect(view().name("errors/custom"));
+    }
+
+    @Test
+    public void viewLargeTwitterCardMetaData() throws Exception {
+        // H2 PostId 10L has SUMMARY_LARGE_IMAGE as TwitterCardType
+        MvcResult mvcResult = this.mockMvc.perform(get("/post/solr-rama"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertThat(mvcResult.getResponse().getContentAsString(),
+                containsString("<meta name=\"twitter:card\" content=\"summary_large_image\" />"));
+    }
+
+    @Test
+    public void viewSummarTwitterCardMetaData() throws Exception {
+        // H2 PostId 1L has SUMMARY as TwitterCardType
+        MvcResult mvcResult = this.mockMvc.perform(get("/post/javascript-bootstrap"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertThat(mvcResult.getResponse().getContentAsString(),
+                containsString("<meta name=\"twitter:card\" content=\"summary\" />"));
+    }
+
+    @Test
+    public void noTwitterCardMetaData() throws Exception {
+        // H2 PostId 9L has NONE as TwitterCardType
+        MvcResult mvcResult = this.mockMvc.perform(get("/post/1000-ways-to-title-something"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertThat(mvcResult.getResponse().getContentAsString(),not(containsString("twitter:card")));
     }
 
 }

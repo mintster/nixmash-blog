@@ -932,6 +932,19 @@ h1.post-title {
     word-wrap: break-word;
 }
 
+#post-body h3 {
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+#post-body code {
+    width: 100%;
+    display: inline-block;
+    padding: 13px;
+    border: 1px solid #ccc;
+    font-size: 75%;
+}
+
 #post-footer .footer-links {
     display: inline-block;
     margin-top: 5px;

@@ -2,6 +2,7 @@ package com.nixmash.blog.mail.service;
 
 import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.jpa.model.Post;
+import com.nixmash.blog.jpa.model.PostMeta;
 import com.nixmash.blog.jpa.model.User;
 import com.nixmash.blog.jpa.service.PostService;
 import com.nixmash.blog.mail.components.MailUI;
@@ -67,6 +68,26 @@ public class FmServiceImpl implements FmService {
             result = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
         } catch (IOException | TemplateException e) {
             logger.error("Problem merging test template : " + e.getMessage());
+        }
+        return result;
+    }
+
+    // endregion
+
+
+    // region PostMeta Tags
+
+    @Override
+    public  String getTwitterTemplate(PostMeta postMeta) {
+        String result = null;
+        Map<String, Object> model = new Hashtable<>();
+
+        model.put("postMeta", postMeta);
+        model.put("twitterCardType", postMeta.getTwitterCardType().name().toLowerCase());
+        try {
+            result =  FreeMarkerTemplateUtils.processTemplateIntoString(fm.getTemplate("posts/twitter.ftl"), model);
+        } catch (IOException | TemplateException e) {
+            logger.error("Problem merging Twitter MetaTag template : " + e.getMessage());
         }
         return result;
     }

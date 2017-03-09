@@ -213,17 +213,19 @@ CREATE TABLE categories
   PRIMARY KEY (category_id)
 );
 
+DROP TABLE IF EXISTS post_category_ids;
 CREATE TABLE post_category_ids
 (
-  post_category_id BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  post_category_id BIGINT(20) PRIMARY KEY NOT NULL,
   post_id BIGINT(20) NOT NULL,
   category_id BIGINT(20) NOT NULL,
   CONSTRAINT fk_categories_post_id FOREIGN KEY (post_id) REFERENCES posts (post_id),
   CONSTRAINT fk_categories_category_id FOREIGN KEY (category_id) REFERENCES categories (category_id)
 );
-CREATE INDEX fk_categories_category_id ON post_category_ids (category_id);
-CREATE INDEX fk_categories_post_id ON post_category_ids (post_id);
+CREATE INDEX categories_category_id_uindex ON post_category_ids (category_id);
+CREATE INDEX categories_post_id_uindex ON post_category_ids (post_id);
 
+DROP TABLE IF EXISTS post_meta;
 CREATE TABLE post_meta
 (
   post_id BIGINT(20) PRIMARY KEY NOT NULL,

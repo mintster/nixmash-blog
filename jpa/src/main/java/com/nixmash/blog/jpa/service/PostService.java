@@ -29,6 +29,8 @@ public interface PostService {
 
     PostMeta getPostMetaById(Long postId);
 
+    PostMeta buildTwitterMetaTags(Post post);
+
     Page<Post> getPosts(Integer pageNumber, Integer pageSize);
 
     @Transactional

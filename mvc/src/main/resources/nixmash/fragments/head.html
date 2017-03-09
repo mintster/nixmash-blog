@@ -19,7 +19,9 @@
 
     <script th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
 
+    <!--/*@thymesVar id="twitterMetatags" type="java.lang.String"*/-->
     <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
+
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
@@ -38,6 +40,8 @@
 
         /*]]>*/
     </script>
+
+    <div th:if="${twitterMetatags}" th:utext="${twitterMetatags}" th:remove="tag"></div>
 
     <div th:if="${siteOptions}" th:remove="tag">
         <div th:if="${displayGoogleAnalytics == true}" th:remove="tag">

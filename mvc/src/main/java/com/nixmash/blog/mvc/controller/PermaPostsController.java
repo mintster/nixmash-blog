@@ -5,8 +5,10 @@ import com.nixmash.blog.jpa.exceptions.PostCategoryNotSupportedException;
 import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
 import com.nixmash.blog.jpa.model.CurrentUser;
 import com.nixmash.blog.jpa.model.Post;
+import com.nixmash.blog.jpa.model.PostMeta;
 import com.nixmash.blog.jpa.service.PostService;
 import com.nixmash.blog.jpa.utils.PostUtils;
+import com.nixmash.blog.mail.service.FmService;
 import com.nixmash.blog.mvc.components.WebUI;
 import com.nixmash.blog.solr.service.PostDocService;
 import org.apache.commons.lang3.StringUtils;
@@ -35,12 +37,14 @@ public class PermaPostsController {
 
     private final PostService postService;
     private final PostDocService postDocService;
+    private final FmService fmService;
     private final ApplicationSettings applicationSettings;
     private final WebUI webUI;
 
-    public PermaPostsController(PostService postService, PostDocService postDocService, ApplicationSettings applicationSettings, WebUI webUI) {
+    public PermaPostsController(PostService postService, PostDocService postDocService, FmService fmService, ApplicationSettings applicationSettings, WebUI webUI) {
         this.postService = postService;
         this.postDocService = postDocService;
+        this.fmService = fmService;
         this.applicationSettings = applicationSettings;
         this.webUI = webUI;
     }
@@ -83,6 +87,11 @@ public class PermaPostsController {
                 model.addAttribute("moreLikeThisHeading",
                         webUI.getMessage(MORELIKETHIS_HEADING));
             }
+        }
+
+        PostMeta postMeta = postService.buildTwitterMetaTags(post);
+        if (postMeta != null) {
+            model.addAttribute("twitterMetatags", fmService.getTwitterTemplate(postMeta));
         }
 
         model.addAttribute("post", post);

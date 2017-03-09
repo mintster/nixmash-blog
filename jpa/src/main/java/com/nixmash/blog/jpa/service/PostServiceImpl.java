@@ -231,6 +231,27 @@ public class PostServiceImpl implements PostService {
         return postMetaRepository.findByPostId(postId);
     }
 
+    @Override
+    public PostMeta buildTwitterMetaTags(Post post) {
+        PostMeta postMeta = post.getPostMeta();
+        if (!postMeta.getTwitterCardType().equals(TwitterCardType.NONE)) {
+            String twitterSite = applicationSettings.getTwitterSite();
+            String twitterUrl = String.format("%s/post/%s", applicationSettings.getBaseUrl(), post.getPostName());
+            String twitterImage = String.format("%s%s", applicationSettings.getBaseUrl(), postMeta.getTwitterImage());
+            return PostMeta.getBuilder(
+                    postMeta.getTwitterCardType(),
+                    post.getPostTitle(),
+                    twitterSite,
+                    postMeta.getTwitterCreator())
+                    .twitterDescription(postMeta.getTwitterDescription())
+                    .twitterImage(twitterImage)
+                    .twitterUrl(twitterUrl)
+                    .build();
+        }
+                else
+                    return null;
+    }
+
     // endregion
 
     //region Get Posts

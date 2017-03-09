@@ -7,6 +7,7 @@ import com.nixmash.blog.jpa.enums.PostDisplayType;
 import com.nixmash.blog.jpa.enums.PostType;
 import com.nixmash.blog.jpa.enums.TwitterCardType;
 import com.nixmash.blog.jpa.model.Category;
+import com.nixmash.blog.jpa.model.PostMeta;
 import com.nixmash.blog.jpa.model.Tag;
 
 import java.util.LinkedHashSet;
@@ -77,5 +78,15 @@ public class PostTestUtils {
 
     private static String fieldit(String field, String appender) {
         return String.format("%s-%s", field, appender);
+    }
+
+    public static PostMeta createPostMeta() {
+        return PostMeta.getBuilder(TwitterCardType.SUMMARY,
+                "Test Title", "@testsite", "@testblogger")
+                .twitterDescription("This is a test card")
+                .postId(1L)
+                .twitterImage("http://testsite.com/x/test/myimage.png")
+                .twitterUrl("http://testsite.com/post/test-post")
+                .build();
     }
 }
