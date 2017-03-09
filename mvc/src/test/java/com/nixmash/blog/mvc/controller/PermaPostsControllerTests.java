@@ -87,7 +87,7 @@ public class PermaPostsControllerTests extends AbstractContext {
     }
 
     @Test
-    public void viewLargeTwitterCardMetaData() throws Exception {
+    public void summaryLargeImageTwitterCardMetaDataExists() throws Exception {
         // H2 PostId 10L has SUMMARY_LARGE_IMAGE as TwitterCardType
         MvcResult mvcResult = this.mockMvc.perform(get("/post/solr-rama"))
                 .andExpect(status().isOk())
@@ -98,7 +98,7 @@ public class PermaPostsControllerTests extends AbstractContext {
     }
 
     @Test
-    public void viewSummarTwitterCardMetaData() throws Exception {
+    public void summaryTwitterCardMetaDataExists() throws Exception {
         // H2 PostId 1L has SUMMARY as TwitterCardType
         MvcResult mvcResult = this.mockMvc.perform(get("/post/javascript-bootstrap"))
                 .andExpect(status().isOk())
@@ -109,7 +109,7 @@ public class PermaPostsControllerTests extends AbstractContext {
     }
 
     @Test
-    public void noTwitterCardMetaData() throws Exception {
+    public void noMetaDataForTwitterCardTypeNone() throws Exception {
         // H2 PostId 9L has NONE as TwitterCardType
         MvcResult mvcResult = this.mockMvc.perform(get("/post/1000-ways-to-title-something"))
                 .andExpect(status().isOk())

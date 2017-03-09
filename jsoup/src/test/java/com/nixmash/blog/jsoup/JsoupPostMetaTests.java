@@ -59,7 +59,7 @@ public class JsoupPostMetaTests extends JsoupContext {
     }
 
     @Test
-    public void extractFirstImageFromContent() throws IOException {
+    public void firstContentImageExtracted() throws IOException {
 
         // First Src URL in  /html/testPostBody.html = http://nixmash.com/x/blog/2017/dd0120a.png
 
@@ -71,7 +71,7 @@ public class JsoupPostMetaTests extends JsoupContext {
     }
 
     @Test
-    public void processContentWithNoImage() throws IOException {
+    public void contentWithNoImageHasDefaultImage() throws IOException {
         List<JsoupImage> images = jsoupPostDTONoImages.getImagesInContent();
         assertFalse(jsoupPostDTONoImages.hasImages());
         assertThat(images.size()).isEqualTo(0);
@@ -79,7 +79,7 @@ public class JsoupPostMetaTests extends JsoupContext {
     }
 
     @Test
-    public void stripBaseUrlFromImageUrl() throws MalformedURLException {
+    public void baseUrlStrippedFromImageUrl() throws MalformedURLException {
         String imageUrl;
 
         // Full Url returns correct path
@@ -93,7 +93,7 @@ public class JsoupPostMetaTests extends JsoupContext {
     }
 
     @Test
-    public void getPostDescriptionTest() {
+    public void postsLessThan200CharsContainTwitterDescriptions() {
         assertNotNull(jsoupPostDTOWithImages.getBodyText());
         assertNotNull(jsoupPostDTOShortBody.getBodyText());
     }

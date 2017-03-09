@@ -83,9 +83,11 @@ public class FmServiceImpl implements FmService {
         Map<String, Object> model = new Hashtable<>();
 
         model.put("postMeta", postMeta);
-        model.put("twitterCardType", postMeta.getTwitterCardType().name().toLowerCase());
+        String twitterCard = postMeta.getTwitterCardType().name().toLowerCase();
+        model.put("twitterCardType", twitterCard);
         try {
-            result =  FreeMarkerTemplateUtils.processTemplateIntoString(fm.getTemplate("posts/twitter.ftl"), model);
+            result =  FreeMarkerTemplateUtils
+                    .processTemplateIntoString(fm.getTemplate("posts/twitter.ftl"), model);
         } catch (IOException | TemplateException e) {
             logger.error("Problem merging Twitter MetaTag template : " + e.getMessage());
         }

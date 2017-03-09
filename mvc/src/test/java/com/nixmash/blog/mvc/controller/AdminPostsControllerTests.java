@@ -363,16 +363,20 @@ public class AdminPostsControllerTests  extends AbstractContext{
 
     @Test
     public void newPostContainsTwitterCardInfo() throws Exception {
-        mvc.perform(addTwitterCardPostRequest("bigtwitter", TwitterCardType.SUMMARY_LARGE_IMAGE, PostDisplayType.POST));
+
+        mvc.perform(addTwitterCardPostRequest("bigtwitter",
+                TwitterCardType.SUMMARY_LARGE_IMAGE, PostDisplayType.POST));
         Post post = postService.getPost("my-title-bigtwitter");
-        assertEquals(post.getPostMeta().getTwitterCardType(), TwitterCardType.SUMMARY_LARGE_IMAGE);
+
+        assertEquals(post.getPostMeta().getTwitterCardType(),
+                TwitterCardType.SUMMARY_LARGE_IMAGE);
 
         PostMeta postMeta = postService.getPostMetaById(post.getPostId());
         assertNotNull(postMeta);
     }
 
     @Test
-    public void newPostWithTwitterCardType_None_Saved() throws Exception {
+    public void newPostWithTwitterCardTypeNoneIsSaved() throws Exception {
         mvc.perform(addTwitterCardPostRequest("notwitter", TwitterCardType.NONE, PostDisplayType.POST));
         Post post = postService.getPost("my-title-notwitter");
         assertEquals(post.getPostMeta().getTwitterCardType(), TwitterCardType.NONE);
@@ -381,9 +385,8 @@ public class AdminPostsControllerTests  extends AbstractContext{
         assertNotNull(postMeta);
     }
 
-
     @Test
-    public void multiPhotoPostCardOkay() throws Exception {
+    public void multiPhotoPostTwitterCardIsSaved() throws Exception {
         mvc.perform(addTwitterCardPostRequest("multiphoto twitter post", TwitterCardType.SUMMARY, PostDisplayType.MULTIPHOTO_POST));
         Post post = postService.getPost("my-title-multiphoto-twitter-post");
         assertEquals(post.getPostMeta().getTwitterCardType(), TwitterCardType.SUMMARY);

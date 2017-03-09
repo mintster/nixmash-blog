@@ -114,7 +114,8 @@ public class Post implements Serializable {
     public Category category;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "post_id", referencedColumnName = "post_id", insertable = false, updatable = false)
+    @JoinColumn(name = "post_id",
+            referencedColumnName = "post_id", insertable = false, updatable = false)
     public PostMeta postMeta;
 
     @Transient

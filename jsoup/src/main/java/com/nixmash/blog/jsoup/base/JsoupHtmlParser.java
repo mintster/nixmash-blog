@@ -39,7 +39,6 @@ public class JsoupHtmlParser<T> {
                     value = convertToText();
                 }
 
-
                 if (f.isAnnotationPresent(Selector.class)) {
                     value = parseSelector(f);
                 }

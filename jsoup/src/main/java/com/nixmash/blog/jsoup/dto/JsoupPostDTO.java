@@ -12,6 +12,8 @@ import java.util.List;
  * Created by daveburke on 5/19/16.
  */
 @SuppressWarnings("WeakerAccess")
+
+
 public class JsoupPostDTO implements Serializable {
 
     private static final long serialVersionUID = -2690151588053584076L;
@@ -21,7 +23,6 @@ public class JsoupPostDTO implements Serializable {
 
     @ImageSelector
     public List<JsoupImage> imagesInContent;
-
     public boolean hasImages() {
         { return  (!this.imagesInContent.isEmpty());}
     }

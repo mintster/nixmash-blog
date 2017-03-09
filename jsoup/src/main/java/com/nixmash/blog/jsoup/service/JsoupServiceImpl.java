@@ -128,7 +128,9 @@ public class JsoupServiceImpl implements JsoupService {
             String twitterImage = jsoupPostDTO.getTwitterImagePath();
             String twitterDescription = jsoupPostDTO.getTwitterDescription();
 
-            return PostMeta.getUpdated(postDTO.getTwitterCardType(), twitterImage, twitterDescription)
+            return PostMeta.getUpdated(postDTO.getTwitterCardType(),
+                    twitterImage,
+                    twitterDescription)
                     .twitterCreator(twitterCreator)
                     .postId(postDTO.getPostId())
                     .build();

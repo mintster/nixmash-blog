@@ -318,6 +318,8 @@ public class AdminPostsController {
 
                 if (sessionPost == null)
                     saved.setPostMeta(jsoupService.createPostMeta(postDTO));
+                else
+                    saved.setPostMeta(jsoupService.updatePostMeta(postDTO));
 
                 WebUtils.setSessionAttribute(request, SESSION_ATTRIBUTE_NEWPOST, saved);
 
@@ -574,7 +576,6 @@ public class AdminPostsController {
 
 
     // endregion
-
 
     // region postDTO Utilities
 
