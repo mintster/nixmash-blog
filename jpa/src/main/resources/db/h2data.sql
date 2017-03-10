@@ -177,7 +177,7 @@ VALUES (4, 3, 'Content Negotiation using Spring MVC', 'content-negotiation-using
 INSERT INTO posts (post_id, user_id, post_title, post_name, post_link, post_date, post_modified, post_type, display_type, is_published, post_content, post_source, post_image, click_count, likes_count, value_rating, version)
 VALUES (5, 3, 'Variations on JSON Key-Value Pairs in Spring MVC', 'variations-on-json-key-value-pairs-in-spring-mvc',
            'http://nixmash.com/java/variations-on-json-key-value-pairs-in-spring-mvc/', '2016-06-02 15:34:09',
-           '2016-06-02 15:34:09', 'LINK', 'NIXMASH_POST', 1,
+           '2016-06-02 15:34:09', 'LINK', 'LINK_SUMMARY', 1,
            'The topic of this post is pretty lightweight. A bit of a lark, really...', 'nixmash.com',
         'http://nixmash.com/x/blog/2016/jsonpair0528c.png', 0, 0, 0, 0);
 INSERT INTO posts (post_id, user_id, post_title, post_name, post_link, post_date, post_modified, post_type, display_type, is_published, post_content, post_source, post_image, click_count, likes_count, value_rating, version)
@@ -197,6 +197,15 @@ INSERT INTO posts (post_id, user_id, post_title, post_name, post_link, post_date
 VALUES (10, 3, 'Solr Rama', 'solr-rama', NULL, '2016-09-30 17:40:18',
             '2016-09-30 17:40:18', 'POST', 'POST', 1,
             '<p><strong>This is a post</strong> for <em>Solr Testing</em></p>', 'NA', NULL, 0, 0, 0, 0);
+INSERT INTO posts (post_id, user_id, post_title, post_name, post_link, post_date, post_modified, post_type, display_type, is_published, post_content, post_source, post_image, click_count, likes_count, value_rating, version)
+VALUES (11, 3, 'SinglePhoto Post', 'singlephoto-post', NULL, '2016-09-30 17:40:18',
+            '2016-09-30 17:40:18', 'POST', 'SINGLEPHOTO_POST', 1,
+            '<p><strong>This is a singlephoto post</strong> for <em>RSS Testing</em></p>', 'NA', NULL, 0, 0, 0, 0);
+INSERT INTO posts (post_id, user_id, post_title, post_name, post_link, post_date, post_modified, post_type, display_type, is_published, post_content, post_source, post_image, click_count, likes_count, value_rating, version)
+VALUES (12, 3, 'MultiPhoto Post', 'multiphoto-post', NULL, '2016-09-30 17:40:18',
+            '2016-09-30 17:40:18', 'POST', 'MULTIPHOTO_POST', 1,
+            '<p><strong>This is a multiphoto post</strong> for <em>RSS Testing</em></p>', 'NA', NULL, 0, 0, 0, 0);
+
 
 INSERT INTO tags (tag_id, tag_value) VALUES (1, 'h2tagone');
 INSERT INTO tags (tag_id, tag_value) VALUES (2, 'h2tagtwo');
@@ -222,6 +231,8 @@ INSERT INTO post_category_ids (post_id, category_id) VALUES (7, 2);
 INSERT INTO post_category_ids (post_id, category_id) VALUES (8, 6);
 INSERT INTO post_category_ids (post_id, category_id) VALUES (9, 3);
 INSERT INTO post_category_ids (post_id, category_id) VALUES (10, 2);
+INSERT INTO post_category_ids (post_id, category_id) VALUES (11, 2);
+INSERT INTO post_category_ids (post_id, category_id) VALUES (12, 2);
 
 INSERT INTO post_tag_ids (post_id, tag_id) VALUES (1, 1);
 INSERT INTO post_tag_ids (post_id, tag_id) VALUES (1, 2);
@@ -236,6 +247,8 @@ INSERT INTO post_tag_ids (post_id, tag_id) VALUES (6, 2);
 INSERT INTO post_tag_ids (post_id, tag_id) VALUES (10, 1);
 INSERT INTO post_tag_ids (post_id, tag_id) VALUES (10, 2);
 INSERT INTO post_tag_ids (post_id, tag_id) VALUES (10, 3);
+INSERT INTO post_tag_ids (post_id, tag_id) VALUES (11, 3);
+INSERT INTO post_tag_ids (post_id, tag_id) VALUES (12, 3);
 
 INSERT INTO user_likes (like_id, user_id, item_id, content_type_id) VALUES (1, 3, 1, 1);
 INSERT INTO user_likes (like_id, user_id, item_id, content_type_id) VALUES (2, 3, 2, 1);
@@ -259,6 +272,9 @@ VALUES
   (3, 2, 'WP_000931.jpg', '000e045d-781b-4979-9a00-37692f8d33cf-thumbnail.png',
    '000e045d-781b-4979-9a00-37692f8d33cf.jpg',
    'image/jpeg', 908532, 51092, '2016-08-03 14:58:45');
+INSERT INTO post_images (image_id, post_id, image_name, thumbnail_filename, filename, content_type, size, thumbnail_size, datetime_created) VALUES (4, 12, 'cats0306b.png', '48e0c504-859a-461d-a400-b7f137149e0c-thumbnail.png', '48e0c504-859a-461d-a400-b7f137149e0c.png', 'image/png', 83704, 12534, '2017-03-08 14:15:51');
+INSERT INTO post_images (image_id, post_id, image_name, thumbnail_filename, filename, content_type, size, thumbnail_size, datetime_created) VALUES (5, 12, 'cats0306a.png', 'a51d98b9-db84-43ed-b41d-1e3a2a3c561f-thumbnail.png', 'a51d98b9-db84-43ed-b41d-1e3a2a3c561f.png', 'image/png', 70978, 9372, '2017-03-08 14:15:51');
+INSERT INTO post_images (image_id, post_id, image_name, thumbnail_filename, filename, content_type, size, thumbnail_size, datetime_created) VALUES (6, 11, 'shrimp.jpg', '42ac213f-e813-43d6-884e-c083f62b4f59-thumbnail.png', '42ac213f-e813-43d6-884e-c083f62b4f59.jpg', 'image/jpeg', 252122, 38418, '2017-03-08 15:06:07');
 
 INSERT INTO flashcard_categories (category_id, category) VALUES (1, 'category one');
 INSERT INTO flashcard_categories (category_id, category) VALUES (2, 'category two');

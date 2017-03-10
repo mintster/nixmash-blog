@@ -65,6 +65,8 @@ public class FmServiceTests extends MailContext {
 
     // endregion
 
+    // region Twitter Meta Tags
+
     @Test
     public void twitterTemplate() {
         String result = fmService.getTwitterTemplate(PostTestUtils.createPostMeta());
@@ -98,8 +100,33 @@ public class FmServiceTests extends MailContext {
         assertNull(postMeta);
     }
 
-    // region PostMeta tags
+    // endregion
 
+    // region Rss Content Tests
+
+    @Test
+    public void rssPostDisplayTypeContentTest() throws  PostNotFoundException {
+        // H2 POST 10L 'solr-rama' normal POST PostDisplayType
+        Post post = postService.getPost("solr-rama");
+        String result = fmService.createRssPostContent(post);
+        assertThat(result, containsString("<strong>This is a post</strong>"));
+    }
+
+    @Test
+    public void rssSinglePhotoPostDisplayTypeContentTest() throws  PostNotFoundException {
+        // H2 POST 11L 'singlephoto-post' SINGLEPHOTO_POST PostDisplayType
+        Post post = postService.getPost("singlephoto-post");
+        String result = fmService.createRssPostContent(post);
+        assertThat(result, containsString("src=\"http://"));
+    }
+
+    @Test
+    public void rssMultiPhotoPostDisplayTypeContentTest() throws  PostNotFoundException {
+        // H2 POST 12L 'multiphoto-post' MULTIPHOTO_POST PostDisplayType
+        Post post = postService.getPost("multiphoto-post");
+        String result = fmService.createRssPostContent(post);
+        assertThat(result, containsString("src=\"http://"));
+    }
 
     // endregion
 

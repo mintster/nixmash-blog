@@ -12,6 +12,8 @@ public interface FmService {
 
     String getNoLikesMessage();
 
+    String createRssPostContent(Post post);
+
     String createPostHtml(Post post, String templateName);
 
     String createPostHtml(Post post);

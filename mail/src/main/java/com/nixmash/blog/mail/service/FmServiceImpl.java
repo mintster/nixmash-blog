@@ -74,7 +74,6 @@ public class FmServiceImpl implements FmService {
 
     // endregion
 
-
     // region PostMeta Tags
 
     @Override
@@ -121,6 +120,24 @@ public class FmServiceImpl implements FmService {
             logger.error("Problem merging NoLikes template : " + e.getMessage());
         }
         return result;
+    }
+
+    @Override
+    public String createRssPostContent(Post post) {
+        String html = null;
+
+        Map<String, Object> model = new Hashtable<>();
+
+        model.put("post", post);
+        model.put("baseurl", applicationSettings.getBaseUrl());
+
+        try {
+            Template template = fm.getTemplate("posts/rss_post.ftl");
+            html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+        } catch (IOException | TemplateException e) {
+            logger.error("Problem merging post template : " + e.getMessage());
+        }
+        return html;
     }
 
     @Override
