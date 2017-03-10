@@ -20,10 +20,34 @@
 </p>
 
 <div class="change-entry">
+    <h3>v1.0.0.0310</h3>
+    <ul>
+        <li>The photos in MULTIPHOTO and SINGLEPHOTO Post Types were not included in RSS Feeds, only the text in the post content.
+            That has been fixed.
+        </li>
+        <li>A new <samp>/freemarker/posts/rss_post.ftl</samp> template added in <strong><em>MAIL</em></strong> Resources.</li>
+    </ul>
+    <p class="change-top-link"><a href="#top">[back to top]</a></p>
+</div>
+
+
+
+<div class="change-entry">
+    <h3>v1.0.0.0309</h3>
+    <ul>
+        <li>Twitter Card Data Display complete.</li>
+        <li>Twitter Meta Tag HTML generated with new FreeMarker <samp>twitter.ftl</samp> template in <em>/mail/resources/posts</em>.</li>
+    </ul>
+    <p class="change-top-link"><a href="#top">[back to top]</a></p>
+</div>
+
+
+<div class="change-entry">
     <h3>v1.0.0.0308</h3>
     <ul>
         <li>Twitter Card Data Creation complete.</li>
         <li>New SQL table <samp>post_meta</samp>. <samp>PostMeta</samp> Entity added to <samp>Post</samp> Model with <em>Fetch Eager</em></li>
+        <li>SQL Script for <samp>post_meta</samp> table found in <em>/install/sql/mysqlsetup.sql</em> H2 schema and data files in <em>/jpa/resources...</em> also updated.</li>
         <li>Three Card Options are: <em>NONE</em>, <em>SUMMARY</em>, and <em>SUMMARY_LARGE_IMAGE</em></li>
         <li>Several supporting properties in External <samp>blog.properties</samp>: <em>twitterSite</em>, <em>twitterCreator</em> and <em>twitterImage</em>.</li>
         <li>The first post image is saved as the Twitter Card Image. The <em>TwitterImage</em> property is the fallback default card image when post contains no images.</li>

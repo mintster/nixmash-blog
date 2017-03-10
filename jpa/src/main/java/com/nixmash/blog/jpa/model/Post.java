@@ -151,6 +151,14 @@ public class Post implements Serializable {
         return (this.postId == null);
     }
 
+    public boolean isMultiPhotoPost() {
+        return (this.displayType == PostDisplayType.MULTIPHOTO_POST);
+    }
+
+    public boolean isSinglePhotoPost() {
+        return (this.displayType == PostDisplayType.SINGLEPHOTO_POST);
+    }
+
     public String getAuthorFullname() {
         return author.getFirstName() + " " +  author.getLastName();
     }

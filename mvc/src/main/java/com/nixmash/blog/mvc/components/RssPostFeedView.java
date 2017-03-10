@@ -3,6 +3,7 @@ package com.nixmash.blog.mvc.components;
 import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.service.PostService;
+import com.nixmash.blog.mail.service.FmService;
 import com.rometools.rome.feed.rss.Channel;
 import com.rometools.rome.feed.rss.Content;
 import com.rometools.rome.feed.rss.Description;
@@ -27,12 +28,15 @@ public final class RssPostFeedView extends AbstractRssFeedView {
     private static final int NUMBER_OF_ITEMS = 10;
 
     private PostService postService;
+    private FmService fmService;
     private ApplicationSettings applicationSettings;
+
 
     @Autowired
     public RssPostFeedView(PostService postService,
-                           ApplicationSettings applicationSettings) {
+                           FmService fmService, ApplicationSettings applicationSettings) {
         this.postService = postService;
+        this.fmService = fmService;
         this.applicationSettings = applicationSettings;
     }
 
@@ -66,9 +70,16 @@ public final class RssPostFeedView extends AbstractRssFeedView {
     }
 
     private Description createDescription(Post post) {
+
+        Long postId = post.getPostId();
+        if (post.isMultiPhotoPost())
+            post.setPostImages(postService.getPostImages(postId));
+        if (post.isSinglePhotoPost())
+            post.setSingleImage(postService.getPostImages(postId).get(0));
+
         Description description = new Description();
         description.setType(Content.HTML);
-        description.setValue(post.getPostContent());
+        description.setValue(fmService.createRssPostContent(post));
         return description;
     }
 
