@@ -1,6 +1,7 @@
 package com.nixmash.blog.jsoup.base;
 
 import com.nixmash.blog.jsoup.annotations.*;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -218,6 +219,8 @@ public class JsoupHtmlParser<T> {
     private JsoupImage createImageElement(Element media) {
         JsoupImage img = new JsoupImage();
         img.setSrc(media.attr("abs:src"));
+        if (StringUtils.isEmpty(img.getSrc()))
+            img.setSrc(media.attr("src"));
         img.setAlt(trim(media.attr("alt"), 60));
         img.setHeight(attrIntToNull(media.attr("height")));
         img.setWidth(attrIntToNull(media.attr("width")));

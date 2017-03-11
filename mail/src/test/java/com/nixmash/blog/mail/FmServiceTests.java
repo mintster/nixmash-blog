@@ -76,7 +76,7 @@ public class FmServiceTests extends MailContext {
     @Test
     public void twitterSummaryTemplate() throws PostNotFoundException {
         Post post = postService.getPostById(1L);
-        PostMeta postMeta = postService.buildTwitterMetaTags(post);
+        PostMeta postMeta = postService.buildTwitterMetaTagsForDisplay(post);
         String result = fmService.getTwitterTemplate(postMeta);
         assertThat(result, containsString("summary"));
     }
@@ -86,7 +86,7 @@ public class FmServiceTests extends MailContext {
     public void twitterSummaryLargeImageTemplate() throws PostNotFoundException {
         // H2 Post 10L SolrRama is SUMMARY_LARGE_IMAGE
         Post post = postService.getPostById(10L);
-        PostMeta postMeta = postService.buildTwitterMetaTags(post);
+        PostMeta postMeta = postService.buildTwitterMetaTagsForDisplay(post);
         String result = fmService.getTwitterTemplate(postMeta);
         assertThat(result, containsString("summary_large_image"));
     }
@@ -94,9 +94,9 @@ public class FmServiceTests extends MailContext {
     @Test
     public void noneTwitterTypeTemplateIsNull() throws PostNotFoundException {
         // H2 POST 9L is twitterCardType=NONE
-        // postService.buildTwitterMetaTags(post) returns NULL PostMeta object
+        // postService.buildTwitterMetaTagsForDisplay(post) returns NULL PostMeta object
         Post post = postService.getPostById(9L);
-        PostMeta postMeta = postService.buildTwitterMetaTags(post);
+        PostMeta postMeta = postService.buildTwitterMetaTagsForDisplay(post);
         assertNull(postMeta);
     }
 

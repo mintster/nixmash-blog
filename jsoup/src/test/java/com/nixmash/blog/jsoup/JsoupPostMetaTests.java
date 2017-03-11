@@ -1,9 +1,15 @@
 package com.nixmash.blog.jsoup;
 
 import com.nixmash.blog.jpa.common.ApplicationSettings;
+import com.nixmash.blog.jpa.dto.PostDTO;
+import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
+import com.nixmash.blog.jpa.model.PostMeta;
+import com.nixmash.blog.jpa.service.PostService;
+import com.nixmash.blog.jpa.utils.PostUtils;
 import com.nixmash.blog.jsoup.base.JsoupHtmlParser;
 import com.nixmash.blog.jsoup.base.JsoupImage;
 import com.nixmash.blog.jsoup.dto.JsoupPostDTO;
+import com.nixmash.blog.jsoup.service.JsoupService;
 import com.nixmash.blog.jsoup.utils.JsoupTestUtil;
 import com.nixmash.blog.jsoup.utils.JsoupUtil;
 import org.jsoup.Jsoup;
@@ -41,6 +47,12 @@ public class JsoupPostMetaTests extends JsoupContext {
     @Autowired
     private ApplicationSettings applicationSettings;
 
+    @Autowired
+    private PostService postService;
+
+    @Autowired
+    private JsoupService jsoupService;
+
     @Before
     public void setup() throws IOException {
 
@@ -55,6 +67,22 @@ public class JsoupPostMetaTests extends JsoupContext {
         File shortBodyIn = JsoupTestUtil.getFile("/html/testShortPostBody.html");
         docShortBody = Jsoup.parse(shortBodyIn, null, "http://example.com");
         jsoupPostDTOShortBody = jsoupPostParser.parse(docShortBody);
+
+    }
+
+    @Test
+    public void updatePostMeta() throws PostNotFoundException {
+
+        String NA = "na";
+
+        PostMeta postMeta = postService.getPostMetaById(1L);
+        assertEquals(postMeta.getTwitterDescription(),NA);
+
+        PostDTO postDTO = PostUtils.postToPostDTO(postService.getPostById(1L));
+        jsoupService.updatePostMeta(postDTO);
+
+        postMeta = postService.getPostMetaById(1L);
+        assertNotEquals(postMeta.getTwitterDescription(),NA);
 
     }
 

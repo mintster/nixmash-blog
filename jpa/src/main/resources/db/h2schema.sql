@@ -9,7 +9,6 @@ CREATE TABLE authorities (
   PRIMARY KEY (authority_id)
 );
 
-
 -- ----------------------------
 -- Table structure for users
 -- ----------------------------
@@ -29,60 +28,6 @@ CREATE TABLE users (
   password varchar(255) NOT NULL,
   version int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (user_id)
-);
-
--- ----------------------------
--- Table structure for hobbies
--- ----------------------------
-CREATE TABLE hobbies (
-  hobby_id bigint(20) NOT NULL AUTO_INCREMENT,
-  hobby_title varchar(20) NOT NULL,
-  PRIMARY KEY (hobby_id)
-);
-
-
--- ----------------------------
--- Table structure for contacts
--- ----------------------------
-CREATE TABLE contacts (
-  contact_id bigint(20) NOT NULL AUTO_INCREMENT,
-  first_name varchar(40) NOT NULL,
-  last_name varchar(40) NOT NULL,
-  birth_date date DEFAULT NULL,
-  email varchar(100) NOT NULL,
-  created_by_user varchar(50) NOT NULL,
-  creation_time timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  modified_by_user varchar(50) NOT NULL,
-  modification_time timestamp NULL DEFAULT NULL,
-  version int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (contact_id)
-);
-
-
--- ----------------------------
--- Table structure for contact_hobby_ids
--- ----------------------------
-DROP TABLE IF EXISTS contact_hobby_ids;
-CREATE TABLE contact_hobby_ids (
-  contact_hobby_id bigint(20) NOT NULL AUTO_INCREMENT,
-  contact_id bigint(20) NOT NULL,
-  hobby_id bigint(20) NOT NULL,
-  PRIMARY KEY (contact_hobby_id),
-  CONSTRAINT fk_hobby_contact_id FOREIGN KEY (contact_id) REFERENCES contacts (contact_id) ON DELETE CASCADE,
-  CONSTRAINT fk_hobby_hobby_id FOREIGN KEY (hobby_id) REFERENCES hobbies (hobby_id)
-);
-
--- ----------------------------
--- Table structure for contact_phones
--- ----------------------------
-CREATE TABLE contact_phones (
-  contact_phone_id bigint(20) NOT NULL AUTO_INCREMENT,
-  contact_id bigint(20) NOT NULL,
-  phone_type varchar(20) NOT NULL,
-  phone_number varchar(20) NOT NULL,
-  version int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (contact_phone_id),
-  CONSTRAINT fk_contact_phones_contact_id FOREIGN KEY (contact_id) REFERENCES contacts (contact_id)
 );
 
 -- ----------------------------
@@ -185,6 +130,7 @@ CREATE TABLE posts (
   CONSTRAINT posts_users_user_id_fk FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
+DROP TABLE IF EXISTS tags;
 CREATE TABLE tags
 (
   tag_id BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -192,6 +138,7 @@ CREATE TABLE tags
   PRIMARY KEY (tag_id)
 );
 
+DROP TABLE IF EXISTS post_tag_ids;
 CREATE TABLE post_tag_ids
 (
   post_tag_id BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -207,7 +154,6 @@ CREATE TABLE categories
 (
   category_id BIGINT(20) NOT NULL AUTO_INCREMENT,
   category_value VARCHAR(50) NOT NULL,
-  wp_category_id BIGINT(20) NULL,
   is_active tinyint(1) NOT NULL DEFAULT '1',
   is_default tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (category_id)
@@ -216,14 +162,16 @@ CREATE TABLE categories
 DROP TABLE IF EXISTS post_category_ids;
 CREATE TABLE post_category_ids
 (
-  post_category_id BIGINT(20) PRIMARY KEY NOT NULL,
+  post_category_id BIGINT(20) NOT NULL  AUTO_INCREMENT,
   post_id BIGINT(20) NOT NULL,
   category_id BIGINT(20) NOT NULL,
+  PRIMARY KEY (post_category_id),
   CONSTRAINT fk_categories_post_id FOREIGN KEY (post_id) REFERENCES posts (post_id),
   CONSTRAINT fk_categories_category_id FOREIGN KEY (category_id) REFERENCES categories (category_id)
 );
-CREATE INDEX categories_category_id_uindex ON post_category_ids (category_id);
-CREATE INDEX categories_post_id_uindex ON post_category_ids (post_id);
+
+-- CREATE INDEX categories_category_id_uindex ON post_category_ids (category_id);
+-- CREATE INDEX categories_post_id_uindex ON post_category_ids (post_id);
 
 DROP TABLE IF EXISTS post_meta;
 CREATE TABLE post_meta
@@ -238,7 +186,7 @@ CREATE TABLE post_meta
 );
 CREATE INDEX post_metadata_post_id_uindex ON post_meta (post_id);
 
-
+DROP TABLE IF EXISTS user_likes;
 CREATE TABLE user_likes (
   like_id bigint(20) NOT NULL AUTO_INCREMENT,
   user_id bigint(20) DEFAULT NULL,

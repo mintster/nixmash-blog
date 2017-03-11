@@ -89,7 +89,7 @@ public class PermaPostsController {
             }
         }
 
-        PostMeta postMeta = postService.buildTwitterMetaTags(post);
+        PostMeta postMeta = postService.buildTwitterMetaTagsForDisplay(post);
         if (postMeta != null) {
             model.addAttribute("twitterMetatags", fmService.getTwitterTemplate(postMeta));
         }

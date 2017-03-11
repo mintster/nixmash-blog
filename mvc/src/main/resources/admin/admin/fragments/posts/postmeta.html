@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="body">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Update Post Meta  Tag Info for All Posts
+                        <small>Create Twitter and other Meta Tag Post info</small>
+                    </h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content  fill-body">
+                    <div class="fill-body-message">
+                        <form action="/admin/posts/postmeta" th:action="@{/admin/posts/postmeta}" method="get" class="form-horizontal"
+                              id="post-search-form">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td class="col-sm-5">
+                                            <label class="control-label">Click Button to Update PostMeta Data</label>
+                                    </td>
+                                    <td class="col-sm-1 reindex-button">
+                                        <div class="controls">
+                                            <input type="submit" class="btn btn-primary btn-lg" name="update"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr th:if="${hasPostMetaCount}">
+                                    <td colspan="2" class="reindex-msg-td"><div class="reindex-msg" th:text="${updateMessage}"></div></td>
+                                </tr>
+                                </table>
+                            </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -27,6 +27,7 @@ public class PostTestUtils {
     public static final PostType POST_TYPE = PostType.POST;
     public static final PostDisplayType DISPLAY_TYPE = PostDisplayType.LINK;
     public static final TwitterCardType TWITTER_CARD_SUMMARY = TwitterCardType.SUMMARY;
+    public static final String JAVA_CATEGORY_VALUE = "Java";
 
 
     public static PostDTO createPostDTO(int i) {
@@ -69,7 +70,7 @@ public class PostTestUtils {
     }
 
     public static Category getTestCategory() {
-        return new Category(2L, "Java", true, true);
+        return new Category(2L, JAVA_CATEGORY_VALUE, true, true);
     }
 
     public static Category getUncategorizedCategory() {
