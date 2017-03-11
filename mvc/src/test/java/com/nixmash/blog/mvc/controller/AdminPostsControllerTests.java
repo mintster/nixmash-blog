@@ -324,6 +324,31 @@ public class AdminPostsControllerTests  extends AbstractContext{
 
     // endregion
 
+    // region PostMeta Updates
+
+
+    @Test
+    public void postMetaPageLoads() throws Exception {
+        RequestBuilder request = get("/admin/posts/postmeta").with(csrf());
+        mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(view().name(ADMIN_POSTMETA_UPDATE_VIEW));
+    }
+
+    @Test
+    public void updatePostMetas() throws Exception {
+        RequestBuilder request = get("/admin/posts/postmeta")
+                .param("update", "doit")
+                .with(csrf());
+
+        mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("hasPostMetaCount"))
+                .andExpect(view().name(ADMIN_POSTMETA_UPDATE_VIEW));
+
+    }
+    // endregion
+
     // region Post Categories
 
     @Test

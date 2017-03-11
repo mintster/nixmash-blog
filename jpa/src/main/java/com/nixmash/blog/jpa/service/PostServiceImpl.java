@@ -197,6 +197,7 @@ public class PostServiceImpl implements PostService {
             logger.debug("No post found with id: {}", postId);
             throw new PostNotFoundException("No post found with id: " + postId);
         }
+        populatePostImages(found);
         return found;
     }
 
@@ -209,22 +210,26 @@ public class PostServiceImpl implements PostService {
             logger.debug("No post found with id: {}", postName);
             throw new PostNotFoundException("No post found with id: " + postName);
         } else {
-            try {
-                if (found.getDisplayType().equals(PostDisplayType.MULTIPHOTO_POST))
-                    found.setPostImages(this.getPostImages(found.getPostId()));
-                if (found.getDisplayType().equals(PostDisplayType.SINGLEPHOTO_POST))
-                    found.setSingleImage(this.getPostImages(found.getPostId()).get(0));
-            } catch (Exception e) {
-                logger.info(String.format("Image Retrieval Error for Post ID:%s Title: %s", String.valueOf(found.getPostId()), found.getPostTitle()));
-            }
+            populatePostImages(found);
         }
 
         return found;
     }
 
+    private void populatePostImages(Post post) {
+        try {
+            if (post.getDisplayType().equals(PostDisplayType.MULTIPHOTO_POST))
+                post.setPostImages(this.getPostImages(post.getPostId()));
+            if (post.getDisplayType().equals(PostDisplayType.SINGLEPHOTO_POST))
+                post.setSingleImage(this.getPostImages(post.getPostId()).get(0));
+        } catch (Exception e) {
+            logger.info(String.format("Image Retrieval Error for Post ID:%s Title: %s", String.valueOf(post.getPostId()), post.getPostTitle()));
+        }
+    }
+
     // endregion
 
-    // region MetaPosts
+    // region PostMeta Services
 
     @Override
     public PostMeta getPostMetaById(Long postId) {
@@ -232,7 +237,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostMeta buildTwitterMetaTags(Post post) {
+    public PostMeta buildTwitterMetaTagsForDisplay(Post post) {
         PostMeta postMeta = post.getPostMeta();
         if (!postMeta.getTwitterCardType().equals(TwitterCardType.NONE)) {
             String twitterSite = applicationSettings.getTwitterSite();

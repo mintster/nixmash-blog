@@ -3,3 +3,6 @@ select count(*) as 'count',
     on pc.post_id = p.post_id
     INNER JOIN categories c on c.category_id = pc.category_id
 GROUP BY pc.category_id ORDER BY count DESC;
+
+
+update post_meta set twitter_image='/x/pics/twitter120x120.pn', twitter_description='na' where twitter_card = 'SUMMARY';

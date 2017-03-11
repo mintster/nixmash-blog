@@ -1,5 +1,6 @@
 package com.nixmash.blog.jsoup.utils;
 
+import com.nixmash.blog.jpa.service.PostService;
 import com.nixmash.blog.jsoup.JsoupContext;
 import com.nixmash.blog.jsoup.base.JsoupHtmlParser;
 import com.nixmash.blog.jsoup.dto.TestDTO;
@@ -25,6 +26,9 @@ public class JsoupTwitterTests extends JsoupContext {
 
     private Document doc;
     private TestDTO testDTO;
+
+    @Autowired
+    private PostService postService;
 
     @Autowired
     @Qualifier("testDTOParser")
@@ -61,6 +65,5 @@ public class JsoupTwitterTests extends JsoupContext {
         assertNotNull(testDTO.getTwitterDTO());
         assertNull(testDTO.getTwitterDTO().getTwitterCreator());
     }
-
 
 }

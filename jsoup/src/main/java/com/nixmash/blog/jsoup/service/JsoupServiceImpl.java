@@ -4,10 +4,12 @@ import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.jpa.dto.PostDTO;
 import com.nixmash.blog.jpa.enums.PostDisplayType;
 import com.nixmash.blog.jpa.enums.TwitterCardType;
+import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.model.PostImage;
 import com.nixmash.blog.jpa.model.PostMeta;
 import com.nixmash.blog.jpa.repository.PostMetaRepository;
 import com.nixmash.blog.jpa.service.PostService;
+import com.nixmash.blog.jpa.utils.PostUtils;
 import com.nixmash.blog.jsoup.base.JsoupHtmlParser;
 import com.nixmash.blog.jsoup.dto.JsoupPostDTO;
 import com.nixmash.blog.jsoup.dto.PagePreviewDTO;
@@ -101,6 +103,18 @@ public class JsoupServiceImpl implements JsoupService {
     // region TwitterCards
 
     @Override
+    public void updateAllPostMeta(List<Post> posts) {
+        for (Post post : posts) {
+//            try {
+//                Post updated = postService.getPostById(post.getPostId());
+                post.setPostMeta(updatePostMeta(PostUtils.postToPostDTO(post)));
+//            } catch (PostNotFoundException e) {
+//                e.printStackTrace();
+//            }
+        }
+    }
+
+    @Override
     public PostMeta createPostMeta(PostDTO postDTO) {
         PostMeta postMeta = buildPostMetaToSave(postDTO);
         return postMetaRepository.save(postMeta);
@@ -118,7 +132,6 @@ public class JsoupServiceImpl implements JsoupService {
                 postMeta.getTwitterCardType());
         return updated;
     }
-
 
     private PostMeta buildPostMetaToSave(PostDTO postDTO) {
 

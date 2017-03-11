@@ -194,16 +194,16 @@ INSERT INTO posts (post_id, user_id, post_title, post_name, post_link, post_date
 VALUES (9, 3, '1000 Ways To Title Something', '1000-ways-to-title-something', NULL, '2016-05-28 17:40:18',
            '2016-05-28 17:40:18', 'POST', 'POST', 1, 'This post title begins with 1000', 'NA', NULL, 0, 0, 0, 0);
 INSERT INTO posts (post_id, user_id, post_title, post_name, post_link, post_date, post_modified, post_type, display_type, is_published, post_content, post_source, post_image, click_count, likes_count, value_rating, version)
-VALUES (10, 3, 'Solr Rama', 'solr-rama', NULL, '2016-09-30 17:40:18',
-            '2016-09-30 17:40:18', 'POST', 'POST', 1,
+VALUES (10, 3, 'Solr Rama', 'solr-rama', NULL, '2016-04-20 17:40:18',
+            '2016-04-20 17:40:18', 'POST', 'POST', 1,
             '<p><strong>This is a post</strong> for <em>Solr Testing</em></p>', 'NA', NULL, 0, 0, 0, 0);
 INSERT INTO posts (post_id, user_id, post_title, post_name, post_link, post_date, post_modified, post_type, display_type, is_published, post_content, post_source, post_image, click_count, likes_count, value_rating, version)
-VALUES (11, 3, 'SinglePhoto Post', 'singlephoto-post', NULL, '2016-09-30 17:40:18',
-            '2016-09-30 17:40:18', 'POST', 'SINGLEPHOTO_POST', 1,
+VALUES (11, 3, 'SinglePhoto Post', 'singlephoto-post', NULL, '2016-04-19 17:40:18',
+            '2016-04-19 17:40:18', 'POST', 'SINGLEPHOTO_POST', 1,
             '<p><strong>This is a singlephoto post</strong> for <em>RSS Testing</em></p>', 'NA', NULL, 0, 0, 0, 0);
 INSERT INTO posts (post_id, user_id, post_title, post_name, post_link, post_date, post_modified, post_type, display_type, is_published, post_content, post_source, post_image, click_count, likes_count, value_rating, version)
-VALUES (12, 3, 'MultiPhoto Post', 'multiphoto-post', NULL, '2016-09-30 17:40:18',
-            '2016-09-30 17:40:18', 'POST', 'MULTIPHOTO_POST', 1,
+VALUES (12, 3, 'MultiPhoto Post', 'multiphoto-post', NULL, '2016-04-18 17:40:18',
+            '2016-04-18 17:40:18', 'POST', 'MULTIPHOTO_POST', 1,
             '<p><strong>This is a multiphoto post</strong> for <em>RSS Testing</em></p>', 'NA', NULL, 0, 0, 0, 0);
 
 
@@ -221,34 +221,34 @@ INSERT INTO categories (category_id, category_value, is_active, is_default) VALU
 INSERT INTO categories (category_id, category_value, is_active, is_default) VALUES (5, 'Wannabe', 1, 0);
 INSERT INTO categories (category_id, category_value, is_active, is_default) VALUES (6, 'Shorttimer', 1, 0);
 
-INSERT INTO post_category_ids (post_id, category_id) VALUES (1, 1);
-INSERT INTO post_category_ids (post_id, category_id) VALUES (2, 1);
-INSERT INTO post_category_ids (post_id, category_id) VALUES (3, 2);
-INSERT INTO post_category_ids (post_id, category_id) VALUES (4, 2);
-INSERT INTO post_category_ids (post_id, category_id) VALUES (5, 2);
-INSERT INTO post_category_ids (post_id, category_id) VALUES (6, 2);
-INSERT INTO post_category_ids (post_id, category_id) VALUES (7, 2);
-INSERT INTO post_category_ids (post_id, category_id) VALUES (8, 6);
-INSERT INTO post_category_ids (post_id, category_id) VALUES (9, 3);
-INSERT INTO post_category_ids (post_id, category_id) VALUES (10, 2);
-INSERT INTO post_category_ids (post_id, category_id) VALUES (11, 2);
-INSERT INTO post_category_ids (post_id, category_id) VALUES (12, 2);
+INSERT INTO post_category_ids (post_category_id, post_id, category_id) VALUES (1, 1, 1);
+INSERT INTO post_category_ids (post_category_id, post_id, category_id) VALUES (2, 2, 1);
+INSERT INTO post_category_ids (post_category_id, post_id, category_id) VALUES (3, 3, 2);
+INSERT INTO post_category_ids (post_category_id, post_id, category_id) VALUES (4, 4, 2);
+INSERT INTO post_category_ids (post_category_id, post_id, category_id) VALUES (5, 5, 2);
+INSERT INTO post_category_ids (post_category_id, post_id, category_id) VALUES (6, 6, 2);
+INSERT INTO post_category_ids (post_category_id, post_id, category_id) VALUES (7, 7, 2);
+INSERT INTO post_category_ids (post_category_id, post_id, category_id) VALUES (8, 8, 6);
+INSERT INTO post_category_ids (post_category_id, post_id, category_id) VALUES (9, 9, 3);
+INSERT INTO post_category_ids (post_category_id, post_id, category_id) VALUES (10, 10, 2);
+INSERT INTO post_category_ids (post_category_id, post_id, category_id) VALUES (11, 11, 2);
+INSERT INTO post_category_ids (post_category_id, post_id, category_id) VALUES (12, 12, 2);
 
-INSERT INTO post_tag_ids (post_id, tag_id) VALUES (1, 1);
-INSERT INTO post_tag_ids (post_id, tag_id) VALUES (1, 2);
-INSERT INTO post_tag_ids (post_id, tag_id) VALUES (1, 3);
-INSERT INTO post_tag_ids (post_id, tag_id) VALUES (2, 4);
-INSERT INTO post_tag_ids (post_id, tag_id) VALUES (2, 1);
-INSERT INTO post_tag_ids (post_id, tag_id) VALUES (3, 1);
-INSERT INTO post_tag_ids (post_id, tag_id) VALUES (4, 1);
-INSERT INTO post_tag_ids (post_id, tag_id) VALUES (5, 1);
-INSERT INTO post_tag_ids (post_id, tag_id) VALUES (5, 5);
-INSERT INTO post_tag_ids (post_id, tag_id) VALUES (6, 2);
-INSERT INTO post_tag_ids (post_id, tag_id) VALUES (10, 1);
-INSERT INTO post_tag_ids (post_id, tag_id) VALUES (10, 2);
-INSERT INTO post_tag_ids (post_id, tag_id) VALUES (10, 3);
-INSERT INTO post_tag_ids (post_id, tag_id) VALUES (11, 3);
-INSERT INTO post_tag_ids (post_id, tag_id) VALUES (12, 3);
+INSERT INTO post_tag_ids (post_tag_id, post_id, tag_id) VALUES (1, 1, 1);
+INSERT INTO post_tag_ids (post_tag_id, post_id, tag_id) VALUES (2, 1, 2);
+INSERT INTO post_tag_ids (post_tag_id, post_id, tag_id) VALUES (3, 1, 3);
+INSERT INTO post_tag_ids (post_tag_id, post_id, tag_id) VALUES (4, 2, 4);
+INSERT INTO post_tag_ids (post_tag_id, post_id, tag_id) VALUES (5, 2, 1);
+INSERT INTO post_tag_ids (post_tag_id, post_id, tag_id) VALUES (6, 3, 1);
+INSERT INTO post_tag_ids (post_tag_id, post_id, tag_id) VALUES (7, 4, 1);
+INSERT INTO post_tag_ids (post_tag_id, post_id, tag_id) VALUES (8, 5, 1);
+INSERT INTO post_tag_ids (post_tag_id, post_id, tag_id) VALUES (9, 5, 5);
+INSERT INTO post_tag_ids (post_tag_id, post_id, tag_id) VALUES (10, 6, 2);
+INSERT INTO post_tag_ids (post_tag_id, post_id, tag_id) VALUES (11, 10, 1);
+INSERT INTO post_tag_ids (post_tag_id, post_id, tag_id) VALUES (12, 10, 2);
+INSERT INTO post_tag_ids (post_tag_id, post_id, tag_id) VALUES (13, 10, 3);
+INSERT INTO post_tag_ids (post_tag_id, post_id, tag_id) VALUES (14, 11, 3);
+INSERT INTO post_tag_ids (post_tag_id, post_id, tag_id) VALUES (15, 12, 3);
 
 INSERT INTO user_likes (like_id, user_id, item_id, content_type_id) VALUES (1, 3, 1, 1);
 INSERT INTO user_likes (like_id, user_id, item_id, content_type_id) VALUES (2, 3, 2, 1);

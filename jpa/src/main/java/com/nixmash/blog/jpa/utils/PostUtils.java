@@ -73,7 +73,7 @@ public class PostUtils {
 
     public static String createPostSource(String url) {
         String domain = null;
-        if (StringUtils.isEmpty(url))
+        if (StringUtils.isEmpty(url) || url.equals("NA"))
             return null;
         else {
             try {

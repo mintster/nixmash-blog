@@ -52,7 +52,7 @@ public class Post implements Serializable {
     private String postName;
 
     @Column(name = "post_link")
-    private String postLink;
+    private String postLink = "NA";
 
     @Column(name = "post_image", length = MAX_POST_NAME_LENGTH)
     private String postImage;

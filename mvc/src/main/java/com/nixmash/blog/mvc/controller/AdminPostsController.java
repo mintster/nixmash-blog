@@ -58,6 +58,7 @@ public class AdminPostsController {
     public static final String ADMIN_TAGS_VIEW = "admin/posts/tags";
     public static final String ADMIN_POSTLINK_UPDATE_VIEW = "admin/posts/update";
     public static final String ADMIN_POSTS_REINDEX_VIEW = "admin/posts/reindex";
+    public static final String ADMIN_POSTMETA_UPDATE_VIEW = "admin/posts/postmeta";
     public static final String ADMIN_CATEGORIES_VIEW = "admin/posts/categories";
 
     // endregion
@@ -65,6 +66,7 @@ public class AdminPostsController {
     // region static message.properites
     private static final String MESSAGE_ADMIN_UPDATE_POSTLINK_TITLE = "admin.update.postlink.title";
     private static final String MESSAGE_ADMIN_SOLR_REINDEX_COMPLETE = "admin.solr.posts.reindexed";
+    private static final String MESSAGE_ADMIN_POSTMETA_UPDATE_COMPLETE = "admin.posts.postmeta.updated";
 
     private static final String MESSAGE_ADMIN_UPDATE_POSTLINK_HEADING = "admin.update.postlink.heading";
     private static final String ADD_POST_HEADER = "posts.add.note.page.header";
@@ -165,6 +167,47 @@ public class AdminPostsController {
     }
 
 
+    // endregion
+
+    // region Update PostMeta  Info
+
+    @RequestMapping(value = "/postmeta", method = GET)
+    public ModelAndView postMetaUpdatePage() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName(ADMIN_POSTMETA_UPDATE_VIEW);
+        return mav;
+    }
+
+    @RequestMapping(value = "/postmeta", params = "update", method = GET)
+    public ModelAndView updatePostMetaData() {
+        ModelAndView mav = new ModelAndView();
+        List<Post> posts = postService.getAllPublishedPosts();
+        int postMetaCount = posts.size();
+
+        long lStartTime = new Date().getTime();
+
+//        for (Post post : posts) {
+//            PostDTO postDTO = PostUtils.postToPostDTO(post);
+//            post.setPostMeta(jsoupService.updatePostMeta(postDTO));
+//        }
+        jsoupService.updateAllPostMeta(posts);
+        long lEndTime = new Date().getTime();
+        long duration = lEndTime - lStartTime;
+
+        String totalTime = String.format("%d min, %d sec",
+                TimeUnit.MILLISECONDS.toMinutes(duration),
+                TimeUnit.MILLISECONDS.toSeconds(duration) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration))
+        );
+
+
+        String updateMessage = webUI.getMessage(MESSAGE_ADMIN_SOLR_REINDEX_COMPLETE, postMetaCount, totalTime);
+
+        mav.addObject("updateMessage", updateMessage);
+        mav.addObject("hasPostMetaCount", true);
+        mav.setViewName(ADMIN_POSTMETA_UPDATE_VIEW);
+        return mav;
+    }
     // endregion
 
     //region Add Post GET

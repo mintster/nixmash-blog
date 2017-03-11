@@ -29,7 +29,7 @@ public interface PostService {
 
     PostMeta getPostMetaById(Long postId);
 
-    PostMeta buildTwitterMetaTags(Post post);
+    PostMeta buildTwitterMetaTagsForDisplay(Post post);
 
     Page<Post> getPosts(Integer pageNumber, Integer pageSize);
 
@@ -151,4 +151,5 @@ public interface PostService {
     List<Post> getPublishedPostsByTagId(long tagId);
 
     void deleteImage(PostImage image);
+
 }
