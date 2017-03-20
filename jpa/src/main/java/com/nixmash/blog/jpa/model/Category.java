@@ -56,7 +56,7 @@ public class Category implements Serializable {
         this.categoryId = categoryId;
     }
 
-    @Column(name = "is_default", nullable = false, columnDefinition = "TINYINT")
+    @Column(name = "is_default", nullable = false)
     public Boolean getIsDefault() {
         return isDefault;
     }
@@ -65,7 +65,7 @@ public class Category implements Serializable {
         this.isDefault = isDefault;
     }
 
-    @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT")
+    @Column(name = "is_active", nullable = false)
     public Boolean getIsActive() {
         return isActive;
     }

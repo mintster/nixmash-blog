@@ -5,4 +5,6 @@ select count(*) as 'count',
 GROUP BY pc.category_id ORDER BY count DESC;
 
 
-update post_meta set twitter_image='/x/pics/twitter120x120.pn', twitter_description='na' where twitter_card = 'SUMMARY';
+update post_meta set twitter_image='/x/pics/twitter120x120.png', twitter_description='na' where twitter_card = 'SUMMARY';
+
+TRUNCATE TABLE tags;

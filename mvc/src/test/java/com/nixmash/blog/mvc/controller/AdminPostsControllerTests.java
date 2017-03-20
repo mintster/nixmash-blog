@@ -38,6 +38,7 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.servlet.ServletException;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.nixmash.blog.mvc.controller.AdminPostsController.*;
 import static com.nixmash.blog.mvc.security.SecurityRequestPostProcessors.csrf;
@@ -345,6 +346,8 @@ public class AdminPostsControllerTests  extends AbstractContext{
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("hasPostMetaCount"))
                 .andExpect(view().name(ADMIN_POSTMETA_UPDATE_VIEW));
+
+        List<Post> posts = postService.getAllPublishedPosts();
 
     }
     // endregion
