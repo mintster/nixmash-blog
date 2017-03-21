@@ -20,6 +20,17 @@
 </p>
 
 <div class="change-entry">
+    <h3>v1.0.0.0321</h3>
+    <p>Focusing on the New Blog experience</p>
+    <ul>
+        <li>An exception was thrown when a post was created without first creating a Category. This is a little tricky since some users will use the WordPress NixMash Migrator app to import their WP Categories. Solution: Remind all users to run <samp>/install/sql/initialize.sql</samp> before firing up their site which creates the required <strong><em>Uncategorized</em></strong> Category if not already present.</li>
+        <li>And on New Blog, New Posts, an exception was thrown if Solr was not enabled and configured. A new External Property <samp>blog.solrEnabled</samp> in <samp>blog.properties</samp> was added to bypass indexing new posts and links. The setting is limited to post administration tasks, as it does not hide user Search fields or Search-related links.</li>
+        <li>A new <samp>nolinks.ftl</samp> FreeMarker template displays when no Links are available.</li>
+    </ul>
+    <p class="change-top-link"><a href="#top">[back to top]</a></p>
+</div>
+
+<div class="change-entry">
     <h3>v1.0.0.0310</h3>
     <ul>
         <li>The photos in MULTIPHOTO and SINGLEPHOTO Post Types were not included in RSS Feeds, only the text in the post content.
@@ -29,8 +40,6 @@
     </ul>
     <p class="change-top-link"><a href="#top">[back to top]</a></p>
 </div>
-
-
 
 <div class="change-entry">
     <h3>v1.0.0.0309</h3>

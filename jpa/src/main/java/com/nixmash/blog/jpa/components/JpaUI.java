@@ -70,7 +70,7 @@ public class JpaUI {
         String activeProfile = environment.getActiveProfiles()[0];
         logger.info(String.format("Current JPA Active Profile: %s", activeProfile));
 
-        displayCategoryCounts();
+        displayPosts();
     }
 
     // region Categories
@@ -109,7 +109,7 @@ public class JpaUI {
     private void displayPosts() {
         List<Post> posts = postService.getAllPosts();
         for (Post post : posts) {
-            System.out.println(post.getPostId() + " : " + post.getPostTitle());
+            System.out.println(post.getPostId() + " : " + post.getPostTitle() + " : " + post.getCategory().getCategoryValue());
         }
     }
 

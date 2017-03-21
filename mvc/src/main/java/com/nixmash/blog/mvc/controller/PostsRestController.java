@@ -89,6 +89,9 @@ public class PostsRestController {
     public String getLinks(@PathVariable Integer pageNumber, HttpServletRequest request, CurrentUser currentUser) {
         Slice<Post> posts = postService.getPagedPostsByPostType(PostType.LINK, pageNumber, POST_PAGING_SIZE);
         String result = populatePostStream(posts.getContent(), currentUser);
+        if (StringUtils.isEmpty(result)) {
+            result = fmService.getNoLinksMessage();
+        }
         WebUtils.setSessionAttribute(request, SESSION_ATTRIBUTE_JUSTLINKS, posts.getContent());
         return result;
     }

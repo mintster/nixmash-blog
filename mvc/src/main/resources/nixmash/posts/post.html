@@ -21,53 +21,55 @@
     <div class="page-header" id="banner">
         <div class="row post-header-row">
             <div th:replace="fragments/sponsor :: [id='sponsor']">[sponsor image]</div>
-            <div class="col-lg-12">
-                <h1 th:text="${post.postTitle}" class="post-title">[post title]</h1>
-            </div>
         </div>
     </div>
 </div>
 <div class="container bs-container">
-    <div class="row row-centered" id="post">
-        <div class="bs-section col-lg-12 col-centered">
-            <div id="message-holder">
-                <div th:if="${feedbackMessage}" th:class="'messageblock hidden'"
-                     th:utext="${feedbackMessage}"></div>
-            </div>
-            <div id="post-photo" th:if="${post.displayType.name() == 'SINGLEPHOTO_POST'}">
-                <div th:if="${post.singleImage != null}" th:remove="tag">
-                    <a th:href="|${post.singleImage.url}${post.singleImage.newFilename}|">
-                        <img th:src="|${post.singleImage.url}${post.singleImage.newFilename}|" alt="Click to view the lightbox"
-                             class="post-photo-single"/>
-                    </a>
+    <div class="row">
+        <div class="bs-section">
+            <div th:include="fragments/posts/sidebar :: sidebar('posts')" th:remove="tag">Posts Sidebar</div>
+            <div class="col-lg-9" id="post">
+                <h1 th:text="${post.postTitle}" class="post-title">[post title]</h1>
+
+                <div id="post-photo" th:if="${post.displayType.name() == 'SINGLEPHOTO_POST'}">
+                    <div th:if="${post.singleImage != null}" th:remove="tag">
+                        <a th:href="|${post.singleImage.url}${post.singleImage.newFilename}|">
+                            <img th:src="|${post.singleImage.url}${post.singleImage.newFilename}|"
+                                 alt="Click to view the lightbox"
+                                 class="post-photo-single"/>
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div id="post-body" th:utext="${post.postContent}">
-            </div>
-            <div id="post-photos" th:if="${post.displayType.name() == 'MULTIPHOTO_POST'}">
+                <div id="post-body" th:utext="${post.postContent}">
+                </div>
+                <div id="post-photos" th:if="${post.displayType.name() == 'MULTIPHOTO_POST'}">
 
-                <div th:each="image : ${post.postImages }" th:remove="tag">
-                    <a th:href="|${image.url}${image.newFilename}|">
-                        <img th:src="|${image.url}${image.newFilename}|" alt="Click to view the lightbox"
-                             class="post-photo-thumbnail"/>
-                    </a>
+                    <div th:each="image : ${post.postImages }" th:remove="tag">
+                        <a th:href="|${image.url}${image.newFilename}|">
+                            <img th:src="|${image.url}${image.newFilename}|" alt="Click to view the lightbox"
+                                 class="post-photo-thumbnail"/>
+                        </a>
+                    </div>
+
                 </div>
 
+                <div th:replace="fragments/posts/postfooter :: postfooter">[POST FOOTER]</div>
+                <div th:replace="fragments/posts/morelikethis :: morelikethis">[POST FOOTER]</div>
+
+                <div class="permalink-close">
+                    <a href="/posts" class="btn btn-primary" th:text="#{posts.permalink.page.return}">[Return to
+                        Posts]</a>
+                </div>
+
+                <nav th:replace="fragments/secinfo :: [id='secInfo']">User Info</nav>
+
             </div>
-
-            <div th:replace="fragments/posts/postfooter :: postfooter">[POST FOOTER]</div>
-            <div th:replace="fragments/posts/morelikethis :: morelikethis">[POST FOOTER]</div>
-
-            <div class="permalink-close">
-                <a href="/posts" class="btn btn-primary" th:text="#{posts.permalink.page.return}">[Return to Posts]</a>
-            </div>
-
         </div>
     </div>
-    <nav th:replace="fragments/secinfo :: [id='secInfo']">User Info</nav>
 </div>
 <div th:include="fragments/scripts :: [id='scripts']" th:remove="tag">[scripts]</div>
 <div th:include="fragments/alerts :: [id='alerts']" th:remove="tag">Alerts</div>
+<script th:replace="fragments/posts/sidebar :: javascript">Post Sidebar Scripts</script>
 
 <script th:src="@{/js/jquery.lightbox.js}"></script>
 

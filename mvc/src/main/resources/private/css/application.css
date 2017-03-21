@@ -896,6 +896,10 @@ span.taglink .label-default {
     background-color: #aaa;
 }
 
+#posts .alert h2 {
+    margin-top: 10px;
+}
+
 /*</editor-fold>*/
 /*/<editor-fold> desc="POST PERMALINK DISPLAY ----------------------------/ "*/
 
@@ -907,6 +911,8 @@ span.taglink .label-default {
 
 h1.post-title {
     font-size: 36px;
+    line-height: 1.3;
+    margin-bottom: 40px;
 }
 
 #post-body {
@@ -1026,6 +1032,10 @@ h1.post-title {
 #post img.post-photo-single {
     border: #ae3910 2px solid;
     max-width: 100%;
+}
+
+#post div#secInfo {
+    margin-top: 60px;
 }
 
 /*</editor-fold>*/
@@ -1422,7 +1432,7 @@ button.btn.btn-success.btn-flashcard-category {
 }
 
 /*</editor-fold>*/
-/*<editor-fold desc="EXCEPTION MESSAGES">*/
+/*<editor-fold desc="EXCEPTION MESSAGES ---------------------------------------/">*/
 #category-message {
     margin-top: 80px;
 }
@@ -1460,4 +1470,93 @@ button.btn.btn-success.btn-flashcard-category {
     margin-top: 6px;
 }
 /*</editor-fold>*/
+/*<editor-fold desc="CODER NOTES ------------------------------------- /">*/
+.android-coder-notes {
+    margin-top: 50px;
+    padding: 12px 30px 8px 30px;
+    background-color: #f2f2f2;
+    border: 1px solid #aaa;
+}
+h4.android-coder-title {
+    /* font-weight: bold; */
+    color: #4a6671;
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+.android-coder-notes a {
+    font-weight: bold;
+}
+/*</editor-fold>*/
+/*<editor-fold desc="NIXMASHUP LINKS -----------------------------------------------/">*/
+p.mashupintro, p.mashupintroplus {
+    display: block;
+    font-style: italic;
+    margin-top: 30px;
+    overflow: hidden;
+    font-size: 16px;
+}
+div.mashuplinks {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    clear: left;
+}
+p.everymandate {
+    clear: left;
+    color: #777;
+    display: block;
+    font-size: 0.9em;
+    font-weight: bold;
+    margin-bottom: -20px;
+    overflow: hidden;
+    padding-left: 9px;
+}
+span.mashupimage {
+    float: left;
+    margin-bottom: 18px;
+}
+.mashupimage img {
+    border: 2px solid #000;
+    margin-right: 20px;
+}
+.mashup p.linktitle {
+    font-size: 28px;
+    margin-top: 35px;
+}
+p.mashupphotoinfo {
+    background-image: url(/x/pics/creativecommons.png);
+    background-position: 0;
+    background-repeat: no-repeat;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 0.7em;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    margin-top: 20px;
+    padding-left: 32px;
+    text-transform: uppercase;
+}
+p.mashupfeedinfo {
+    padding: 14px;
+    font-size: .9em;
+    font-style: italic;
+    border-top: dashed 1px #ccc;
+    border-bottom: dashed 1px #ccc;
+    margin: 30px 0;
+}
+#post-body .mashup p.linktext {
+    margin-bottom: 10px;
+}
+div.mashup p.hashtags {
+    font-size: .9em;
+    margin-top: 0;
+    margin-bottom: .3em;
+    color: #56ae7a;
+}
+div.mashup p.hashtags a {
+    font-style: italic;
+    font-family: helvetica, sans-serif;
+    font-size: 16px;
+}
+/*</editor-fold>*/
+
+
 
