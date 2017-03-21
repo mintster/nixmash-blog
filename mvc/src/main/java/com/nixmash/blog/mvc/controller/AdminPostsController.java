@@ -142,6 +142,7 @@ public class AdminPostsController {
     @RequestMapping(value = "/solr/reindex", method = GET)
     public ModelAndView postsSolrReindexPage() {
         ModelAndView mav = new ModelAndView();
+        mav.addObject("solrEnabled", applicationSettings.getSolrEnabled());
         mav.setViewName(ADMIN_POSTS_REINDEX_VIEW);
         return mav;
     }

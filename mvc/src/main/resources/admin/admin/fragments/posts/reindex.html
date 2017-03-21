@@ -17,7 +17,11 @@
                         <form action="/admin/posts/solr/reindex" th:action="@{/admin/posts/solr/reindex}" method="get" class="form-horizontal"
                               id="post-search-form">
                             <table class="table table-striped">
-                                <tr>
+                                <!--/*@thymesVar id="appSettings" type="com.nixmash.blog.jpa.common.ApplicationSettings"*/-->
+                                <tr th:unless="${appSettings.solrEnabled}">
+                                    <td colspan="2" class="solr-message">Solr is not enabled. Please confirm your Solr Server is running and that the <span>blog.solrEnabled</span> property in your external <span>blog.properties</span> file is set to "true."</td>
+                                </tr>
+                                <tr th:if="${appSettings.solrEnabled}">
                                     <td class="col-sm-5">
                                             <label class="control-label">Click Button to Reindex Posts</label>
                                     </td>
