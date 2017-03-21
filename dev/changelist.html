@@ -26,6 +26,7 @@
         <li>An exception was thrown when a post was created without first creating a Category. This is a little tricky since some users will use the WordPress NixMash Migrator app to import their WP Categories. Solution: Remind all users to run <samp>/install/sql/initialize.sql</samp> before firing up their site which creates the required <strong><em>Uncategorized</em></strong> Category if not already present.</li>
         <li>And on New Blog, New Posts, an exception was thrown if Solr was not enabled and configured. A new External Property <samp>blog.solrEnabled</samp> in <samp>blog.properties</samp> was added to bypass indexing new posts and links. The setting is limited to post administration tasks, as it does not hide user Search fields or Search-related links.</li>
         <li>A new <samp>nolinks.ftl</samp> FreeMarker template displays when no Links are available.</li>
+        <li>Duplicate Posts were retrieved and displayed. Problem was due to these posts being assigned multiple categories which were migrated from WordPress. Script was added to <samp>/install/sql/initialize.sql</samp> to remove multiple post category assignments in table <samp>post_category_ids.</samp></li>
     </ul>
     <p class="change-top-link"><a href="#top">[back to top]</a></p>
 </div>
