@@ -5,7 +5,7 @@ NixMash Blog is a Java Spring Web Bootstrap 3 application based on [NixMash Spri
 
 If you wish to move your WordPress Blog to the NixMash Blog application, a WordPress-to-NixMash Blog migration application is available on [GitHub here.](https://github.com/mintster/wp-nixmashspring-migrator)
 
-##About NixMash Blog## 
+## About NixMash Blog 
 
 It wasn't our intention to build another Blog Engine, but the blogging capability in [NixMash Spring](https://github.com/mintster/spring-data) made the idea of creating a standalone blogging application became a non-brainer for several reasons:
 
@@ -21,7 +21,7 @@ It wasn't our intention to build another Blog Engine, but the blogging capabilit
 10. Fully documented on detailed blog posts on [NixMash.com](http://nixmash.com) and elsewhere
 11. Free and Open Source, licensed under GNU GPL v3
 
-##Installation##
+## Installation
 
 Download the NixMash Blog source code from GitHub and build the application in your IDE or in Gradle. For Gradle there is a Build Script in `/install/sh/buildAll.sh` which will build this multi-module app.
 
@@ -33,11 +33,11 @@ Other setup steps *BEFORE BUILDING THE APPLICATION THE FIRST TIME* are:
 4. Update appropriate properties in the external `blog.properties` file.
 
 
-##Administration and Users##
+## Administration and Users
 
 The site is configured to allow user logins through both Site Registration and the Social Services of Facebook, Google and Twitter. You can disable user account creation with the `blog.loginEnabled` property in the external `blog.properties` file.
 
-###Admin User Account###
+### Admin User Account
 
 The default user is "Ken Watts" (fictitious) with the following account credentials:
 
@@ -46,7 +46,7 @@ The default user is "Ken Watts" (fictitious) with the following account credenti
 
 Please remember to change the username and password before going live...
 
-##Other Configuration Matters##
+## Other Configuration Matters
 
 - For Development the app is configured to use port 9000, or *http://localhost:9000*
 - NixMash Blog is configured to use resources from a file path specified in the external `blog.properties` file. For development and testing the app on http://localhost:9000, there is a script to create a softlink to this file path root in `/install/linkbBuild.sh.`
@@ -56,7 +56,7 @@ Please remember to change the username and password before going live...
 $ gradle mvc:clean mvc:bootRepackage
 ```
 
-##License##
+## License
 
 NixMash Blog is Open Source. We only require that you abide by the terms of the GNU GPL v3 License.
 
