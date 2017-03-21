@@ -39,22 +39,22 @@ The site is configured to allow user logins through both Site Registration and t
 
 ###Admin User Account
 
-The default user is "Ken Watts" (fictional) with the following account credentials:
+The default user is "Ken Watts" (fictitious) with the following account credentials:
 
 **USERNAME:** ken
 **PASSWORD:** password
 
 Please remember to change the username and password before going live...
 
-##Other Configuration Points 
+##Other Configuration Matters
 
 - For Development the app is configured to use port 9000, or *http://localhost:9000*
 - NixMash Blog is configured to use resources from a file path specified in the external `blog.properties` file. For development and testing the app on http://localhost:9000, there is a script to create a softlink to this file path root in `/install/linkbBuild.sh.`
 - The best way to package the application for deployment is with Gradle. The command would be
 
-``
+```bash
 $ gradle mvc:clean mvc:bootRepackage
-``
+```
 
 ##License
 
