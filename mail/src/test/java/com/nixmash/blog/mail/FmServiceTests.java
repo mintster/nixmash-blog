@@ -133,7 +133,12 @@ public class FmServiceTests extends MailContext {
     // region Posts
 
     @Test
+    public void noLinksTemplate() {
+        String result = fmService.getNoLinksMessage();
+        assertThat(result, containsString("No Links"));
+    }
 
+    @Test
     public void noLikesTemplate() {
         String result = fmService.getNoLikesMessage();
         assertThat(result, containsString("No Liked Posts Selected"));

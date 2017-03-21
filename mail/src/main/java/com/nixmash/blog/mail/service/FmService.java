@@ -8,6 +8,8 @@ public interface FmService {
 
     String displayTestTemplate(User user);
 
+    String getNoLinksMessage();
+
     String getNoResultsMessage(String search);
 
     String getNoLikesMessage();

@@ -98,6 +98,20 @@ public class FmServiceImpl implements FmService {
     // region Posts
 
     @Override
+    public String getNoLinksMessage() {
+        String result = null;
+        Map<String, Object> model = new Hashtable<>();
+
+        try {
+            result =  FreeMarkerTemplateUtils.processTemplateIntoString(fm.getTemplate("posts/nolinks.ftl"), model);
+        } catch (IOException | TemplateException e) {
+            logger.error("Problem merging No Links template : " + e.getMessage());
+        }
+        return result;
+    }
+
+
+    @Override
     public String getNoResultsMessage(String search) {
         String result = null;
         Map<String, Object> model = new Hashtable<>();
