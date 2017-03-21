@@ -301,6 +301,7 @@ a.password-glyph {
 }
 /*</editor-fold>*/
 
+/*<editor-fold desc="CATEGORIES">*/
 input.new-category {
     min-width: 250px;
     margin-top: -4px;
@@ -318,6 +319,21 @@ input[type=checkbox].category-checkbox {
 }
 #categoriesTable tr.category-default {
   background-color: #eee;
+}
+/*</editor-fold>*/
+
+td.solr-message span {
+    color: #333;
+    background-color: #eee;
+    padding: 1px 6px;
+}
+
+table.table-striped td.solr-message {
+    height: 125px;
+    margin-top: 40px;
+    padding: 40px;
+    border: #2a3f54 1px solid;
+    color: #cd5c5c;
 }
 
 

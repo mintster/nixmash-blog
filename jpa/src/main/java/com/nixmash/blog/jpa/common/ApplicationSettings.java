@@ -19,6 +19,7 @@ public class ApplicationSettings  implements Serializable {
 	private String baseUrl;
 	private String siteName;
 	private Boolean loginEnabled;
+	private Boolean solrEnabled;
 
 	// endregion
 
@@ -79,6 +80,14 @@ public class ApplicationSettings  implements Serializable {
 	// endregion
 
 	// region Getters Setters
+
+
+	public Boolean getSolrEnabled() {
+		return solrEnabled;
+	}
+	public void setSolrEnabled(Boolean solrEnabled) {
+		this.solrEnabled = solrEnabled;
+	}
 
 	public String getTwitterImage() {
 		return twitterImage;

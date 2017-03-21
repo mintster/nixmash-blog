@@ -1,5 +1,6 @@
 package com.nixmash.blog.mvc.controller;
 
+import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.jpa.dto.CategoryDTO;
 import com.nixmash.blog.jpa.dto.PostDTO;
 import com.nixmash.blog.jpa.dto.TagDTO;
@@ -8,7 +9,10 @@ import com.nixmash.blog.jpa.enums.PostType;
 import com.nixmash.blog.jpa.enums.TwitterCardType;
 import com.nixmash.blog.jpa.exceptions.DuplicatePostNameException;
 import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
-import com.nixmash.blog.jpa.model.*;
+import com.nixmash.blog.jpa.model.Category;
+import com.nixmash.blog.jpa.model.CurrentUser;
+import com.nixmash.blog.jpa.model.Post;
+import com.nixmash.blog.jpa.model.Tag;
 import com.nixmash.blog.jpa.service.PostService;
 import com.nixmash.blog.jpa.utils.PostUtils;
 import com.nixmash.blog.jsoup.dto.PagePreviewDTO;
@@ -105,18 +109,20 @@ public class AdminPostsController {
     private final WebUI webUI;
     private final FmService fmService;
     private final JsoupService jsoupService;
+    private final ApplicationSettings applicationSettings;
 
     // endregion
 
     private static final Logger logger = LoggerFactory.getLogger(AdminPostsController.class);
 
     @Autowired
-    public AdminPostsController(PostService postService, PostDocService postDocService, WebUI webUI, FmService fmService, JsoupService jsoupService) {
+    public AdminPostsController(PostService postService, PostDocService postDocService, WebUI webUI, FmService fmService, JsoupService jsoupService, ApplicationSettings applicationSettings) {
         this.postService = postService;
         this.postDocService = postDocService;
         this.webUI = webUI;
         this.fmService = fmService;
         this.jsoupService = jsoupService;
+        this.applicationSettings = applicationSettings;
     }
 
     //region Posts List
@@ -136,6 +142,7 @@ public class AdminPostsController {
     @RequestMapping(value = "/solr/reindex", method = GET)
     public ModelAndView postsSolrReindexPage() {
         ModelAndView mav = new ModelAndView();
+        mav.addObject("solrEnabled", applicationSettings.getSolrEnabled());
         mav.setViewName(ADMIN_POSTS_REINDEX_VIEW);
         return mav;
     }
@@ -185,11 +192,6 @@ public class AdminPostsController {
         int postMetaCount = posts.size();
 
         long lStartTime = new Date().getTime();
-
-//        for (Post post : posts) {
-//            PostDTO postDTO = PostUtils.postToPostDTO(post);
-//            post.setPostMeta(jsoupService.updatePostMeta(postDTO));
-//        }
         jsoupService.updateAllPostMeta(posts);
         long lEndTime = new Date().getTime();
         long duration = lEndTime - lStartTime;
@@ -300,7 +302,8 @@ public class AdminPostsController {
                 post.setPostMeta(jsoupService.createPostMeta(postDTO));
 
                 // All links are saved as PUBLISHED so no _isPublished_ status check on new Links
-                postDocService.addToIndex(post);
+                if (applicationSettings.getSolrEnabled())
+                    postDocService.addToIndex(post);
 
                 // Links are included in Posts A-to-Z Listing
                 fmService.createPostAtoZs();
@@ -369,7 +372,9 @@ public class AdminPostsController {
                 if (saveAction.equals(POST_PUBLISH)) {
 
                     if (saved.getIsPublished()) {
-                        postDocService.addToIndex(saved);
+                        if (applicationSettings.getSolrEnabled()) {
+                            postDocService.addToIndex(saved);
+                        }
                         fmService.createPostAtoZs();
                     }
 
@@ -441,17 +446,20 @@ public class AdminPostsController {
             if (post.getIsPublished()) {
 
                 post.setPostMeta(jsoupService.updatePostMeta(postDTO));
-
-                if (postIsIndexed)
-                    postDocService.updatePostDocument(post);
-                else
-                    postDocService.addToIndex(post);
+                if (applicationSettings.getSolrEnabled()) {
+                    if (postIsIndexed)
+                        postDocService.updatePostDocument(post);
+                    else
+                        postDocService.addToIndex(post);
+                }
 
                 fmService.createPostAtoZs();
             } else {
                 // remove postDocument from Solr Index if previously marked "Published", now marked "Draft"
                 if (postIsIndexed)
-                    postDocService.removeFromIndex(postDoc);
+                    if (applicationSettings.getSolrEnabled()) {
+                        postDocService.removeFromIndex(postDoc);
+                    }
             }
 
             webUI.addFeedbackMessage(attributes, FEEDBACK_POST_UPDATED);

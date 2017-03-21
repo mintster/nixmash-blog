@@ -66,6 +66,7 @@ public class PostDTO implements Serializable {
     private int imageIndex = 1;
     private String alphaKey;
     private Long temporaryPostId = 1L;
+
     private Long categoryId = 1L;
 
     private List<MultipartPostImage> postImages;

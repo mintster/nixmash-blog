@@ -105,12 +105,8 @@ public class JsoupServiceImpl implements JsoupService {
     @Override
     public void updateAllPostMeta(List<Post> posts) {
         for (Post post : posts) {
-//            try {
-//                Post updated = postService.getPostById(post.getPostId());
-                post.setPostMeta(updatePostMeta(PostUtils.postToPostDTO(post)));
-//            } catch (PostNotFoundException e) {
-//                e.printStackTrace();
-//            }
+            PostMeta updated = updatePostMeta(PostUtils.postToPostDTO(post));
+            post.setPostMeta(updated);
         }
     }
 
@@ -121,6 +117,7 @@ public class JsoupServiceImpl implements JsoupService {
     }
 
     @Override
+    @Transactional
     public PostMeta updatePostMeta(PostDTO postDTO) {
 
         PostMeta postMeta = buildPostMetaToSave(postDTO);
