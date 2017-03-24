@@ -1,0 +1,52 @@
+body {
+    font-family: ubuntu, arial, helvetica, serif;
+    margin: 40px;
+}
+
+samp {
+    background-color: #F7F7F9;
+    border: 1px solid #D1D1E8;
+    border-radius: 3px;
+    margin: auto;
+    overflow-x: auto;
+    padding: 0 3px;
+    font-family: 'Droid Sans Mono', Courier, monospace;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    display: inline;
+    line-height: 1.5;
+}
+ul ol {
+    margin-top: 5px;
+    margin-bottom: 6px;
+}
+li {
+    line-height: 1.4;
+}
+.change-entry {
+    margin: 35px 0;
+}
+.change-intro em {
+    color: blueviolet;
+}
+h1 {
+    background-image: url('../pics/mintlogo-small.png');
+    background-repeat: no-repeat;
+    background-position: top left;
+    padding-left: 45px;
+}
+span.link-pipe {
+color: gray;
+    padding: 0 4px;
+}
+
+a:link, a:visited {
+    color: gray;
+    text-decoration: none;
+    font-weight: bold;
+}
+a:hover, a:focus {
+    color: #000;
+    text-decoration: underline;
+}

@@ -1,14 +1,8 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
 <body>
-<div class="jumbotron">
+<div th:fragment="jumbotron_one" class="home_jumbotron">
     <div class="container">
-        <img th:src="@{'/images/site/nixmash-header.png'}" height="99" width="300"/>
-
-        <p th:utext="#{home.subtitle}">[Jumbotron Subtitle]</p>
-
-        <div class="row">
-            <div class="col-lg-12"><br/><br/></div>
-        </div>
+        <img th:src="@{'/x/pics/home/nixmash-logo.png'}"/>
 
         <!--temporary merge comment for git merge script test-->
 
@@ -30,5 +24,22 @@
 
     </div>
 </div>
+
+<div th:fragment="jumbotron_two" class="whatwedo_jumbotron">
+    <div class="container">
+
+        <h2>Specializing in Java Web Applications and Services</h2>
+
+        <blockquote>
+            <small>Independent Developers from beautiful Burlington, Vermont who value a Work-Life Balance.</small>
+            <small>Linux Server and Desktop experts. We do all Linux all the time, in both Ubuntu and Linux Mint.</small>
+            <small>Life Long adherents of the Free Open Source Software licensing and distribution philosophy.</small>
+            <small>Years of rock solid application design, product delivery and community code contribution.</small>
+            <small>A Small Office/Home Office Business able to offer top shelf application development for less.</small>
+        </blockquote>
+
+    </div>
+</div>
+
 </body>
 </html>

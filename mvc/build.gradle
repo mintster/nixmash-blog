@@ -1,4 +1,4 @@
-war { baseName = 'nixmashSpring' }
+war { baseName = 'nixmashBlog' }
 
 sourceSets {
 	main {

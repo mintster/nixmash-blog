@@ -8,14 +8,15 @@
 </head>
 <body>
 <nav th:replace="fragments/navbar :: navbar('home')">Navbar</nav>
-<div th:replace="fragments/jumbotron :: .jumbotron">Home Page Jumbotron</div>
+<div th:replace="fragments/jumbotron :: jumbotron_one">Home Page Jumbotron</div>
+<div th:replace="fragments/jumbotron :: jumbotron_two">What We Do Jumbotron</div>
 
 <!--/*@thymesVar id="post" type="com.nixmash.blog.jpa.model.Post"*/-->
 <!--/*@thymesVar id="posts" type="List<com.nixmash.blog.jpa.model.Post>"*/-->
 
 <div th:if="${posts}" th:remove="tag">
     <div class="container home-posts">
-        <div class="row">
+        <div class="row home-post-blockquote">
             <blockquote>
                 <p>
                     Most recent NixMash Posts and Links
