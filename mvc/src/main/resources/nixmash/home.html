@@ -11,29 +11,37 @@
 <div th:replace="fragments/jumbotron :: jumbotron_one">Home Page Jumbotron</div>
 <div th:replace="fragments/jumbotron :: jumbotron_two">What We Do Jumbotron</div>
 
+<div th:replace="fragments/about :: home_about">Home About Us</div>
+
 <!--/*@thymesVar id="post" type="com.nixmash.blog.jpa.model.Post"*/-->
 <!--/*@thymesVar id="posts" type="List<com.nixmash.blog.jpa.model.Post>"*/-->
 
-<div th:if="${posts}" th:remove="tag">
-    <div class="container home-posts">
-        <div class="row home-post-blockquote">
-            <blockquote>
-                <p>
-                    Most recent NixMash Posts and Links
-                </p>
-                <small th:each="post : ${posts}">
-                    <a th:href="@{|/post/${post.postName}|}" th:text="${post.postTitle}">[post]</a>
-                </small>
-                <div class="home-posts-link">
-                    <a href="/posts" class="btn btn-primary">View Posts Stream</a>
-                </div>
-            </blockquote>
+<div class="home-posts">
+    <div class="container">
+
+        <div th:if="${posts}" th:remove="tag">
+            <h2>Recent Posts and Links</h2>
+            <div class="home-post-blockquote">
+                <blockquote>
+                    <small th:each="post : ${posts}">
+                        <a th:href="@{|/post/${post.postName}|}" th:text="${post.postTitle}">[post]</a>
+                    </small>
+                    <div class="home-posts-link">
+                        <a href="/posts" class="btn btn-primary">View Posts Stream</a>
+                    </div>
+                </blockquote>
+            </div>
         </div>
     </div>
 </div>
+<div class="home-footer">
+    <div class="container">
+        <p class="mashupphotoinfo">The banner photo of Church Street was <a href="https://flic.kr/p/RW27MT">created by BostonTx</a>, made available under a <a href="http://creativecommons.org/licenses/by-nc/3.0/us/">Creative Commons Attribution-Noncommercial license.</a></p>
 
-<div class="container">
-    <nav th:replace="fragments/secinfo :: [id='secInfo']">User Info</nav>
+        <nav th:replace="fragments/secinfo :: [id='secInfo']">User Info</nav>
+
+    </div>
+
 </div>
 <div th:include="fragments/scripts :: [id='scripts']" th:remove="tag">Scripts</div>
 </body>

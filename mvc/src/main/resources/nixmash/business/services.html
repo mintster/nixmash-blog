@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:include="fragments/head :: head" th:remove="tag">Global Header</div>
+    <title th:text="#{services.page.title}"></title>
+</head>
+<body>
+
+<nav th:replace="fragments/navbar :: navbar('services')">Navbar</nav>
+
+<!--/*@thymesVar id="currentUser" type="com.nixmash.blog.jpa.model.CurrentUser"*/-->
+<!--/*@thymesVar id="currentUserConnection" type="com.nixmash.blog.jpa.model.UserConnection"*/-->
+
+<div class="container">
+    <div class="page-header" id="banner">
+        <div class="row">
+            <div class="col-lg-8 col-md-7 col-sm-6">
+                <h1 th:text="#{services.page.header}">[Services]</h1>
+                <p class="lead" th:text="#{services.page.subheader}">[Services Services Services!]</p>
+            </div>
+            <div th:replace="fragments/sponsor :: [id='sponsor']">Sponsor Image</div>
+        </div>
+    </div>
+
+</div>
+<div class="container bs-container big-font-container">
+    <div class="row row-centered">
+        <div class="container services-block">
+            <p>NixMash is a different kind of Code Shop. We're a Virtual Team of developers and designers based in
+                Burlington, Vermont. NixMash was founded by Dave Burke, who has more than 30 years of development
+                experience in a range of industries and environments. You can think of NixMash as "Dave Burke and
+                Friends."</p>
+
+            <img src="/x/pics/site/spring_logo_pivotal.png" class="spring-side-logo"/>
+            <p>Our business model works like this. We at NixMash are committed to Open Source technologies. In that spirit we spent nearly two years building a full featured Open Source
+                application in Java with <a href="https://spring.io/">the Spring Framework</a> called <strong>NixMash
+                    Spring.</strong> For those who might not know,
+                Spring is far and away the most popular Java Framework for building web and cloud applications today. If you
+                want to learn more about our <strong>NixMash Spring</strong> application, it is free to download <a
+                        href="https://github.com/mintster/spring-data">on GitHub.</a></p>
+
+            <p>Let's say you want us to build you a new Website. We'll start with <strong>NixMash Spring</strong> and
+                add the
+                features you need, which is all you pay for. Everything else
+                that you need with a website, User Logins, Password Recovery, Social Logins from services like Facebook,
+                User
+                Administration, Email Services, SEO Tracking and so on are already built-in. In other words, with any
+                NixMash-built website you get two years of development time for free!</p>
+
+            <a href="http://parasitewonders.com/" target="_blank"><img src="/x/pics/portfolio/parasitewonders.png"
+                                                                       alt="" class="services-parasites"/></a>
+            <p class="link-image-text"><a href="http://parasitewonders.com/">Parasite Wonders</a> is a site we built for
+                Dr. Bobbi Pritt of the Mayo Clinic. It is an example of how we save clients both time and money using
+                our <strong>NixMash Spring</strong> application as a site codebase. <em>This</em> site, NixMash.com, in fact, is another
+                example! We're all about Open Source here at NixMash as you know by now, so if you want the source code
+                to NixMash.com you can download it <a href="https://github.com/mintster/nixmash-blog">on GitHub.</a></p>
+
+            <p class="clearfix"></p>
+
+            <p class="text-after-link-image">We use the following proven technologies, all of which have stood the test
+                of time and see increasing use
+                and popularity:</p>
+
+            <ul>
+                <li>Linux as the Server Platform</li>
+                <li>Java</li>
+                <li>The Spring Framework for Development</li>
+                <li>Gradle for Application Builds</li>
+                <li>Apache Solr Search Engine</li>
+                <li>MySQL or PostgreSQL Databases</li>
+                <li>Git for Version Control</li>
+                <li>FreeMarker for HTML and Email Templating</li>
+                <li>Thymeleaf for Web Page Templating and Display</li>
+                <li>Bootstrap for Theming</li>
+                <li>JQuery and JavaScript when required for client-side web page functions</li>
+            </ul>
+
+<p>Oh, and just because we use Open Source technologies doesn't mean you have to share your code with everyone like we share this site code on GitHub. You can keep the proprietary logic for which you paid good money fully private and secure.</p>
+
+            <p>If you have questions or a great idea for a website or cloud application, contact Dave. See our contact page for details.</p>
+
+            <p>Peace.</p>
+        </div>
+    </div>
+    <nav th:replace="fragments/secinfo :: [id='secInfo']">User Info</nav>
+</div>
+<div th:include=" fragments/scripts :: [id='scripts']" th:remove="tag">Scripts</div>
+<div th:include="fragments/alerts :: [id='alerts']" th:remove="tag">Alerts</div>
+
+</body>
+</html>

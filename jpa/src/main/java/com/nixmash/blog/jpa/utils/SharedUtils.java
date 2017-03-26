@@ -1,6 +1,9 @@
 package com.nixmash.blog.jpa.utils;
 
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Random;
 
 /**
@@ -24,5 +27,32 @@ public class SharedUtils {
         return totalTime;
     }
 
+
+    public static boolean isNixMashPC()  {
+        boolean isNixMashPC = false;
+        try {
+            for(Enumeration<NetworkInterface> e
+                = NetworkInterface.getNetworkInterfaces();
+                e.hasMoreElements(); )
+            {
+                NetworkInterface ni = e.nextElement();
+                if (ni.getDisplayName().equals("wlp5s0"))
+                    isNixMashPC = formatMac(ni.getHardwareAddress()).equals("10-FE-ED-84-9E-A9");
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return isNixMashPC;
+    }
+
+    private static String formatMac(byte[] mac) {
+        if (mac == null)
+            return "UNKNOWN";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < mac.length; i++) {
+            sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+        }
+        return sb.toString();
+    }
 
 }

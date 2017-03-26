@@ -5,6 +5,7 @@
     background-image: url(/x/pics/home/churchstreet-banner.png);
     min-height: 400px;
 }
+
 .home_jumbotron img {
     float: right;
 }
@@ -30,11 +31,15 @@ blockquote small {
 }
 
 .home-posts {
-    margin-bottom: 30px;
+    background-color: #f4f4f4;
 }
 
 .home-posts-link {
     margin-top: 20px;
+}
+
+.home-posts h2 {
+    margin-top: 60px;
 }
 
 .whatwedo_jumbotron {
@@ -47,16 +52,54 @@ blockquote small {
 .whatwedo_jumbotron h2 {
     margin-bottom: 45px;
 }
+
 .whatwedo_jumbotron blockquote small {
-    color: #eee;
+    color: #e3e3e3;
     line-height: 1.8;
+    font-size: 20px;
 }
 
-.row.home-post-blockquote {
-    padding-left:15px;
-    margin-top:60px;
+.home-post-blockquote {
+    margin-top: 40px;
+    margin-bottom: 40px;
 }
-    /*</editor-fold>*/
+
+.home_about {
+    margin-top: 40px;
+}
+
+.home_about a {
+    font-weight: bold;
+}
+
+.home_about blockquote {
+    margin-bottom: 40px;
+}
+
+.home_about blockquote p {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.home_about h2 {
+    margin-bottom: 40px;
+}
+
+.home-footer {
+    background-color: #f4f4f4;
+}
+
+.home-footer #secInfo {
+    margin-top: 40px;
+}
+
+.home-footer p.mashupphotoinfo {
+    font-size: 0.8em;
+    line-height: 2;
+    color: #555;
+}
+
+/*</editor-fold>*/
 /*/<editor-fold> desc="BODY, ROWS AND COLUMNS ----------------------------/ "*/
 body {
     padding-top: 40px;
@@ -223,6 +266,7 @@ a.navbar-text.pull-right.navbar-welcome.dropdown-toggle {
 .navbar-form .btn-sm {
     margin-top: 6px;
 }
+
 /*</editor-fold>*/
 /*/<editor-fold> desc="SECUSER USER AND GITHUB PROJECT INFO ----------------------------/ "*/
 #secInfo {
@@ -436,6 +480,7 @@ td a b {
     display: block;
     margin-top: 25px;
 }
+
 /* USER REGISTRATION HOME MESSAGE -------------------------- */
 
 .email-approved-row {
@@ -445,6 +490,7 @@ td a b {
     color: #333;
     font-style: italic;
 }
+
 /* SOCIAL BUTTONS ---------------------------------------------- */
 .welcome-row {
     font-size: 18px;
@@ -542,6 +588,7 @@ textarea.mail-body {
 
 #contact-twitter-message {
     min-height: 300px;
+    margin-bottom: 60px;
 }
 
 #contact-twitter-message h3 {
@@ -552,6 +599,9 @@ textarea.mail-body {
     font-weight: bold;
 }
 
+#contact-twitter-message p {
+    font-size: 20px;
+}
 /*</editor-fold>*/
 /*/<editor-fold> desc="SUBMENUS----------------------------/ "*/
 .marginBottom-0 {
@@ -1114,11 +1164,11 @@ h1.post-title {
         top: 138px;
     }
 
-    #tagcloud.affix  {
+    #tagcloud.affix {
         top: 330px;
     }
 
-    #secInfo.affix  {
+    #secInfo.affix {
         top: 900px;
     }
 
@@ -1452,9 +1502,11 @@ button.btn.btn-success.btn-flashcard-category {
 #sidebar-search {
     position: static;
 }
+
 #sidebar-search input.search-submit.button {
     display: none;
 }
+
 #sidebar-search input.form-control {
     width: 245px;
 }
@@ -1471,39 +1523,48 @@ button.btn.btn-success.btn-flashcard-category {
 #category-message {
     margin-top: 80px;
 }
+
 #category-message a {
     font-weight: bold;
 }
+
 #category-message h1 {
     margin-bottom: 40px;
 }
+
 #category-message p {
     font-size: 20px;
     padding-bottom: 20px;
 }
+
 #category-message span.oldCategory {
     font-weight: bold;
 }
+
 /*</editor-fold>*/
 /*<editor-fold desc="MORELIKETHIS --------------------------------------- /  ">*/
 .mlt-item h3 {
     margin-bottom: 6px;
     font-size: 24px;
 }
+
 #morelikethis span.taglink a.label {
     font-size: small;
     padding: 3px 8px;
     margin-left: 0;
     margin-right: 1px;
 }
+
 #morelikethis a.big.label.label-default {
     /*background-color: #708686;*/
 }
+
 .mlt.post-date {
     font-style: italic;
     font-size: small;
     margin-top: 6px;
 }
+
 /*</editor-fold>*/
 /*<editor-fold desc="CODER NOTES ------------------------------------- /">*/
 .android-coder-notes {
@@ -1512,15 +1573,18 @@ button.btn.btn-success.btn-flashcard-category {
     background-color: #f2f2f2;
     border: 1px solid #aaa;
 }
+
 h4.android-coder-title {
     /* font-weight: bold; */
     color: #4a6671;
     font-size: 26px;
     margin-bottom: 20px;
 }
+
 .android-coder-notes a {
     font-weight: bold;
 }
+
 /*</editor-fold>*/
 /*<editor-fold desc="NIXMASHUP LINKS -----------------------------------------------/">*/
 p.mashupintro, p.mashupintroplus {
@@ -1530,11 +1594,13 @@ p.mashupintro, p.mashupintroplus {
     overflow: hidden;
     font-size: 16px;
 }
+
 div.mashuplinks {
     margin-top: 30px;
     margin-bottom: 10px;
     clear: left;
 }
+
 p.everymandate {
     clear: left;
     color: #777;
@@ -1545,23 +1611,28 @@ p.everymandate {
     overflow: hidden;
     padding-left: 9px;
 }
+
 span.mashupimage {
     float: left;
     margin-bottom: 18px;
-}
-.mashupimage img {
-    border: 2px solid #000;
     margin-right: 20px;
 }
+
+#post-body span.mashupimage img {
+    border: 2px solid #000;
+    margin-top: 5px;
+}
+
 .mashup p.linktitle {
     font-size: 28px;
     margin-top: 35px;
 }
+
 p.mashupphotoinfo {
     background-image: url(/x/pics/creativecommons.png);
     background-position: 0;
     background-repeat: no-repeat;
-    font-family: Helvetica,Arial,sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
     font-size: 0.7em;
     line-height: 1.8;
     margin-bottom: 30px;
@@ -1569,6 +1640,7 @@ p.mashupphotoinfo {
     padding-left: 32px;
     text-transform: uppercase;
 }
+
 p.mashupfeedinfo {
     padding: 14px;
     font-size: .9em;
@@ -1577,21 +1649,62 @@ p.mashupfeedinfo {
     border-bottom: dashed 1px #ccc;
     margin: 30px 0;
 }
+
 #post-body .mashup p.linktext {
     margin-bottom: 10px;
 }
+
 div.mashup p.hashtags {
     font-size: .9em;
     margin-top: 0;
     margin-bottom: .3em;
     color: #56ae7a;
 }
+
 div.mashup p.hashtags a {
     font-style: italic;
     font-family: helvetica, sans-serif;
     font-size: 16px;
 }
+
 /*</editor-fold>*/
 
+.services-block {
+    min-height: 600px;
+    text-align: left;
+    margin-bottom: 60px;
+}
 
+.services-block a {
+    font-weight: bold;
+}
+.services-block p {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
 
+.services-block p.link-image-text {
+    margin-top: 35px;
+}
+.services-block p.text-after-link-image {
+    clear: left;
+}
+
+.services-block a img.services-parasites {
+    max-width: 200px;
+    border: solid 2px;
+    float: left;
+    margin-right: 20px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+}
+
+.services-block ul {
+    font-size: 20px;
+    margin-bottom: 35px;
+}
+
+.services-block img.spring-side-logo {
+    float: right;
+    max-width: 350px;
+}

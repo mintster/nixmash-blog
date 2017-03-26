@@ -49,6 +49,11 @@
                         </ul>
                     </li>
 
+                    <li th:class="${activeTab == 'services'} ? 'active' : null"><a href="/services"
+                                                                                  th:href="@{/services}"
+                                                                                  th:text="#{navbar.services.navbar.linktext}">[Services]</a>
+                    </li>
+
                     <li th:class="${activeTab == 'contact'} ? 'active' : null"><a href="/users/contact"
                                                                                   th:href="@{/users/contact}"
                                                                                   th:text="#{mail.contact.navbar.linktext}">[Contact]</a>
