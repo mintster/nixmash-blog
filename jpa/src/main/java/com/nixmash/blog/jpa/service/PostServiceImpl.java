@@ -237,6 +237,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PostMeta buildTwitterMetaTagsForDisplay(Post post) {
         PostMeta postMeta = post.getPostMeta();
         if (!postMeta.getTwitterCardType().equals(TwitterCardType.NONE)) {

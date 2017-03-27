@@ -113,6 +113,8 @@ public class AdminPostsController {
 
     // endregion
 
+    // region Constructor
+
     private static final Logger logger = LoggerFactory.getLogger(AdminPostsController.class);
 
     @Autowired
@@ -124,6 +126,8 @@ public class AdminPostsController {
         this.jsoupService = jsoupService;
         this.applicationSettings = applicationSettings;
     }
+
+    // endregion
 
     //region Posts List
 

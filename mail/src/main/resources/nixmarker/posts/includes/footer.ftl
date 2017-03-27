@@ -40,6 +40,8 @@
 </div>
 
 <#if  post.postType.name() == "LINK">
-<a target="_blank" href="${post.postLink}" class="remote-link" title="Go to External Site">${post.postSource}</a>
+<div class="link-source">
+<span class="link-source-prefix">Link Source:</span> <a target="_blank" href="${post.postLink}" class="remote-link" title="Go to External Site">${post.postSource}</a>
+</div>
 </#if>
 

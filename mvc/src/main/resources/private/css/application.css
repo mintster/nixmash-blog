@@ -840,7 +840,7 @@ span.tag.label {
 }
 
 #posts .post .post-content {
-
+    margin-top: 45px;
 }
 
 #posts img.thumbnail-image {
@@ -981,6 +981,20 @@ span.taglink .label-default {
     margin-top: 10px;
 }
 
+.link-source {
+    margin-top: 20px;
+}
+.link-source a.remote-link {
+    font-size: 26px;
+    line-height: .9;
+}
+
+span.link-source-prefix {
+    display: inline-block;
+    float: left;
+    margin-right: 7px;
+    color: #666;
+}
 /*</editor-fold>*/
 /*/<editor-fold> desc="POST PERMALINK DISPLAY ----------------------------/ "*/
 
