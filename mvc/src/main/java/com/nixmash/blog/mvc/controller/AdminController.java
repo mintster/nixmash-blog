@@ -4,6 +4,7 @@ import com.nixmash.blog.jpa.common.ISiteOption;
 import com.nixmash.blog.jpa.common.SiteOptions;
 import com.nixmash.blog.jpa.dto.*;
 import com.nixmash.blog.jpa.enums.SignInProvider;
+import com.nixmash.blog.jpa.enums.UserRegistration;
 import com.nixmash.blog.jpa.exceptions.SiteOptionNotFoundException;
 import com.nixmash.blog.jpa.model.Authority;
 import com.nixmash.blog.jpa.model.User;
@@ -325,7 +326,6 @@ public class AdminController {
 
     // endregion
 
-
     // region Utility Methods
 
     SiteOptionMapDTO getGeneralSiteSettings() {
@@ -353,9 +353,17 @@ public class AdminController {
         siteService.update(SiteOptionDTO.with(
                 ISiteOption.GOOGLE_ANALYTICS_TRACKING_ID, siteOptionMapDTO.getGoogleAnalyticsTrackingId())
                 .build());
+
+        // TODO: Add Multiple User Registration Options Logic
+
         siteService.update(SiteOptionDTO.with(
-                ISiteOption.USER_REGISTRATION, siteOptionMapDTO.getUserRegistration())
+                ISiteOption.USER_REGISTRATION, UserRegistration.EMAIL_VERIFICATION)
                 .build());
+
+//        siteService.update(SiteOptionDTO.with(
+//                ISiteOption.USER_REGISTRATION, siteOptionMapDTO.getUserRegistration())
+//                .build());
+
     }
 
 

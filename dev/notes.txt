@@ -32,6 +32,12 @@ We added categories to our NixMash Blogging app on GitHub. Our primary approach 
 @creatorwith25characters
 summary_large_image
 
+BLOG POSTS:
+
+Conditional WAR Exclude in Gradle
+Overwriting the Spring Whitelabel Error Page
+
+---------------
 
 HTTP Status: 500 (Internal Server Error)
 Message: org.springframework.web.util.NestedServletException:

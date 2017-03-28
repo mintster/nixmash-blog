@@ -181,7 +181,6 @@ public class AdminControllerTests extends AbstractContext {
     @Test
     public void updateGeneralSiteSettingsMethodTest() throws Exception {
         siteOptionMapDTO.setSiteName(NEW_SITE_NAME);
-        siteOptionMapDTO.setIntegerProperty(NEW_INTEGER_PROPERTY);
         siteOptionMapDTO.setUserRegistration(NEW_USER_REGISTRATION);
 
         adminController.updateGeneralSiteSettings(siteOptionMapDTO);
@@ -189,8 +188,6 @@ public class AdminControllerTests extends AbstractContext {
         assertEquals(siteOptions.getSiteName(), NEW_SITE_NAME);
         assertEquals(siteOptions.getUserRegistration(), NEW_USER_REGISTRATION);
 
-        // integerProperty is not updated as a General Site Setting
-        assertEquals(siteOptions.getIntegerProperty(), DEFAULT_INTEGER_PROPERTY);
     }
 
     @Test

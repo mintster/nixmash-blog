@@ -23,9 +23,6 @@ public class SiteOptionMapDTO implements Serializable{
 
     private String googleAnalyticsTrackingId;
 
-    @NotNull
-    private Integer integerProperty;
-
     private UserRegistration userRegistration;
 
     // region getters setters
@@ -62,14 +59,6 @@ public class SiteOptionMapDTO implements Serializable{
         this.googleAnalyticsTrackingId = googleAnalyticsTrackingId;
     }
 
-    public Integer getIntegerProperty() {
-        return integerProperty;
-    }
-
-    public void setIntegerProperty(Integer integerProperty) {
-        this.integerProperty = integerProperty;
-    }
-
     public UserRegistration getUserRegistration() {
         return userRegistration;
     }
@@ -101,11 +90,6 @@ public class SiteOptionMapDTO implements Serializable{
             built.addGoogleAnalytics = addGoogleAnalytics;
             built.googleAnalyticsTrackingId = googleAnalyticsTrackingId;
             built.userRegistration = userRegistration;
-        }
-
-        public Builder integerProperty(Integer integerProperty) {
-            built.integerProperty = integerProperty;
-            return this;
         }
 
         public SiteOptionMapDTO build() {

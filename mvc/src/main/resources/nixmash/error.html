@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:include="fragments/error-head :: head" th:remove="tag">Global Header</div>
-    <title>NixMash Spring Error Page</title>
+    <title>NixMash Blog Error Page</title>
 </head>
 <body>
 <nav th:replace="fragments/navbar :: navbar('error')">Navbar</nav>
@@ -12,7 +12,6 @@
         <div class="row">
             <div class="col-lg-8 col-md-7 col-sm-6">
                 <h1 th:text="#{error.page.title}">[error title]</h1>
-
                 <p class="lead">Error encounter at <span th:text="${timestamp}"/></p>
             </div>
             <div th:replace="fragments/sponsor :: [id='sponsor']">[sponsor image]</div>

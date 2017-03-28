@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.solr.UncategorizedSolrException;
 import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -319,7 +318,6 @@ public class PostsRestController {
         return populatePostStream(posts, currentUser, null);
     }
 
-    @Transactional(readOnly = true)
     private String populatePostStream(List<Post> posts, CurrentUser currentUser, String format) {
         String result = StringUtils.EMPTY;
         for (Post post : posts) {

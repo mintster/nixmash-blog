@@ -38,6 +38,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Value("${nixmash.mode.enabled}")
     private Boolean nixmashModeEnabled;
 
+
     // region Template Resolvers
 
     @Bean

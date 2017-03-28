@@ -51,20 +51,11 @@ public class SiteOptions {
     private String siteDescription;
     private Boolean addGoogleAnalytics;
     private String googleAnalyticsTrackingId;
-    private Integer integerProperty;
     private UserRegistration userRegistration;
 
     // endregion
 
     // region Getter Setters
-
-    public Integer getIntegerProperty() {
-        return integerProperty;
-    }
-
-    public void setIntegerProperty(Integer integerProperty) {
-        this.integerProperty = integerProperty;
-    }
 
     public String getSiteName() {
         return siteName;
@@ -117,7 +108,6 @@ public class SiteOptions {
                 ", siteDescription='" + siteDescription + '\'' +
                 ", addGoogleAnalytics=" + addGoogleAnalytics +
                 ", googleAnalyticsTrackingId='" + googleAnalyticsTrackingId + '\'' +
-                ", integerProperty=" + integerProperty +
                 ", userRegistration=" + userRegistration +
                 '}';
     }

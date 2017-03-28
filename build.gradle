@@ -1,7 +1,7 @@
 
 
 buildscript {
-	ext { springBootVersion = '1.5.1.RELEASE' }
+	ext { springBootVersion = '1.5.2.RELEASE' }
 	repositories {
 		mavenCentral()
 //		maven { url 'http://repo.spring.io/snapshot' }
@@ -27,7 +27,7 @@ allprojects {
 	targetCompatibility = 1.8
 
 	ext['spring-data-releasetrain.version']="Hopper-SR7"
-	ext['hibernate.version']="5.1.4.Final"
+//	ext['hibernate.version']="5.1.4.Final"
 
 	dependencyManagement {
 		applyMavenExclusions false
@@ -76,7 +76,7 @@ allprojects {
 		testCompile "org.mockito:mockito-core"
 		testCompile "org.hamcrest:hamcrest-library"
 
-		compile ('ch.qos.logback:logback-classic:1.1.7') { exclude(module:'slf4j-api') }
+		compile ('ch.qos.logback:logback-classic:1.2.2') { exclude(module:'slf4j-api') }
 	}
 
 	springBoot {

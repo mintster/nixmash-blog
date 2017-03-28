@@ -48,10 +48,8 @@ public class SiteServiceTests extends SpringDataTests{
     @Test
     public void siteOptionUpdated_UpdatesSiteOptionsBean() throws SiteOptionNotFoundException {
         siteService.update(new SiteOptionDTO(SITE_PROPERTY_NAME, "Updated Site Name"));
-        siteService.update(new SiteOptionDTO(INTEGER_PROPERTY_NAME, "8"));
 
         assert(siteOptions.getSiteName().equals("Updated Site Name"));
-        assert(siteOptions.getIntegerProperty().equals(8));
 
     }
 

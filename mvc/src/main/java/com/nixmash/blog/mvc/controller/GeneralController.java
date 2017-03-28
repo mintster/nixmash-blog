@@ -14,7 +14,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
@@ -79,6 +82,15 @@ public class GeneralController {
         return HOME_VIEW;
     }
 
+
+//    @RequestMapping(value = "/error")
+//    public ModelAndView error() {
+//        ModelAndView mav = new ModelAndView();
+//        mav.addObject(ERROR_PAGE_TITLE_ATTRIBUTE, "Error Alert!");
+//        mav.addObject(ERROR_PAGE_MESSAGE_ATTRIBUTE, "Sorry about that. The exception has been logged and we'll get to the bottom of it. Thanks!");
+//        mav.setViewName(ERROR_CUSTOM_VIEW);
+//        return mav;
+//    }
 
     @RequestMapping(value = "/robots.txt", method = RequestMethod.GET)
     @ResponseBody
