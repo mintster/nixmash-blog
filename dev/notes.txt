@@ -31,3 +31,11 @@ We added categories to our NixMash Blogging app on GitHub. Our primary approach 
 
 @creatorwith25characters
 summary_large_image
+
+
+HTTP Status: 500 (Internal Server Error)
+Message: org.springframework.web.util.NestedServletException:
+Request processing failed; nested exception is org.springframework.transaction.CannotCreateTransactionException:
+Could not open JPA EntityManager for transaction; nested exception is javax.persistence.PersistenceException:
+com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+Exception: org.springframework.transaction.CannotCreateTransactionException

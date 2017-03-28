@@ -28,4 +28,12 @@
 		<jsr107:mbeans enable-statistics="true"/>
 	</cache>
 
+	<cache alias="tagCloud">
+		<expiry>
+			<!-- Cache Github Stats for 60 minutes -->
+			<ttl unit="seconds">3600</ttl>
+		</expiry>
+		<heap unit="entries">100</heap>
+		<jsr107:mbeans enable-statistics="true"/>
+	</cache>
 </config>

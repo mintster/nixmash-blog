@@ -1,2 +1,2 @@
-include "jpa", "mail", "jsoup", "solr", "mvc", "batch"
+include "jpa", "mail", "jsoup", "solr", "mvc"
 

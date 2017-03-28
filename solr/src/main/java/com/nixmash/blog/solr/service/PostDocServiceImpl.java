@@ -1,10 +1,14 @@
 package com.nixmash.blog.solr.service;
 
+import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.jpa.dto.PostQueryDTO;
+import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
 import com.nixmash.blog.jpa.model.Post;
+import com.nixmash.blog.jpa.service.PostService;
 import com.nixmash.blog.solr.model.PostDoc;
 import com.nixmash.blog.solr.repository.custom.CustomPostDocRepository;
 import com.nixmash.blog.solr.utils.SolrUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+@Transactional
 @Service
 public class PostDocServiceImpl implements PostDocService {
 
@@ -32,11 +37,57 @@ public class PostDocServiceImpl implements PostDocService {
     CustomPostDocRepository customPostDocRepository;
 
     private final SolrOperations solrOperations;
+    private final PostService postService;
+    private final ApplicationSettings applicationSettings;
+
 
     @Autowired
-    public PostDocServiceImpl(SolrOperations solrOperations) {
+    public PostDocServiceImpl(SolrOperations solrOperations, PostService postService, ApplicationSettings applicationSettings) {
         this.solrOperations = solrOperations;
+        this.postService = postService;
+        this.applicationSettings = applicationSettings;
     }
+
+
+    // region PostDoc to Post Conversion
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Post> getPostsFromPostDocs(List<PostDoc> postDocs) {
+        List<Post> posts = new ArrayList<>();
+        for (PostDoc postDoc :
+                postDocs) {
+            try {
+                posts.add(postService.getPostById(Long.parseLong(postDoc.getPostId())));
+            } catch (PostNotFoundException e) {
+                logger.info("Could not convert PostDoc {} to Post with title \"{}\"", postDoc.getPostId(), postDoc.getPostTitle());
+            }
+        }
+        return posts;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Post> getMoreLikeThisPostsFromPostDocs(List<PostDoc> postDocs) {
+        List<Post> posts = new ArrayList<>();
+        String result = StringUtils.EMPTY;
+
+        for (int i = 0; i < applicationSettings.getMoreLikeThisNum(); i++) {
+            try {
+                PostDoc postDoc = postDocs.get(i);
+                posts.add(postService.getPostById(Long.parseLong(postDoc.getPostId())));
+            } catch (PostNotFoundException | IndexOutOfBoundsException e) {
+                if (e.getClass().equals(PostNotFoundException.class))
+                    logger.info("MoreLikeThis PostDoc {} to Post with title \"{}\" NOT FOUND", postDocs.get(i).getPostId(), postDocs.get(i).getPostTitle());
+                else {
+                    logger.info("EXCEPTION: AppSetting.MoreLikeThisNum > post count");
+                    return null;
+                }
+            }
+        }
+        return posts;
+    }
+    // endregion
 
     @Override
     public List<PostDoc> getPostsWithUserQuery(String userQuery) {
@@ -44,14 +95,15 @@ public class PostDocServiceImpl implements PostDocService {
         return customPostDocRepository.findPostsBySimpleQuery(userQuery);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
-    public List<PostDoc> getMoreLikeThis(Long postId)  {
+    public List<PostDoc> getMoreLikeThis(Long postId) {
         List<PostDoc> postDocList = null;
         try {
             postDocList = customPostDocRepository.findMoreLikeThis(postId);
         } catch (UncategorizedSolrException e) {
             logger.info("MoreLikeThis posts not retrieved for postId " + String.valueOf(postId));
+            postDocList = null;
         }
         return postDocList;
     }
@@ -125,7 +177,7 @@ public class PostDocServiceImpl implements PostDocService {
 
     @Override
     public List<PostDoc> getAllPostDocuments() {
-       return customPostDocRepository.findAllPostDocuments();
+        return customPostDocRepository.findAllPostDocuments();
     }
 
     @Override

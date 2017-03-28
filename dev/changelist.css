@@ -31,7 +31,7 @@ li {
     color: blueviolet;
 }
 h1 {
-    background-image: url('../pics/mintlogo-small.png');
+    background-image: url('/x/pics/mintlogo-small.png');
     background-repeat: no-repeat;
     background-position: top left;
     padding-left: 45px;

@@ -13,6 +13,12 @@ import java.util.List;
  */
 public interface PostDocService {
 
+    @Transactional(readOnly = true)
+    List<Post> getPostsFromPostDocs(List<PostDoc> postDocs);
+
+    @Transactional(readOnly = true)
+    List<Post> getMoreLikeThisPostsFromPostDocs(List<PostDoc> postDocs);
+
     List<PostDoc> getPostsWithUserQuery(String userQuery);
 
     List<PostDoc> getMoreLikeThis(Long postId);

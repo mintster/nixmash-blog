@@ -232,6 +232,7 @@ public class PostServiceImpl implements PostService {
     // region PostMeta Services
 
     @Override
+    @Transactional(readOnly = true)
     public PostMeta getPostMetaById(Long postId) {
         return postMetaRepository.findByPostId(postId);
     }
@@ -306,6 +307,7 @@ public class PostServiceImpl implements PostService {
         return postRepository.findByIsPublishedTrue(sortByPostDateDesc());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Post> getOneMostRecent() {
         logger.debug("Getting most recent post");
@@ -340,11 +342,13 @@ public class PostServiceImpl implements PostService {
         return postRepository.findAllByCategoryId(categoryId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Post> getPublishedPostsByTagId(long tagId) {
         return postRepository.findAllPublishedByTagId(tagId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Post> getAllPostsByTagId(long tagId) {
         return postRepository.findAllByTagId(tagId);
@@ -472,6 +476,7 @@ public class PostServiceImpl implements PostService {
         return category;
     }
 
+    @Transactional
     private void clearCategoryDefaults() {
         Iterable<Category> cats = categoryRepository.findAll();
         for (Category cat : cats) {
@@ -582,6 +587,7 @@ public class PostServiceImpl implements PostService {
     @SuppressWarnings("JpaQueryApiInspection")
     @Transactional(readOnly = true)
     @Override
+    @Cacheable(cacheNames = "tagCloud", key = "#root.methodName")
     public List<TagDTO> getTagCloud(int tagCount) {
         List<Tag> tagcloud = em.createNamedQuery("getTagCloud", Tag.class)
                 .getResultList();
