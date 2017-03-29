@@ -35,6 +35,15 @@
             <div th:unless="${exception == null}">
                 <span style="font-weight: bold">Exception: </span><span th:text="${exception}"/>
             </div>
+
+            <div th:unless="${stacktrace == null}">
+                <span style="font-weight: bold">Stack Trace: </span><span th:text="${stacktrace}"/>
+            </div>
+
+            <div th:unless="${stack == null}">
+                <span style="font-weight: bold">Stack: </span><span th:text="${stack}"/>
+            </div>
+
             </p>
             <p>
                 Back to the <a th:href="@{/}">Home Page</a>

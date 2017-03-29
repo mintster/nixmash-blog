@@ -54,7 +54,7 @@ allprojects {
 		compile 'javax.servlet:javax.servlet-api:3.1.0'
 		compile 'org.javassist:javassist'
 
-		compile 'commons-dbcp:commons-dbcp:1.4'
+//		compile 'commons-dbcp:commons-dbcp:1.4'
 		compile 'org.apache.tomcat:tomcat-dbcp:8.5.4'
 		compile 'com.google.guava:guava-gwt:18.0'
 		compile 'org.apache.commons:commons-lang3:3.4'
