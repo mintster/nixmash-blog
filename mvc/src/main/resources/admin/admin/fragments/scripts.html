@@ -7,6 +7,11 @@
     <script th:src="@{/js/datatables/jquery.dataTables.min.js}"></script>
 </div>
 
+<div th:fragment="dynatables">
+    <link rel="stylesheet" type="text/css" th:href="@{/js/dynatables/jquery.dynatable.css}"/>
+    <script th:src="@{/js/dynatables/jquery.dynatable.js}"></script>
+</div>
+
 <div th:fragment="scripts">
     <script th:src="@{/dashboard/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/bootstrap-dialog.js}"></script>

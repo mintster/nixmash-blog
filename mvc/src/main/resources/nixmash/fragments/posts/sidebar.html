@@ -3,7 +3,8 @@
 <body>
 <div th:fragment="sidebar(activeTab)">
 
-    <div  th:with="top=${currentUser == null} ? 374px :  416px" th:remove="tag">
+    <!-- Was " ? 374px :  416px" for additional sidebar 'Likes' menu item -->
+    <div  th:with="top=${currentUser == null} ? 374px :  374px" th:remove="tag">
         <style type="text/css" th:inline="text">
             #tagcloud.affix
             {

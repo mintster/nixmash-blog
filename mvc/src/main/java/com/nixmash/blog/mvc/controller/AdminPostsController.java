@@ -139,6 +139,15 @@ public class AdminPostsController {
         return mav;
     }
 
+    @RequestMapping(value = "/recent", method = GET)
+    public ModelAndView recentPostsListPage() {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("posts", postService.getAllPosts());
+        mav.setViewName(ADMIN_POSTS_LIST_VIEW);
+        return mav;
+    }
+
+
     //endregion
 
     // region Solr
