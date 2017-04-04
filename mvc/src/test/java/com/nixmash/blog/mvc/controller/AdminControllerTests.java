@@ -190,7 +190,6 @@ public class AdminControllerTests extends AbstractContext {
         adminController.updateGeneralSiteSettings(siteOptionMapDTO);
 
         assertEquals(siteOptions.getSiteName(), NEW_SITE_NAME);
-        assertEquals(siteOptions.getUserRegistration(), NEW_USER_REGISTRATION);
 
     }
 
