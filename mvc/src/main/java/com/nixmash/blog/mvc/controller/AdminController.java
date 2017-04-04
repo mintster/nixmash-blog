@@ -361,7 +361,7 @@ public class AdminController {
         // TODO: Add Multiple User Registration Options Logic
 
         siteService.update(SiteOptionDTO.with(
-                ISiteOption.USER_REGISTRATION, UserRegistration.EMAIL_VERIFICATION)
+                ISiteOption.USER_REGISTRATION, UserRegistration.CLOSED)
                 .build());
 
 //        siteService.update(SiteOptionDTO.with(

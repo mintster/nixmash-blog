@@ -1,6 +1,8 @@
 package com.nixmash.blog.mvc.controller;
 
 import com.nixmash.blog.jpa.common.ApplicationSettings;
+import com.nixmash.blog.jpa.model.Post;
+import com.nixmash.blog.jpa.service.PostService;
 import com.nixmash.blog.mvc.AbstractContext;
 import com.nixmash.blog.solr.SolrTestUtils;
 import com.nixmash.blog.solr.model.PostDoc;
@@ -28,9 +30,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -43,6 +43,12 @@ public class PostsRestControllerTests extends AbstractContext {
 
     @MockBean
     private PostDocService mockPostDocService;
+
+    @Autowired
+    private PostDocService postDocService;
+
+    @Autowired
+    private PostService postService;
 
     @Autowired
     private ApplicationSettings applicationSettings;
@@ -60,6 +66,7 @@ public class PostsRestControllerTests extends AbstractContext {
 
         when(mockPostDocService.getMoreLikeThis(MLT_POSTID))
                 .thenReturn(SolrTestUtils.createPostList(3));
+
     }
 
     @Test
@@ -110,6 +117,8 @@ public class PostsRestControllerTests extends AbstractContext {
         // MoreLikeThis Posts Enabled, returns an HTML Response
 
         applicationSettings.setMoreLikeThisDisplay(true);
+        List<Post> posts = postService.getAllPosts();
+        postDocService.reindexPosts(posts);
 
         mockMvc.perform(get("/post/" + MLT_POSTNAME))
                 .andExpect(model().attributeExists(MORELIKETHIS_ATTRIBUTE));
