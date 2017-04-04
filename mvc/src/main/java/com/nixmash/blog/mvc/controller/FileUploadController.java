@@ -85,7 +85,7 @@ public class FileUploadController {
                                    BindingResult result, ModelMap model, CurrentUser currentUser,
                                    RedirectAttributes attributes, SessionStatus status) throws IOException {
 
-        String profileRedirectUrl = String.format("redirect:/%s?ico", currentUser.getUsername());
+        String profileRedirectUrl = String.format("redirect:/user/%s?ico", currentUser.getUsername());
 
         if (result.hasErrors()) {
             logger.info("Profile Image Errors for: {}", profileImageDTO.getFile().getOriginalFilename());

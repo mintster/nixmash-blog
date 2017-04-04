@@ -142,6 +142,27 @@ public class AdminPostsControllerTests  extends AbstractContext{
                 is(instanceOf(ArrayList.class)));
     }
 
+    @Test
+    public void postsList_allPosts_present() throws Exception {
+        RequestBuilder request = get("/admin/posts?allposts=true")
+                .with(csrf());
+        mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("allposts"))
+                .andExpect(view().name(ADMIN_POSTS_LIST_VIEW));
+    }
+
+    @Test
+    public void postsList_allPosts_isNotPresent() throws Exception {
+        RequestBuilder request = get("/admin/posts")
+                .with(csrf());
+        mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("posts"))
+                .andExpect(model().attributeDoesNotExist("allposts"))
+                .andExpect(view().name(ADMIN_POSTS_LIST_VIEW));
+    }
+
     // endregion
 
     // region Posts

@@ -1,13 +1,13 @@
 NixMash Blog
 ==========================
 
-NixMash Blog is a Java Spring Web Bootstrap 3 application based on [NixMash Spring](https://github.com/mintster/spring-data). You will soon see it in action at [NixMash,](http://nixmash.com) currently a WordPress Blog. NixMash Blog was designed to run on Linux.
+NixMash Blog is a Java Spring Web Bootstrap 3 application based on [NixMash Spring](https://github.com/mintster/spring-data). You can see it in action at [NixMash.](http://nixmash.com) NixMash Blog is built and runs on Linux. You can view the **NixMash Blog** Changelist [here.](http://nixmash.com/files/html/changelist.html)
 
 If you wish to move your WordPress Blog to the NixMash Blog application, a WordPress-to-NixMash Blog migration application is available on [GitHub here.](https://github.com/mintster/wp-nixmashspring-migrator)
 
 ## About NixMash Blog 
 
-It wasn't our intention to build another Blog Engine, but the blogging capability in [NixMash Spring](https://github.com/mintster/spring-data) made the idea of creating a standalone blogging application became a non-brainer for several reasons:
+It wasn't our intention to build another Blog Engine, but the blogging capability in [NixMash Spring](https://github.com/mintster/spring-data) made the idea of creating a standalone blogging application a non-brainer for several reasons:
 
 1. Darn good basic blogging features like Tags, Categories and RSS
 2. Solr Post search

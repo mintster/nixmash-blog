@@ -68,7 +68,6 @@ public class SiteOptionTests {
     @Test
     public void siteOptionsIsPopulatedFromContext() throws Exception {
         assertEquals(siteOptions.getAddGoogleAnalytics(), false);
-        assertEquals(siteOptions.getIntegerProperty(), (Integer) 1);
         assertEquals(siteOptions.getGoogleAnalyticsTrackingId(), "UA-XXXXXX-7");
         assertEquals(siteOptions.getSiteName(), "My Site");
         assertEquals(siteOptions.getSiteDescription(), "My Site Description");
@@ -79,7 +78,6 @@ public class SiteOptionTests {
     public void siteOptionsPropertyIsUpdatedAtRuntime() throws SiteOptionNotFoundException {
 
         assertEquals(siteOptions.getSiteName(), DEFAULT_SITE_NAME);
-        assertEquals(siteOptions.getIntegerProperty(), DEFAULT_INTEGER_PROPERTY);
         assertEquals(siteOptions.getUserRegistration(), DEFAULT_USER_REGISTRATION);
 
         siteService.update(new SiteOptionDTO(ISiteOption.SITE_NAME, MY_UPDATED_SITE_NAME));
@@ -88,7 +86,6 @@ public class SiteOptionTests {
         siteService.update(new SiteOptionDTO(ISiteOption.USER_REGISTRATION, String.valueOf(UPDATED_USER_REGISTRATION)));
 
         assertEquals(siteOptions.getSiteName(), MY_UPDATED_SITE_NAME);
-        assertEquals(siteOptions.getIntegerProperty(), UPDATED_INTEGER_PROPERTY);
         assertEquals(siteOptions.getUserRegistration(), UserRegistration.CLOSED);
 
         siteService.update(new SiteOptionDTO(ISiteOption.SITE_NAME, DEFAULT_SITE_NAME));

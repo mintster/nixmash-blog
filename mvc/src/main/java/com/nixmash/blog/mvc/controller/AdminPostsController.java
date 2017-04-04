@@ -113,6 +113,8 @@ public class AdminPostsController {
 
     // endregion
 
+    // region Constructor
+
     private static final Logger logger = LoggerFactory.getLogger(AdminPostsController.class);
 
     @Autowired
@@ -125,12 +127,22 @@ public class AdminPostsController {
         this.applicationSettings = applicationSettings;
     }
 
+    // endregion
+
     //region Posts List
 
     @RequestMapping(value = "", method = GET)
-    public ModelAndView postsListPage() {
+    public ModelAndView postsListPage(@RequestParam(value = "allposts", required = false, defaultValue = "false") Boolean allPosts) {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("posts", postService.getAllPosts());
+        int pageLength = 25;
+        if (allPosts) {
+            mav.addObject("posts", postService.getAllPosts());
+            mav.addObject("allposts", true);
+            pageLength = 200;
+        } else {
+            mav.addObject("posts", postService.getAdminRecentPosts());
+        }
+        mav.addObject("pageLength", pageLength);
         mav.setViewName(ADMIN_POSTS_LIST_VIEW);
         return mav;
     }

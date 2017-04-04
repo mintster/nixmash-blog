@@ -23,7 +23,8 @@
             java: 'Java',
             html: 'HTML',
             css: 'CSS',
-            bash: 'Bash'
+            bash: 'Bash',
+            sql: 'SQL'
         };
     </script>
 </div>
@@ -50,6 +51,9 @@
         showDialog("Save Post", "Please save a draft of your post before adding images or attachments.");
     }
 
+    function showTagsHelp() {
+        showDialog("Tag Entry Tip", "Use CTRL-ENTER when adding new tags, TAB key to autocomplete.");
+    }
 
     function toggleImageUploads() {
         {

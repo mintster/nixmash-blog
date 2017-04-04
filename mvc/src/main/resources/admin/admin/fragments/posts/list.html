@@ -4,10 +4,13 @@
 <body>
 <div th:fragment="body">
 
-    <script type="text/javascript">
+    <script type="text/javascript" th:inline="javascript">
+
+        /*<![CDATA[*/
 
         $(document).ready(function(){
             $('#postsTable').DataTable( {
+                "aLengthMenu": [[10, 25, 50, 100, 200, -1], [10, 25, 50, 100, 200, "All"]],
                 "aoColumns": [
                     null,
                     null,
@@ -18,10 +21,12 @@
                     { "orderable": false }
                 ],
                 "autoWidth": false,
-                "pageLength": 50,
+                "pageLength": [[${pageLength}]],
                 "order": [[ 0, "desc" ]]
             });
         });
+
+        /*]]>*/
     </script>
     <!--/*@thymesVar id="post" type="com.nixmash.blog.jpa.model.Post"*/-->
     <!--/*@thymesVar id="posts" type="List<com.nixmash.blog.jpa.model.Post>"*/-->
@@ -37,6 +42,10 @@
                            class="btn btn-primary">[Add Post]</a>
                         <a th:href="@{'/admin/posts/add/link'}" th:text="#{admin.links.button.new}"
                            class="btn btn-primary">[Add a Link]</a>
+                        <a th:unless="${allposts}" th:href="@{'/admin/posts?allposts=true'}" th:text="#{admin.posts.button.allposts}"
+                           class="btn btn-primary">[Load all Posts]</a>
+                        <a th:if="${allposts}" th:href="@{'/admin/posts'}" th:text="#{admin.posts.button.recentposts}"
+                           class="btn btn-primary">[Recent Posts]</a>
                     </div>
                     <div class="clearfix"></div>
                 </div>

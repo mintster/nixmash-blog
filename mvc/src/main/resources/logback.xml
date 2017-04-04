@@ -13,18 +13,23 @@
 		</encoder>
 	</appender>
 
-	<logger name="com.nixmash.blog.mvc" level="info" />
-	<logger name="com.nixmash.blog.jsoup" level="off" />
-	<logger name="com.nixmash.blog.jpa" level="info" />
-	<logger name="com.nixmash.blog.solr" level="off" />
+	<logger name="com.nixmash.blog.mvc" level="trace" />
+	<logger name="com.nixmash.blog.jsoup" level="info" />
+	<logger name="com.nixmash.blog.jpa" level="debug" />
+	<logger name="com.nixmash.blog.solr" level="info" />
 	<logger name="org.thymeleaf" level="off" />
 	<logger name="org.hibernate" level="off" />
-	<logger name="org.springframework" level="off" />
+	<logger name="org.springframework" level="warn" />
 	<logger name="org.freemarker" level="off" />
+	<logger name="org.apache.tomcat.jdbc" level="info" />
+	<logger name="org.freemarker" level="off" />
+	<logger name="org.ehcache" level="off" />
+	<logger name="com.github.dandelion" level="off" />
+	<logger name="org.eclipse.jetty" level="off" />
 
 	<!--<include resource="logToFile.xml" />-->
 
-	<root level="off">
+	<root level="info">
 		<appender-ref ref="console" />
 	</root>
 </configuration>

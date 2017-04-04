@@ -38,6 +38,8 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
 
     List<Post> findAll(Sort sort);
 
+    List<Post> findFirst25ByOrderByPostDateDesc(Sort sort);
+
     List<Post> findByIsPublishedTrue(Sort sort);
 
     Page<Post> findByIsPublishedTrue(Pageable pageable);

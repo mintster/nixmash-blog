@@ -33,13 +33,19 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @Controller
 public class GeneralController {
 
+    // region Constants
     private static final Logger logger = LoggerFactory.getLogger(GeneralController.class);
 
     public static final String HOME_VIEW = "home";
     public static final String REDIRECT_HOME_VIEW = "redirect:/";
     public static final String ERROR_403_VIEW = "errors/custom";
     public static final String ERROR_404_VIEW = "errors/404";
+    private static final String SERVICES_VIEW = "business/services";
 
+    // endregion
+    
+    // region Beans
+    
     private final FmService fmService;
     private final WebUI webUI;
     private final PostService postService;
@@ -54,6 +60,10 @@ public class GeneralController {
         this.postService = postService;
     }
 
+    // endregion
+    
+    // region Pages
+    
     @RequestMapping(value = "/", method = GET)
     public String home(Model model) {
         String springVersion = webUI.parameterizedMessage("home.spring.version", SpringBootVersion.getVersion());
@@ -65,12 +75,22 @@ public class GeneralController {
             model.addAttribute("gitHubStats", gitHubStats);
         }
 
-        Slice<Post> posts = postService.getPublishedPosts(0, 20);
+        Slice<Post> posts = postService.getPublishedPosts(0, 10);
         if (posts.getContent().size() > 0)
             model.addAttribute("posts", posts);
 
         return HOME_VIEW;
     }
+
+
+//    @RequestMapping(value = "/error")
+//    public ModelAndView error() {
+//        ModelAndView mav = new ModelAndView();
+//        mav.addObject(ERROR_PAGE_TITLE_ATTRIBUTE, "Error Alert!");
+//        mav.addObject(ERROR_PAGE_MESSAGE_ATTRIBUTE, "Sorry about that. The exception has been logged and we'll get to the bottom of it. Thanks!");
+//        mav.setViewName(ERROR_CUSTOM_VIEW);
+//        return mav;
+//    }
 
     @RequestMapping(value = "/robots.txt", method = RequestMethod.GET)
     @ResponseBody
@@ -119,6 +139,10 @@ public class GeneralController {
         return badgeSelectOptions();
     }
 
+    // endregion
+    
+    // region private methods
+    
     private List<SelectOptionDTO> badgeSelectOptions() {
         List<SelectOptionDTO> selectOptionDTOs = new ArrayList<>();
         selectOptionDTOs.add(new SelectOptionDTO("Innovator", "Innovator", false));
@@ -129,4 +153,6 @@ public class GeneralController {
         selectOptionDTOs.add(new SelectOptionDTO("Boy Scout", "Boy Scout", false));
         return selectOptionDTOs;
     }
+
+    // endregion
 }

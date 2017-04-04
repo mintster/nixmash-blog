@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,6 +28,9 @@ public class GeneralControllerTests extends AbstractContext {
 
     @Autowired
     private WebApplicationContext wac;
+
+    @Autowired
+    private Environment environment;
 
     private MockMvc mockMvc;
 
@@ -61,4 +65,6 @@ public class GeneralControllerTests extends AbstractContext {
                 .andExpect(content().contentType(MediaType.TEXT_PLAIN))
                 .andExpect(content().string(containsString("Disallow")));
     }
+
+
 }

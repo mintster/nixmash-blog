@@ -1,41 +1,50 @@
 jar {
-	manifest {
-		attributes 'Main-Class': 'com.nixmash.blog.mail.MailLauncher'
-	}
+    manifest {
+        attributes 'Main-Class': 'com.nixmash.blog.mail.MailLauncher'
+    }
 }
 
 sourceSets {
-	main {
-		java.srcDirs = ['src/main/java', 'src/main/resources']
-		resources.srcDir('src/main/resources')
-	}
-	test {
-		java.srcDir('src/test/java')
-		resources.srcDir('src/test/resources')
-	}
+    main {
+        java.srcDirs = ['src/main/java']
+        resources {
+            srcDir('src/main/resources')
+        }
+    }
+    test {
+        java.srcDir('src/test/java')
+        resources.srcDir('src/test/resources')
+    }
+}
+
+task nixClean << {
+    jar
+    {
+        rootSpec.exclude('**/freemarker')
+    }
 }
 
 configurations {
-	compile.exclude module: 'org.slf4j'
+    compile.exclude module: 'org.slf4j'
 }
 
 springBoot {
-	mainClass = 'com.nixmash.blog.mail.MailLauncher'
+    mainClass = 'com.nixmash.blog.mail.MailLauncher'
 }
 
 dependencies {
-	compile project(':jpa')
+    compile project(':jpa')
 
-	compile 'org.springframework:spring-context-support:4.3.6.RELEASE'
-	compile 'org.springframework.boot:spring-boot-starter-mail'
-	compile 'org.springframework.boot:spring-boot-starter-freemarker'
-	compile group: 'commons-io', name: 'commons-io', version: '2.4'
+    compile 'org.springframework:spring-context-support:4.3.6.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-mail'
+    compile 'org.springframework.boot:spring-boot-starter-freemarker'
+    compile group: 'commons-io', name: 'commons-io', version: '2.4'
 
-	testCompile project(':jpa').sourceSets.test.output
+    testCompile project(':jpa').sourceSets.test.output
 }
 
 bootRun {
-	addResources = false
-	systemProperty 'spring.profiles.active', 'mysql'
-	main = 'com.nixmash.blog.mail.MailLauncher'
+    addResources = false
+    systemProperty 'spring.profiles.active', 'mysql'
+    main = 'com.nixmash.blog.mail.MailLauncher'
 }

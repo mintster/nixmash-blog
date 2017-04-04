@@ -5,7 +5,6 @@ import com.nixmash.blog.jpa.dto.PostQueryDTO;
 import com.nixmash.blog.jpa.dto.TagDTO;
 import com.nixmash.blog.jpa.enums.PostDisplayType;
 import com.nixmash.blog.jpa.enums.PostType;
-import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
 import com.nixmash.blog.jpa.model.CurrentUser;
 import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.service.PostService;
@@ -296,39 +295,21 @@ public class PostsRestController {
     }
 
     private String populateMoreLikeThisStream(List<PostDoc> postDocs) {
-        List<Post> posts = new ArrayList<>();
-        String result = StringUtils.EMPTY;
+        StringBuilder result = new StringBuilder(StringUtils.EMPTY);
 
-        for (int i = 0; i < applicationSettings.getMoreLikeThisNum(); i++) {
-            try {
-                PostDoc postDoc = postDocs.get(i);
-                posts.add(postService.getPostById(Long.parseLong(postDoc.getPostId())));
-            } catch (PostNotFoundException | IndexOutOfBoundsException e) {
-                if (e.getClass().equals(PostNotFoundException.class))
-                    logger.info("MoreLikeThis PostDoc {} to Post with title \"{}\" NOT FOUND", postDocs.get(i).getPostId(), postDocs.get(i).getPostTitle());
-                else
-                    logger.info("EXCEPTION: AppSetting.MoreLikeThisNum > post count");
-                    return fmService.getNoMoreLikeThisMessage();
+        List<Post> posts = postDocService.getMoreLikeThisPostsFromPostDocs(postDocs);
+        if (posts != null) {
+            for (Post post : posts) {
+                result.append(fmService.createPostHtml(post, "mlt"));
             }
-        }
+        } else
+            result = new StringBuilder(fmService.getNoMoreLikeThisMessage());
 
-        for (Post post : posts) {
-            result += fmService.createPostHtml(post, "mlt");
-        }
-
-        return result;
+        return result.toString();
     }
 
     private String populatePostDocStream(List<PostDoc> postDocs, CurrentUser currentUser) {
-        List<Post> posts = new ArrayList<>();
-        for (PostDoc postDoc :
-                postDocs) {
-            try {
-                posts.add(postService.getPostById(Long.parseLong(postDoc.getPostId())));
-            } catch (PostNotFoundException e) {
-                logger.info("Could not convert PostDoc {} to Post with title \"{}\"", postDoc.getPostId(), postDoc.getPostTitle());
-            }
-        }
+        List<Post> posts = postDocService.getPostsFromPostDocs(postDocs);
         String format = applicationSettings.getTitleSearchResultsDisplay() ? "title" : null;
         return populatePostStream(posts, currentUser, format);
     }
