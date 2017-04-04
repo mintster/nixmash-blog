@@ -54,6 +54,9 @@ public interface PostService {
     List<Post> getAllPosts();
 
     @Transactional(readOnly = true)
+    List<Post> getAdminRecentPosts();
+
+    @Transactional(readOnly = true)
     List<Post> getAllPublishedPostsByPostType(PostType postType);
 
     @Transactional(readOnly = true)

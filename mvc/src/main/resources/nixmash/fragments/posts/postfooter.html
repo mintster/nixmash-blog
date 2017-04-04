@@ -45,6 +45,9 @@
     <div class="footer-links">
         <div class="source-link" th:if="${post.postType.name() == 'LINK'}">
             <a th:href="${post.postLink}" th:text="|Source: ${post.postSource}|" target="_blank">[Post Source]</a>
+            <span class="source-link-image">
+                <a th:href="${post.postLink}" target="_blank"><img src="/x/pics/site/sourcelink.png" alt="" /></a>
+            </span>
         </div>
         <div class="edit-link" th:if="${post.isOwner}">
             <a th:href="@{|/admin/posts/update/${post.postId}|}" th:text="#{post.permalink.edit}">[Edit]</a>

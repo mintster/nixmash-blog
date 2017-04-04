@@ -289,6 +289,12 @@ public class PostServiceImpl implements PostService {
 
     @Transactional(readOnly = true)
     @Override
+    public List<Post> getAdminRecentPosts() {
+        return postRepository.findFirst25ByOrderByPostDateDesc(sortByPostDateDesc());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public List<Post> getAllPublishedPostsByPostType(PostType postType) {
         return postRepository.findAllPublishedByPostType(postType);
     }

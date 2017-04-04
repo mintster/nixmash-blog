@@ -798,9 +798,13 @@ span.tag.label {
     margin-top: -80px;
 }
 
-@media (max-width: 1200px) {
-    .sidebar {
+@media screen and (max-width: 738px) {
+    #leftCol {
         display: none;
+    }
+    span.taglink {
+        margin-bottom: 4px;
+        display: inline-block;
     }
 }
 
@@ -995,6 +999,13 @@ span.link-source-prefix {
     margin-right: 7px;
     color: #666;
 }
+
+span.linksymbol img {
+    margin-left: 2px;
+    width: 14px;
+    margin-bottom: 1px;
+}
+
 /*</editor-fold>*/
 /*/<editor-fold> desc="POST PERMALINK DISPLAY ----------------------------/ "*/
 
@@ -1017,6 +1028,7 @@ h1.post-title {
 
 #post-body img {
     margin: 15px 0 15px auto;
+    max-width: 100%;
 }
 
 #post-body p {
@@ -1102,6 +1114,7 @@ h1.post-title {
     font-size: larger;
     font-style: italic;
     margin-top: 20px;
+    line-height: 18px;
 }
 
 .permalink-close {
@@ -1135,6 +1148,28 @@ h1.post-title {
 
 #post div#secInfo {
     margin-top: 60px;
+}
+
+@media screen and (max-width: 738px) {
+    #post-footer .share-like-row {
+        text-align: right;
+        margin-right: -10px;
+    }
+    #post .post-tags {
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+}
+
+#post-footer .source-link span.source-link-image {
+    margin-left: 4px;
+    vertical-align: text-top;
+}
+
+#post-body code.hljs {
+    border: none;
+    padding: 5px;
+    font-size: 85%;
 }
 
 /*</editor-fold>*/
@@ -1683,6 +1718,7 @@ div.mashup p.hashtags a {
 
 /*</editor-fold>*/
 
+/*<editor-fold desc="SERVICES AND CONTENT PAGES">*/
 .services-block {
     min-height: 600px;
     text-align: left;
@@ -1722,3 +1758,18 @@ div.mashup p.hashtags a {
     float: right;
     max-width: 350px;
 }
+
+@media screen and (max-width: 738px) {
+    .services-block a img.services-parasites {
+        max-width: 100%;
+        margin-bottom: 30px;
+    }
+    .services-block img.spring-side-logo {
+        max-width: 100%;
+        margin-bottom: 40px;
+        margin-top: 20px;
+    }
+}
+
+
+/*</editor-fold>*/

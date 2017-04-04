@@ -9,3 +9,6 @@
 </div>
 <div class="post-date"><span>Posted on </span><abbr title="${post.postDate}">${postCreated}</abbr>
 </div>
+<#if  post.postType.name() == "LINK">
+<span class="linksymbol"><img src="/x/pics/site/sourcelink.png" alt="" /></span>
+</#if>
