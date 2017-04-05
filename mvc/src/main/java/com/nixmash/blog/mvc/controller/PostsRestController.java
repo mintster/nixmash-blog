@@ -69,7 +69,8 @@ public class PostsRestController {
 
     @RequestMapping(value = "/titles/page/{pageNumber}", produces = "text/html;charset=UTF-8")
     public String getPostTitles(@PathVariable Integer pageNumber, HttpServletRequest request, CurrentUser currentUser) {
-        Slice<Post> posts = postService.getPublishedPosts(pageNumber, TITLE_PAGING_SIZE);
+//        Slice<Post> posts = postService.getPublishedPosts(pageNumber, TITLE_PAGING_SIZE);
+        Slice<Post> posts = postService.getPagedPostsByPostType(PostType.POST, pageNumber, TITLE_PAGING_SIZE);
         String result = populatePostStream(posts.getContent(), currentUser, TITLE_TEMPLATE);
         WebUtils.setSessionAttribute(request, SESSION_ATTRIBUTE_POSTTITLES, posts.getContent());
         return result;
@@ -128,8 +129,11 @@ public class PostsRestController {
 
     @RequestMapping(value = "/page/{pageNumber}", produces = "text/html;charset=UTF-8")
     public String getPosts(@PathVariable Integer pageNumber, HttpServletRequest request, CurrentUser currentUser) {
-        Slice<Post> posts = postService.getPublishedPosts(pageNumber, POST_PAGING_SIZE);
-        String template = applicationSettings.getTitleStreamDisplay() ? "title" : null;
+//        Slice<Post> posts = postService.getPublishedPosts(pageNumber, POST_PAGING_SIZE);
+        boolean titleDisplay = applicationSettings.getTitleStreamDisplay();
+        int pagingSize = titleDisplay ? TITLE_PAGING_SIZE : POST_PAGING_SIZE;
+        Slice<Post> posts = postService.getPagedPostsByPostType(PostType.POST, pageNumber, TITLE_PAGING_SIZE);
+        String template = titleDisplay ? "title" : null;
         String result = populatePostStream(posts.getContent(), currentUser, template);
         WebUtils.setSessionAttribute(request, SESSION_ATTRIBUTE_POSTS, posts.getContent());
         return result;

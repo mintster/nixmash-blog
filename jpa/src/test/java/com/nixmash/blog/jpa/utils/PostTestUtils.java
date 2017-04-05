@@ -7,10 +7,13 @@ import com.nixmash.blog.jpa.enums.PostDisplayType;
 import com.nixmash.blog.jpa.enums.PostType;
 import com.nixmash.blog.jpa.enums.TwitterCardType;
 import com.nixmash.blog.jpa.model.Category;
+import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.model.PostMeta;
 import com.nixmash.blog.jpa.model.Tag;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -47,6 +50,15 @@ public class PostTestUtils {
                 fieldit(POST_TITLE, appender), fieldit(POST_NAME, appender), POST_LINK, POST_CONTENT, POST_TYPE, DISPLAY_TYPE, CATEGORY_ID, TWITTER_CARD_SUMMARY)
                 .tags(getTestTagDTOs(2))
                 .build();
+    }
+
+    public static List<Post> createPostList(int n) {
+        List<Post> posts = new ArrayList<Post>(n);
+        for (int i = 1; i < n + 1; i++) {
+            PostDTO postDTO = createPostDTO(n);
+            posts.add(PostUtils.postDtoToPost(postDTO));
+        }
+        return posts;
     }
 
     public static Set<TagDTO> getTestTagDTOs(int i) {

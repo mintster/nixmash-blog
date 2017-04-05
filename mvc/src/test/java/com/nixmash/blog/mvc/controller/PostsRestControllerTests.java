@@ -4,7 +4,6 @@ import com.nixmash.blog.jpa.common.ApplicationSettings;
 import com.nixmash.blog.jpa.model.Post;
 import com.nixmash.blog.jpa.service.PostService;
 import com.nixmash.blog.mvc.AbstractContext;
-import com.nixmash.blog.solr.SolrTestUtils;
 import com.nixmash.blog.solr.model.PostDoc;
 import com.nixmash.blog.solr.service.PostDocService;
 import org.apache.commons.lang3.StringUtils;
@@ -12,11 +11,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -27,13 +25,12 @@ import java.util.List;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 public class PostsRestControllerTests extends AbstractContext {
 
     @Autowired
@@ -41,8 +38,8 @@ public class PostsRestControllerTests extends AbstractContext {
 
     private MockMvc mockMvc;
 
-    @MockBean
-    private PostDocService mockPostDocService;
+//    @MockBean
+//    private PostDocService mockPostDocService;
 
     @Autowired
     private PostDocService postDocService;
@@ -64,8 +61,11 @@ public class PostsRestControllerTests extends AbstractContext {
                 .apply(springSecurity())
                 .build();
 
-        when(mockPostDocService.getMoreLikeThis(MLT_POSTID))
-                .thenReturn(SolrTestUtils.createPostList(3));
+//        List<PostDoc> postDocs = new ArrayList<>();
+//        when(mockPostDocService.getMoreLikeThis(MLT_POSTID)).
+//                thenReturn(SolrTestUtils.createPostDocList(3));
+//        when(mockPostDocService.getMoreLikeThisPostsFromPostDocs(postDocs))
+//                .thenReturn(PostTestUtils.createPostList(3));
 
     }
 

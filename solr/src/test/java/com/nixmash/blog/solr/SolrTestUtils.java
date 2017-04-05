@@ -61,15 +61,15 @@ public abstract class SolrTestUtils {
 		return product;
 	}
 
-	public static List<PostDoc> createPostList(int nrPosts) {
-		List<PostDoc> posts = new ArrayList<PostDoc>(nrPosts);
+	public static List<PostDoc> createPostDocList(int nrPosts) {
+		List<PostDoc> postDocs = new ArrayList<PostDoc>(nrPosts);
 		for (int i = 1; i < nrPosts + 1; i++) {
-			posts.add(createPost(i));
+			postDocs.add(createPostDoc(i));
 		}
-		return posts;
+		return postDocs;
 	}
 
-	protected static PostDoc createPost(int id) {
+	protected static PostDoc createPostDoc(int id) {
 		PostDoc postDoc = new PostDoc();
 		postDoc.setPostId(Integer.toString(id));
 		postDoc.setPostTitle("Post Title " + id);
