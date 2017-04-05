@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,8 +70,9 @@ public class PermaPostsController {
 
     // endregion
 
+
     @GetMapping(value = "/post/{postName}")
-    public String post(@PathVariable("postName") String postName, Model model, CurrentUser currentUser)
+    public String post(@PathVariable("postName") String postName, @RequestParam(value = "preview", required = false, defaultValue = "false") Boolean inPreviewMode, Model model, CurrentUser currentUser)
             throws PostNotFoundException {
 
         Post post = postService.getPost(postName);
@@ -78,20 +80,23 @@ public class PermaPostsController {
         post.setIsOwner(PostUtils.isPostOwner(currentUser, post.getUserId()));
         post.setPostContent(PostUtils.formatPostContent(post));
 
-        if (applicationSettings.getMoreLikeThisDisplay()) {
+        if (!inPreviewMode) {
 
-            // Solr must be active and number of postDocs retrieved must not be null
-            if (postDocService.getMoreLikeThis(post.getPostId()) != null) {
-                model.addAttribute("moreLikeThisDisplay", true);
-                model.addAttribute("postId", post.getPostId());
-                model.addAttribute("moreLikeThisHeading",
-                        webUI.getMessage(MORELIKETHIS_HEADING));
+            if (applicationSettings.getMoreLikeThisDisplay()) {
+
+                // Solr must be active and number of postDocs retrieved must not be null
+                if (postDocService.getMoreLikeThis(post.getPostId()) != null) {
+                    model.addAttribute("moreLikeThisDisplay", true);
+                    model.addAttribute("postId", post.getPostId());
+                    model.addAttribute("moreLikeThisHeading",
+                            webUI.getMessage(MORELIKETHIS_HEADING));
+                }
             }
-        }
 
-        PostMeta postMeta = postService.buildTwitterMetaTagsForDisplay(post);
-        if (postMeta != null) {
-            model.addAttribute("twitterMetatags", fmService.getTwitterTemplate(postMeta));
+            PostMeta postMeta = postService.buildTwitterMetaTagsForDisplay(post);
+            if (postMeta != null) {
+                model.addAttribute("twitterMetatags", fmService.getTwitterTemplate(postMeta));
+            }
         }
 
         model.addAttribute("post", post);

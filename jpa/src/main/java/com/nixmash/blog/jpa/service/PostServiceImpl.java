@@ -207,8 +207,8 @@ public class PostServiceImpl implements PostService {
     public Post getPost(String postName) throws PostNotFoundException {
         Post found = postRepository.findByPostNameIgnoreCase(postName);
         if (found == null) {
-            logger.debug("No post found with id: {}", postName);
-            throw new PostNotFoundException("No post found with id: " + postName);
+            logger.debug("No post found with name: {}", postName);
+            throw new PostNotFoundException("No post found with name: " + postName);
         } else {
             populatePostImages(found);
         }
