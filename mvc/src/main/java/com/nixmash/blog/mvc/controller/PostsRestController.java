@@ -23,6 +23,7 @@ import org.springframework.data.solr.UncategorizedSolrException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.WebUtils;
 
@@ -88,7 +89,11 @@ public class PostsRestController {
     @RequestMapping(value = "/links/page/{pageNumber}", produces = "text/html;charset=UTF-8")
     public String getLinks(@PathVariable Integer pageNumber, HttpServletRequest request, CurrentUser currentUser) {
         Slice<Post> posts = postService.getPagedPostsByPostType(PostType.LINK, pageNumber, POST_PAGING_SIZE);
-        String result = populatePostStream(posts.getContent(), currentUser);
+        String result;
+        if (applicationSettings.getTitleStreamDisplay())
+            result = populatePostStream(posts.getContent(), currentUser, TITLE_TEMPLATE);
+        else
+            result = populatePostStream(posts.getContent(), currentUser);
         if (StringUtils.isEmpty(result)) {
             result = fmService.getNoLinksMessage();
         }
@@ -357,9 +362,9 @@ public class PostsRestController {
 
 
     @RequestMapping(value = "/tagcloud", produces = "text/html;charset=UTF-8")
-    public String getSidebarTagCloud() {
+    public String getTagCloud(@RequestParam(value = "alltags", required = false, defaultValue = "false") Boolean alltags) {
 
-        int tagCount = applicationSettings.getSidebarTagCloudCount();
+        int tagCount = alltags ? -1 : applicationSettings.getSidebarTagCloudCount();
         List<TagDTO> tags = postService.getTagCloud(tagCount);
         maxTagCount = tags.stream().mapToInt(TagDTO::getTagCount).max().orElse(0);
         minTagCount = tags.stream().mapToInt(TagDTO::getTagCount).min().orElse(0);

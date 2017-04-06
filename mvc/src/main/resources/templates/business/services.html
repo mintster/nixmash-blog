@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:include="fragments/head :: head" th:remove="tag">Global Header</div>
+    <title th:text="#{services.page.title}"></title>
+</head>
+<body>
+
+<nav th:replace="fragments/navbar :: navbar('services')">Navbar</nav>
+
+<!--/*@thymesVar id="currentUser" type="com.nixmash.blog.jpa.model.CurrentUser"*/-->
+<!--/*@thymesVar id="currentUserConnection" type="com.nixmash.blog.jpa.model.UserConnection"*/-->
+
+<div class="container">
+    <div class="page-header" id="banner">
+        <div class="row">
+            <div class="col-lg-8 col-md-7 col-sm-6">
+                <h1 th:text="#{services.page.header}">[Services]</h1>
+                <p class="lead" th:text="#{services.page.subheader}">[Services Services Services!]</p>
+            </div>
+            <div th:replace="fragments/sponsor :: [id='sponsor']">Sponsor Image</div>
+        </div>
+    </div>
+
+</div>
+<div class="container bs-container big-font-container">
+    <div class="row row-centered">
+        <div class="container services-block">
+            <p>This is our Services Page. We do services, many services.</p>
+        </div>
+    </div>
+    <nav th:replace="fragments/secinfo :: [id='secInfo']">User Info</nav>
+</div>
+<div th:include=" fragments/scripts :: [id='scripts']" th:remove="tag">Scripts</div>
+<div th:include="fragments/alerts :: [id='alerts']" th:remove="tag">Alerts</div>
+
+</body>
+</html>

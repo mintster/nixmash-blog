@@ -15,7 +15,7 @@
 
 	<logger name="com.nixmash.blog.mvc" level="trace" />
 	<logger name="com.nixmash.blog.jsoup" level="info" />
-	<logger name="com.nixmash.blog.jpa" level="debug" />
+	<logger name="com.nixmash.blog.jpa" level="info" />
 	<logger name="com.nixmash.blog.solr" level="info" />
 	<logger name="org.thymeleaf" level="off" />
 	<logger name="org.hibernate" level="off" />

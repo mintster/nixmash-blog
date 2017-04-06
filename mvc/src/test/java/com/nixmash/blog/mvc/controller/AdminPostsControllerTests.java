@@ -2,6 +2,7 @@ package com.nixmash.blog.mvc.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nixmash.blog.jpa.common.ApplicationSettings;
+import com.nixmash.blog.jpa.dto.TagDTO;
 import com.nixmash.blog.jpa.enums.PostDisplayType;
 import com.nixmash.blog.jpa.enums.TwitterCardType;
 import com.nixmash.blog.jpa.exceptions.PostNotFoundException;
@@ -32,6 +33,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -323,8 +325,9 @@ public class AdminPostsControllerTests  extends AbstractContext{
         Post post = postService.getPostById(1L);
         int postTagStartCount = post.getTags().size();
 
-        // tag size of Post 1L is 3. We are assigning a new tag, so the postTagEndCount
-        // should be 2 less
+        // tag size of Post 1L is 3. Could be any value.
+        // We are assigning a new tag, so the postTagEndCount
+        // should be 2 less, or rather, always 1
 
         mvc.perform(post("/admin/posts/update")
                 .param("postId", "1")
@@ -337,7 +340,7 @@ public class AdminPostsControllerTests  extends AbstractContext{
                 .with(csrf()));
 
         int postTagEndCount = post.getTags().size();
-        assertEquals(postTagEndCount, postTagStartCount - 2);
+        assertEquals(postTagEndCount, 1);
 
         Post verifyPost = postService.getPostById(1L);
         assertEquals(verifyPost.getTags().size(), postTagEndCount);
@@ -589,10 +592,21 @@ public class AdminPostsControllerTests  extends AbstractContext{
     // region Tags
 
     @Test
+    public void tagCloudCacheCountsTest() throws Exception {
+
+        List<TagDTO> tagCloud = postService.getTagCloud(2);
+        assertEquals(tagCloud.size(), 2);
+
+        tagCloud = postService.getTagCloud(-1);
+        assertThat(tagCloud.size(), greaterThan(2));
+    }
+
+    @Test
     public void tagsList_page_loads() throws Exception {
         RequestBuilder request = get("/admin/posts/tags").with(csrf());
         MvcResult result = mvc.perform(request)
                 .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print())
                 .andExpect(view().name(ADMIN_TAGS_VIEW)).andReturn();
 
         assertThat(result.getModelAndView().getModel().get("tags"),

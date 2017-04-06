@@ -43,6 +43,7 @@ public class PostsController {
 
     protected static final String POSTS_LIST_VIEW = "posts/list";
     public static final String POSTS_TITLES_VIEW = "posts/titles";
+    public static final String POSTS_TAGCLOUD_VIEW = "posts/tagcloud";
     private static final String POSTS_TAGS_VIEW = "posts/tags";
     private static final String POSTS_TAGTITLES_VIEW = "posts/tagtitles";
     public static final String POSTS_LIKES_VIEW = "posts/likes";
@@ -149,6 +150,11 @@ public class PostsController {
         boolean showMore = postService.getAllPublishedPostsByPostType(PostType.LINK).size() > POST_PAGING_SIZE;
         model.addAttribute("showmore", showMore);
         return POSTS_LINKS_VIEW;
+    }
+
+    @RequestMapping(value = "/tagcloud", method = GET)
+    public String postsTagcloudPage(Model model) {
+        return POSTS_TAGCLOUD_VIEW;
     }
 
     @RequestMapping(value = "/az", method = GET)
