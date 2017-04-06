@@ -593,14 +593,15 @@ public class PostServiceImpl implements PostService {
     @SuppressWarnings("JpaQueryApiInspection")
     @Transactional(readOnly = true)
     @Override
-    @Cacheable(cacheNames = "tagCloud", key = "#root.methodName")
+    @Cacheable(cacheNames = "tagCloud", key = "#root.methodName.concat('-').concat(#tagCount.toString())")
     public List<TagDTO> getTagCloud(int tagCount) {
         List<Tag> tagcloud = em.createNamedQuery("getTagCloud", Tag.class)
                 .getResultList();
+        int _tagCount = tagCount > 0 ? tagCount : Integer.MAX_VALUE;
         List<TagDTO> tagDTOs = tagcloud
                 .stream()
                 .filter(t -> t.getPosts().size() > 0)
-                .limit(tagCount)
+                .limit(_tagCount)
                 .map(TagDTO::new)
                 .sorted(comparing(TagDTO::getTagValue))
                 .collect(Collectors.toList());

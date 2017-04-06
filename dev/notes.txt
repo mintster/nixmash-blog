@@ -45,3 +45,22 @@ Request processing failed; nested exception is org.springframework.transaction.C
 Could not open JPA EntityManager for transaction; nested exception is javax.persistence.PersistenceException:
 com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
 Exception: org.springframework.transaction.CannotCreateTransactionException
+
+TESTS TO CHECK - APRIL 5.17 ------------------------
+
+
+FAILED JSOUP TESTS:
+
+com.nixmash.blog.jsoup.JsoupServiceTests > retrievePagePreviewDTOWithValidUrl FAILED
+    java.lang.AssertionError at JsoupServiceTests.java:39
+
+
+FAILED MVC TESTS:
+
+com.nixmash.blog.mvc.controller.AdminPostsControllerTests > removingTagFromPostDecreasesItsTagCount FAILED
+    java.lang.AssertionError at AdminPostsControllerTests.java:340
+
+com.nixmash.blog.mvc.controller.NixmashControllerTests > loadServicesPage FAILED
+    org.springframework.web.util.NestedServletException at NixmashControllerTests.java:53
+        Caused by: org.thymeleaf.exceptions.TemplateInputException at NixmashControllerTests.java:53
+

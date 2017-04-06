@@ -82,7 +82,7 @@
                                             </label>
                                         </td>
                                     </tr>
-                                    <tr class="border-bottom-row" th:classappend="${#fields.hasErrors('googleAnalyticsTrackingId')} ? 'has-error'">
+                                    <tr th:classappend="${#fields.hasErrors('googleAnalyticsTrackingId')} ? 'has-error'">
                                         <td>
                                             <div class="control-group"
                                                  th:classappend="${#fields.hasErrors('googleAnalyticsTrackingId')} ? 'error'">
@@ -97,6 +97,32 @@
                                             </div>
                                         </td>
                                     </tr>
+
+                                    <tr class="border-bottom-row">
+                                        <td>
+                                            <div class="control-group">
+                                                <label class="control-label">User Registration Type:</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="controls">
+                                                <select th:field="*{userRegistration}" name="userRegistration" class="selectpicker"
+                                                        data-style="btn-primary">
+                                                    <option value="NO_VERIFICATION" th:text="#{admin.site.settings.userreg.noverification}">
+                                                        [NO VERIFICATION]
+                                                    </option>
+                                                    <option value="EMAIL_VERIFICATION" th:text="#{admin.site.settings.userreg.email}">
+                                                        [EMAIL VERIFICATION]
+                                                    </option>
+                                                    <option value="CLOSED" th:text="#{admin.site.settings.userreg.closed}">
+                                                        [CLOSED]
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+
                                 </table>
                                 <div class="col-lg-12 button-col-align-right">
                                     <input type="submit" class="btn btn-primary" th:value="Update"/>

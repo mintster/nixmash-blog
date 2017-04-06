@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:include="fragments/head :: head" th:remove="tag">Global Header</div>
+    <title th:text="#{posts.tagcloud.page.title}">[TagCloud]</title>
+    <style>
+        #leftCol #tagcloud {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<a name="top"></a>
+<nav th:replace="fragments/navbar :: navbar('posts')">Navbar</nav>
+
+<div class="container">
+    <div th:with="heading=#{posts.tagcloud.page.header}, subheading=#{posts.tagcloud.page.subheader}" th:remove="tag">
+        <div th:replace="fragments/banner :: banner(${heading}, ${subheading})">
+        </div>
+    </div>
+</div>
+
+<div class="container bs-container">
+    <div class="row">
+        <div class="bs-section">
+
+            <div th:include="fragments/posts/sidebar :: sidebar('tagcloud')" th:remove="tag">Posts Sidebar</div>
+
+            <div id="grid-table">
+                <div id="posts" class="col-lg-9">
+                    <div id="tagbodyarea"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<nav th:replace="fragments/secinfo :: [id='secInfo']">User Info</nav>-->
+<div th:include="fragments/scripts :: [id='scripts']" th:remove="tag">Scripts</div>
+<div th:include="fragments/alerts :: [id='alerts']" th:remove="tag">Alerts</div>
+<script th:replace="fragments/posts/sidebar :: javascript"></script>
+
+
+<script th:fragment="stream" th:inline="javascript">
+
+    /*<![CDATA[*/
+
+    $.get("/json/posts/tagcloud?alltags=true", function (data) {
+        $("#tagbodyarea").html(data);
+    });
+
+    /*]]>*/
+
+</script>
+
+</body>
+</html>
+
+
+

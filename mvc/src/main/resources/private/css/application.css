@@ -1245,46 +1245,96 @@ h1.post-title {
 }
 
 /*</editor-fold>*/
-/*/<editor-fold> desc="TAG CLOUD----------------------------/ "*/
+/*/<editor-fold> desc="TAG CLOUDS----------------------------/ "*/
 
-ul.taglist {
+#sidebartags ul.taglist {
     list-style: none;
     text-align: center;
     padding: 0;
     line-height: 1.2;
 }
 
-ul.taglist li {
+#sidebartags ul.taglist li {
     display: inline-block;
 }
 
-ul.taglist li a {
+#sidebartags ul.taglist li a {
     display: inline-block;
     margin-right: 9px;
     padding: 2px 0;
 }
 
-ul.taglist li a.minTag {
+#sidebartags ul.taglist li a.minTag {
     font-size: 12px;
 }
 
-ul.taglist li a.smallTag {
+#sidebartags ul.taglist li a.smallTag {
     font-size: 16px;
     font-weight: 400;
 }
 
-ul.taglist li a.mediumTag {
+#sidebartags ul.taglist li a.mediumTag {
     font-size: 18px;
     font-weight: 700;
 }
 
-ul.taglist li a.largeTag {
+#sidebartags ul.taglist li a.largeTag {
     font-size: 24px;
     font-weight: 500;
 }
 
-ul.taglist li a.maxTag {
+#sidebartags ul.taglist li a.maxTag {
     font-size: 28px;
+    font-weight: 500;
+    line-height: .8;
+}
+
+#posts #tagbodyarea {
+    margin-top: 30px;
+    padding: 30px;
+    background-color: #f3f3f3;
+    border: 1px solid #e3e3e3;
+}
+
+#tagbodyarea ul.taglist {
+    list-style: none;
+    text-align: center;
+    padding: 0;
+    line-height: 1.6;
+}
+
+#tagbodyarea ul.taglist li {
+    display: inline-block;
+}
+
+#tagbodyarea ul.taglist li a {
+    display: inline-block;
+    margin-right: 9px;
+    padding: 2px 0;
+    color: #777777;
+}
+
+#tagbodyarea ul.taglist li a.minTag {
+    font-size: 16px;
+}
+
+#tagbodyarea ul.taglist li a.smallTag {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+#tagbodyarea ul.taglist li a.mediumTag {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+#tagbodyarea ul.taglist li a.largeTag {
+    font-size: 30px;
+    font-weight: 500;
+}
+
+#tagbodyarea ul.taglist li a.maxTag {
+    font-size: 34px;
     font-weight: 500;
     line-height: .8;
 }

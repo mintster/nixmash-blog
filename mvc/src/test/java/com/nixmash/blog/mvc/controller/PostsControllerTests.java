@@ -91,6 +91,13 @@ public class PostsControllerTests extends AbstractContext {
     }
 
     @Test
+    public void tagcloudPageLoads() throws Exception {
+        this.mockMvc.perform(get("/posts/tagcloud"))
+                .andExpect(status().isOk())
+                .andExpect(view().name(POSTS_TAGCLOUD_VIEW));
+    }
+
+    @Test
     public void justLinksPageLoads() throws Exception {
         this.mockMvc.perform(get("/posts/links"))
                 .andExpect(status().isOk())

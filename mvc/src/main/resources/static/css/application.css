@@ -1077,7 +1077,7 @@ h1.post-title {
 }
 
 /*</editor-fold>*/
-/*/<editor-fold> desc="TAG CLOUD----------------------------/ "*/
+/*/<editor-fold> desc="TAG CLOUDS----------------------------/ "*/
 
 ul.taglist {
     list-style: none;
@@ -1121,6 +1121,10 @@ ul.taglist li a.maxTag {
     line-height: .8;
 }
 
+div#tagbodyarea {
+    margin-top: 35px;
+    font-size: 150%;
+}
 /*</editor-fold>*/
 /*/<editor-fold> desc="SHARE LINKS----------------------------/ "*/
 

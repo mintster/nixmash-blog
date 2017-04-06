@@ -36,8 +36,12 @@
                <!--th:classappend="${activeTab == 'titles'} ? 'active'"><span  th:text="#{posts.sidebar.menu.titles}" th:remove="tag">[Post Titles]</span>-->
                 <!--<i class="glyphicon glyphicon-chevron-right"></i></a>-->
 
-            <a th:href="@{/posts/az}" class="list-group-item"
-               th:classappend="${activeTab == 'az'} ? 'active'"><span  th:text="#{posts.sidebar.menu.az}" th:remove="tag">[Posts A-to-Z]</span>
+            <!--<a th:href="@{/posts/az}" class="list-group-item"-->
+               <!--th:classappend="${activeTab == 'az'} ? 'active'"><span  th:text="#{posts.sidebar.menu.az}" th:remove="tag">[Posts A-to-Z]</span>-->
+                <!--<i class="glyphicon glyphicon-chevron-right"></i></a>-->
+
+            <a th:href="@{/posts/tagcloud}" class="list-group-item"
+               th:classappend="${activeTab == 'tagcloud'} ? 'active'"><span  th:text="#{posts.sidebar.menu.tagcloud}" th:remove="tag">[Posts A-to-Z]</span>
                 <i class="glyphicon glyphicon-chevron-right"></i></a>
 
             <a th:href="@{/posts/links}" class="list-group-item"

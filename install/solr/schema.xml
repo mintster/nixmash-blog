@@ -182,7 +182,7 @@
            termVectors="true" />
     <field name="posttype" type="string" indexed="true" stored="true" />
     <field name="source" type="text_general" indexed="true" stored="true"  />
-    <field name="tag" type="string" indexed="true" stored="true" multiValued="true"
+    <field name="tag" type="text_general" indexed="true" stored="true" multiValued="true"
            termVectors="true" />
     <field name="postdate" type="date" indexed="true" stored="true"/>
 

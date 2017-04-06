@@ -512,7 +512,7 @@ public class AdminPostsController {
     public ModelAndView tagList(Model model) {
 
         ModelAndView mav = new ModelAndView();
-        mav.addObject("tags", postService.getTagCloud(Integer.MAX_VALUE));
+        mav.addObject("tags", postService.getTagCloud(-1));
         mav.addObject("newTag", new Tag());
         mav.setViewName(ADMIN_TAGS_VIEW);
         return mav;
