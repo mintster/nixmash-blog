@@ -3,7 +3,9 @@ package com.nixmash.blog.mvc.controller;
 import com.nixmash.blog.jpa.dto.SelectOptionDTO;
 import com.nixmash.blog.jpa.model.GitHubStats;
 import com.nixmash.blog.jpa.model.Post;
+import com.nixmash.blog.jpa.model.SiteImage;
 import com.nixmash.blog.jpa.service.PostService;
+import com.nixmash.blog.jpa.service.SiteService;
 import com.nixmash.blog.mail.service.FmService;
 import com.nixmash.blog.mvc.components.WebUI;
 import org.slf4j.Logger;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,27 +46,29 @@ public class GeneralController {
     private static final String SERVICES_VIEW = "business/services";
 
     // endregion
-    
+
     // region Beans
-    
+
     private final FmService fmService;
     private final WebUI webUI;
     private final PostService postService;
+    private final SiteService siteService;
 
     @Autowired
     Environment environment;
 
     @Autowired
-    public GeneralController(FmService fmService, WebUI webUI, PostService postService) {
+    public GeneralController(FmService fmService, WebUI webUI, PostService postService, SiteService siteService) {
         this.fmService = fmService;
         this.webUI = webUI;
         this.postService = postService;
+        this.siteService = siteService;
     }
 
     // endregion
-    
+
     // region Pages
-    
+
     @RequestMapping(value = "/", method = GET)
     public String home(Model model) {
         String springVersion = webUI.parameterizedMessage("home.spring.version", SpringBootVersion.getVersion());
@@ -75,22 +80,18 @@ public class GeneralController {
             model.addAttribute("gitHubStats", gitHubStats);
         }
 
+        if (webUI.isNixMash()) {
+            SiteImage siteImage = siteService.getHomeBanner();
+            siteImage.setImageMessage(getBannerMessage(siteImage));
+            model.addAttribute("siteImage", siteImage);
+        }
+
         Slice<Post> posts = postService.getPublishedPosts(0, 10);
         if (posts.getContent().size() > 0)
             model.addAttribute("posts", posts);
 
         return HOME_VIEW;
     }
-
-
-//    @RequestMapping(value = "/error")
-//    public ModelAndView error() {
-//        ModelAndView mav = new ModelAndView();
-//        mav.addObject(ERROR_PAGE_TITLE_ATTRIBUTE, "Error Alert!");
-//        mav.addObject(ERROR_PAGE_MESSAGE_ATTRIBUTE, "Sorry about that. The exception has been logged and we'll get to the bottom of it. Thanks!");
-//        mav.setViewName(ERROR_CUSTOM_VIEW);
-//        return mav;
-//    }
 
     @RequestMapping(value = "/robots.txt", method = RequestMethod.GET)
     @ResponseBody
@@ -140,9 +141,9 @@ public class GeneralController {
     }
 
     // endregion
-    
+
     // region private methods
-    
+
     private List<SelectOptionDTO> badgeSelectOptions() {
         List<SelectOptionDTO> selectOptionDTOs = new ArrayList<>();
         selectOptionDTOs.add(new SelectOptionDTO("Innovator", "Innovator", false));
@@ -154,5 +155,13 @@ public class GeneralController {
         return selectOptionDTOs;
     }
 
+    private String getBannerMessage(SiteImage siteImage) {
+        String bannerMessage = null;
+        if (!siteImage.isOwned()) {
+            bannerMessage = MessageFormat.format("The banner photo of {0} was <a href='{1}'>created by {2}</a>, " +
+                    "made available under a <a href=\"http://creativecommons.org/licenses/by-nc/3.0/us/\">Creative Commons Attribution-Noncommercial license.</a>", siteImage.getImageDescription(), siteImage.getSourceUrl(), siteImage.getImageAuthor());
+        }
+        return bannerMessage;
+    }
     // endregion
 }

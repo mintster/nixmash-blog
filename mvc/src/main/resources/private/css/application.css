@@ -2,8 +2,10 @@
 .home_jumbotron {
     padding-top: 30px;
     color: inherit;
-    background-image: url(/x/pics/home/churchstreet-banner.png);
     min-height: 400px;
+    background-position: bottom center;
+    background-size: 100%;
+    margin-bottom: -2px;
 }
 
 .home_jumbotron img {

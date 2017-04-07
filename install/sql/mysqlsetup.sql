@@ -131,6 +131,23 @@ CREATE TABLE `site_options`
 CREATE UNIQUE INDEX SiteOptionsOptionId ON site_options (option_id);
 
 -- ----------------------------
+-- Table structure for site_options
+-- ----------------------------
+DROP TABLE IF EXISTS `site_images`;
+CREATE TABLE site_images
+(
+  site_image_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  image_filename VARCHAR(50) NOT NULL,
+  image_description VARCHAR(100) NOT NULL,
+  image_author VARCHAR(50) NULL,
+  source_url VARCHAR(100) NULL,
+  common_license TINYINT DEFAULT '1' NOT NULL,
+  banner_image TINYINT DEFAULT '0' NOT NULL,
+  CONSTRAINT site_images_site_image_id_uindex UNIQUE (site_image_id)
+);
+
+
+-- ----------------------------
 -- Table structure for posts
 -- ----------------------------
 DROP TABLE IF EXISTS posts;

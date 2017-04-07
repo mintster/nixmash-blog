@@ -34,7 +34,6 @@ summary_large_image
 
 BLOG POSTS:
 
-Conditional WAR Exclude in Gradle
 Overwriting the Spring Whitelabel Error Page
 
 ---------------

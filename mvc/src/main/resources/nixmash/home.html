@@ -5,6 +5,12 @@
     <div th:include="fragments/head :: head" th:remove="tag">Global Header</div>
     <title>Welcome to NixMash</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/github.css}"/>
+
+    <style type="text/css" th:inline="text">
+        .home_jumbotron {
+            background-image: url(/x/pics/home/banners/[[${siteImage.imageFilename}]]);
+        }
+    </style>
 </head>
 <body>
 <nav th:replace="fragments/navbar :: navbar('home')">Navbar</nav>
@@ -36,7 +42,11 @@
 </div>
 <div class="home-footer">
     <div class="container">
-        <p class="mashupphotoinfo">The banner photo of Church Street was <a href="https://flic.kr/p/RW27MT">created by BostonTx</a>, made available under a <a href="http://creativecommons.org/licenses/by-nc/3.0/us/">Creative Commons Attribution-Noncommercial license.</a></p>
+
+        <!--/*@thymesVar id="siteImage" type="com.nixmash.blog.jpa.model.SiteImage"*/-->
+        <div th:unless="${siteImage.isOwned()}" th:remove="tag">
+            <p class="mashupphotoinfo" th:utext="${siteImage.imageMessage}"></p>
+        </div>
 
         <nav th:replace="fragments/secinfo :: [id='secInfo']">User Info</nav>
 

@@ -3,7 +3,9 @@ package com.nixmash.blog.jpa.service;
 import com.nixmash.blog.jpa.common.SiteOptions;
 import com.nixmash.blog.jpa.dto.SiteOptionDTO;
 import com.nixmash.blog.jpa.exceptions.SiteOptionNotFoundException;
+import com.nixmash.blog.jpa.model.SiteImage;
 import com.nixmash.blog.jpa.model.SiteOption;
+import com.nixmash.blog.jpa.repository.SiteImageRepository;
 import com.nixmash.blog.jpa.repository.SiteOptionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,12 +23,28 @@ public class SiteServiceImpl implements SiteService{
 
     private SiteOptionRepository siteOptionRepository;
     private SiteOptions siteOptions;
+    private SiteImageRepository siteImageRepository;
 
     @Autowired
-    public SiteServiceImpl(SiteOptionRepository siteOptionRepository, SiteOptions siteOptions) {
+    public SiteServiceImpl(SiteOptionRepository siteOptionRepository, SiteOptions siteOptions, SiteImageRepository siteImageRepository) {
         this.siteOptionRepository = siteOptionRepository;
         this.siteOptions = siteOptions;
+        this.siteImageRepository = siteImageRepository;
     }
+
+
+    // region SiteImages
+
+    @Transactional
+    @Override
+    public SiteImage getHomeBanner() {
+        return siteImageRepository.findBySiteImageId(1L);
+    }
+
+    // endregion
+
+
+    // region SiteOptions
 
     @Override
     public SiteOption update(SiteOptionDTO siteOptionDTO) throws SiteOptionNotFoundException {
@@ -58,6 +76,8 @@ public class SiteServiceImpl implements SiteService{
 
         return found;
     }
+
+    // endregion
 
 }
 

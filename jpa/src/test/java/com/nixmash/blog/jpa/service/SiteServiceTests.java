@@ -5,6 +5,7 @@ import com.nixmash.blog.jpa.common.ISiteOption;
 import com.nixmash.blog.jpa.common.SiteOptions;
 import com.nixmash.blog.jpa.dto.SiteOptionDTO;
 import com.nixmash.blog.jpa.exceptions.SiteOptionNotFoundException;
+import com.nixmash.blog.jpa.model.SiteImage;
 import com.nixmash.blog.jpa.model.SiteOption;
 import javassist.NotFoundException;
 import org.junit.Test;
@@ -51,6 +52,12 @@ public class SiteServiceTests extends SpringDataTests{
 
         assert(siteOptions.getSiteName().equals("Updated Site Name"));
 
+    }
+
+    @Test
+    public void getHomePageBannerTest() throws Exception {
+        SiteImage bannerImage = siteService.getHomeBanner();
+        assertEquals(bannerImage.getImageFilename(), "churchstreet");
     }
 
     @Test
