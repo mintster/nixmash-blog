@@ -13,8 +13,9 @@ public class SiteImage {
     private String imageDescription;
     private String imageAuthor;
     private String sourceUrl;
-    private Byte commonLicense;
-    private Byte bannerImage;
+    private Boolean commonLicense;
+    private Boolean bannerImage;
+    private Boolean isActive;
 
     private String imageMessage;
 
@@ -70,22 +71,32 @@ public class SiteImage {
 
     @Basic
     @Column(name = "common_license")
-    public Byte getCommonLicense() {
+    public Boolean getCommonLicense() {
         return commonLicense;
     }
 
-    public void setCommonLicense(Byte commonLicense) {
+    public void setCommonLicense(Boolean commonLicense) {
         this.commonLicense = commonLicense;
     }
 
     @Basic
     @Column(name = "banner_image")
-    public Byte getBannerImage() {
+    public Boolean getBannerImage() {
         return bannerImage;
     }
 
-    public void setBannerImage(Byte bannerImage) {
+    public void setBannerImage(Boolean bannerImage) {
         this.bannerImage = bannerImage;
+    }
+
+    @Basic
+    @Column(name = "is_active", nullable = false)
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     @Transient

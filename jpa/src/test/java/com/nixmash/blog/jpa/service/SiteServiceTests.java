@@ -49,14 +49,12 @@ public class SiteServiceTests extends SpringDataTests{
     @Test
     public void siteOptionUpdated_UpdatesSiteOptionsBean() throws SiteOptionNotFoundException {
         siteService.update(new SiteOptionDTO(SITE_PROPERTY_NAME, "Updated Site Name"));
-
         assert(siteOptions.getSiteName().equals("Updated Site Name"));
-
     }
 
     @Test
     public void getHomePageBannerTest() throws Exception {
-        SiteImage bannerImage = siteService.getHomeBanner();
+        SiteImage bannerImage = siteService.getHomeBanner(1L);
         assertEquals(bannerImage.getImageFilename(), "churchstreet");
     }
 

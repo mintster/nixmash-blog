@@ -51,8 +51,9 @@ CREATE TABLE site_images
   image_description VARCHAR(100) NOT NULL,
   image_author VARCHAR(50) NOT NULL,
   source_url VARCHAR(100) NULL,
-  common_license TINYINT DEFAULT '1' NOT NULL,
-  banner_image TINYINT DEFAULT '0' NOT NULL,
+  common_license TINYINT(1) DEFAULT '1' NOT NULL,
+  banner_image TINYINT(1) DEFAULT '0' NOT NULL,
+  is_active TINYINT(1) DEFAULT '1' NOT NULL,
   PRIMARY KEY (site_image_id)
 );
 

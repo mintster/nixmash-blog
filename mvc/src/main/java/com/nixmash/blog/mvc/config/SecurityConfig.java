@@ -82,7 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 				.authorizeRequests()
-				.antMatchers("/admin/**")
+				.antMatchers("/admin/**", "/dev/**")
 					.access("@webUserSecurity.canAccessAdmin(authentication)")
 				.antMatchers("/**").permitAll()
 				.anyRequest()

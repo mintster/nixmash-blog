@@ -16,10 +16,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
@@ -85,6 +82,21 @@ public class GeneralController {
             siteImage.setImageMessage(getBannerMessage(siteImage));
             model.addAttribute("siteImage", siteImage);
         }
+
+        Slice<Post> posts = postService.getPublishedPosts(0, 10);
+        if (posts.getContent().size() > 0)
+            model.addAttribute("posts", posts);
+
+        return HOME_VIEW;
+    }
+
+    @RequestMapping(value = "/dev/banner", method = GET)
+    public String homeBannerDisplay(Model model, @RequestParam(value = "id") long siteImageId) {
+        String springVersion = webUI.parameterizedMessage("home.spring.version", SpringBootVersion.getVersion());
+        model.addAttribute("springVersion", springVersion);
+            SiteImage siteImage = siteService.getHomeBanner(siteImageId);
+            siteImage.setImageMessage(getBannerMessage(siteImage));
+            model.addAttribute("siteImage", siteImage);
 
         Slice<Post> posts = postService.getPublishedPosts(0, 10);
         if (posts.getContent().size() > 0)

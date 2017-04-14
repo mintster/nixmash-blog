@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 public interface SiteService {
 
     @Transactional
+    SiteImage getHomeBanner(long siteImageId);
+
+    @Transactional
     SiteImage getHomeBanner();
 
     SiteOption update(SiteOptionDTO siteOptionDTO) throws SiteOptionNotFoundException;

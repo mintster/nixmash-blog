@@ -298,6 +298,6 @@ update post_meta set twitter_card = 'SUMMARY_LARGE_IMAGE' where post_id = 10;
 update post_meta set twitter_card = 'NONE' where post_id = 9;
 
 INSERT INTO site_images
-(site_image_id, image_filename, image_description, image_author, source_url, common_license, banner_image)
+(site_image_id, image_filename, image_description, image_author, source_url, common_license, banner_image, is_active)
 VALUES
-  (1, 'churchstreet', 'Church Street', 'BostonTx', 'https://flic.kr/p/RW27MT', 1, 1);
+  (1, 'churchstreet', 'Church Street', 'BostonTx', 'https://flic.kr/p/RW27MT', 1, 1, 1);
