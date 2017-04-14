@@ -69,6 +69,15 @@ public class WebUI {
 
     // endregion
 
+
+    // region UI Utilities
+
+    public Boolean isNixMash() {
+        return applicationSettings.getIsNixmashSite();
+    }
+
+    // endregion
+
     // region User Profile MultiFile Upload Functions
 
     public void processProfileImage(ProfileImageDTO profileImageDTO, String userKey)

@@ -16,6 +16,7 @@ import com.nixmash.blog.jpa.exceptions.SiteOptionNotFoundException;
 import com.nixmash.blog.jpa.model.BatchJob;
 import com.nixmash.blog.jpa.model.GitHubStats;
 import com.nixmash.blog.jpa.model.Post;
+import com.nixmash.blog.jpa.model.SiteImage;
 import com.nixmash.blog.jpa.service.PostService;
 import com.nixmash.blog.jpa.service.SiteService;
 import com.nixmash.blog.jpa.service.StatService;
@@ -70,8 +71,16 @@ public class JpaUI {
         String activeProfile = environment.getActiveProfiles()[0];
         logger.info(String.format("Current JPA Active Profile: %s", activeProfile));
 
-        displayPosts();
+        displaySiteImageInfo();
     }
+
+    // region SiteImages
+    private void displaySiteImageInfo() {
+        SiteImage siteImage = siteService.getHomeBanner();
+        System.out.println(String.format("SiteImageId: %s | Filename: %s", siteImage.getSiteImageId(), siteImage.getImageFilename()));
+    }
+
+    // endregion
 
     // region Categories
 

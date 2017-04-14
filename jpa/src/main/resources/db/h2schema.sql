@@ -41,6 +41,23 @@ CREATE TABLE site_options (
 );
 
 -- ----------------------------
+-- Table structure for site_images
+-- ----------------------------
+DROP TABLE IF EXISTS site_images;
+CREATE TABLE site_images
+(
+  site_image_id BIGINT NOT NULL AUTO_INCREMENT,
+  image_filename VARCHAR(50) NOT NULL,
+  image_description VARCHAR(100) NOT NULL,
+  image_author VARCHAR(50) NOT NULL,
+  source_url VARCHAR(100) NULL,
+  common_license TINYINT(1) DEFAULT '1' NOT NULL,
+  banner_image TINYINT(1) DEFAULT '0' NOT NULL,
+  is_active TINYINT(1) DEFAULT '1' NOT NULL,
+  PRIMARY KEY (site_image_id)
+);
+
+-- ----------------------------
 -- Table structure for user_authorities
 -- ----------------------------
 CREATE TABLE user_authorities (
