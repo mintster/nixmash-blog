@@ -170,7 +170,7 @@ public class GeneralController {
     private String getBannerMessage(SiteImage siteImage) {
         String bannerMessage = null;
         if (!siteImage.isOwned()) {
-            bannerMessage = MessageFormat.format("The banner photo of {0} was <a href='{1}'>created by {2}</a>, " +
+            bannerMessage = MessageFormat.format("The banner photo of {0} was <a href=''{1}''>created by {2}</a>, " +
                     "made available under a <a href=\"http://creativecommons.org/licenses/by-nc/3.0/us/\">Creative Commons Attribution-Noncommercial license.</a>", siteImage.getImageDescription(), siteImage.getSourceUrl(), siteImage.getImageAuthor());
         }
         return bannerMessage;
