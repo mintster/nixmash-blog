@@ -10,67 +10,85 @@
     <div th:include="admin/fragments/editor :: ckeditorJS" th:remove="tag">[CKEditor Javascript]</div>
     <div th:include="admin/fragments/editor :: genericEditorJS" th:remove="tag">[Generic Editor Javascript]</div>
 
-    <link rel="stylesheet" type="text/css" href="/css/editor.css" />
+    <link rel="stylesheet" type="text/css" href="/css/editor.css"/>
 
 </div>
 <div th:fragment="ckeditorJS">
     <script>
-        CKEDITOR.replace( 'editor', {
-            height: 250.
-        } );
-        CKEDITOR.config.codeSnippet_languages = {
-            javascript: 'JavaScript',
-            java: 'Java',
-            html: 'HTML',
-            css: 'CSS',
-            bash: 'Bash',
-            sql: 'SQL'
-        };
+        editor = CKEDITOR.replace('editor', {
+            height: 350,
+            allowedContent: true,
+            fillEmptyBlocks: false,
+            codeSnippet_languages: {
+                javascript: 'JavaScript',
+                java: 'Java',
+                html: 'HTML',
+                css: 'CSS',
+                bash: 'Bash',
+                sql: 'SQL'
+            }
+        });
+        editor.addCommand("sampWrapper", {
+            exec: function(edt) {
+                var selected_text = edt.getSelection().getSelectedText();
+                var newElement = new CKEDITOR.dom.element("samp");
+//                newElement.setAttributes({style: 'myclass'});  // Set Attributes (Optional)
+                newElement.setText(selected_text);
+                edt.insertElement(newElement);
+            }
+        });
+
+        editor.ui.addButton('SamplerButton', {
+            label: "Wrap text in Samp",
+            command: 'sampWrapper',
+            toolbar:'basicstyles',
+            icon: 'images/samp.png'
+        });
     </script>
 </div>
 
 <div th:fragment="genericEditorJS">
 
     <!-- IN ADMIN GENERICEDITORJS!!! -->
-<script th:src="@{/js/bootstrap3-typeahead.js}"></script>
-<script th:src="@{/js/bootstrap-tagsinput.js}"></script>
+    <script th:src="@{/js/bootstrap3-typeahead.js}"></script>
+    <script th:src="@{/js/bootstrap-tagsinput.js}"></script>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    $('#tag-select').tagsinput({
-        tagClass: 'label label-default',
-        confirmKeys: [10],
-        typeahead: {
-            source: function (query) {
-                return $.get('/json/posts/tagvalues');
+        $('#tag-select').tagsinput({
+            tagClass: 'label label-default',
+            confirmKeys: [10],
+            typeahead: {
+                source: function (query) {
+                    return $.get('/json/posts/tagvalues');
+                }
+
             }
+        });
 
+        function saveDraftDialog() {
+            showDialog("Save Posterino!", "Please save a draft of your post before adding images or attachments.");
         }
-    });
 
-    function saveDraftDialog() {
-        showDialog("Save Posterino!", "Please save a draft of your post before adding images or attachments.");
-    }
+        function showTagsHelp() {
+            showDialog("Tag Entry Tip", "Use CTRL-ENTER when adding new tags, TAB key to autocomplete.");
+        }
 
-    function showTagsHelp() {
-        showDialog("Tag Entry Tip", "Use CTRL-ENTER when adding new tags, TAB key to autocomplete.");
-    }
-
-    function toggleImageUploads() {
-        {
-            var e = document.getElementById('imageuploads');
-            if (e.style.display == 'block' || e.style.display == '') {
-                e.style.display = 'none';
-                $('#imageUploadButton').text('Add Images')
-            }
-            else {
-                e.style.display = 'block';
-                $('#imageUploadButton').text('Hide Images')
+        function toggleImageUploads() {
+            {
+                var e = document.getElementById('imageuploads');
+                if (e.style.display == 'block' || e.style.display == '') {
+                    e.style.display = 'none';
+                    $('#imageUploadButton').text('Add Images')
+                }
+                else {
+                    e.style.display = 'block';
+                    $('#imageUploadButton').text('Hide Images')
+                }
             }
         }
-    }
 
-</script>
+    </script>
 </div>
 
 </body>
