@@ -90,6 +90,14 @@
                                             th:href="@{/users/resetpassword}"
                                             th:text="#{navbar.user.password}">[Reset Your User Password]</a>
                                     </li>
+                                    <li sec:authorize="hasRole('ROLE_POSTS')">
+                                        <a href="/admin/posts/add/post" th:href="@{/admin/posts/add/post}"><span th:text="#{navbar.user.addpost}"
+                                                                                   th:remove="tag">[Add a New Post]</span></a>
+                                    </li>
+                                    <li sec:authorize="hasRole('ROLE_POSTS')">
+                                        <a href="/admin/posts/add/link" th:href="@{/admin/posts/add/link}"><span th:text="#{navbar.user.addlink}"
+                                                                                   th:remove="tag">[Add a New Link]</span></a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>

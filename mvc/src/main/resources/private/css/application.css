@@ -14,9 +14,11 @@
         background-size: auto 100%;
         background-repeat: no-repeat;
     }
+
     .home_jumbotron img {
         max-width: 250px;
     }
+
     .whatwedo_jumbotron blockquote small {
         margin-bottom: 25px;
     }
@@ -109,10 +111,39 @@ blockquote small {
     margin-top: 40px;
 }
 
-.home-footer p.mashupphotoinfo {
+.home-footer .siteimage_description {
+    width: 50%;
+    display: inline-block;
+}
+
+@media screen and (max-width: 640px) {
+    .home-footer .siteimage_description {
+        width: 100%;
+    }
+}
+
+.home-footer p.siteimage_info {
     font-size: 0.8em;
-    line-height: 2;
+    line-height: 1.5;
     color: #555;
+    font-family: Helvetica, Arial, sans-serif;
+    margin-top: 12px;
+    text-transform: uppercase;
+}
+
+.home-footer p.siteimage_info a.siteimage_authorlink {
+    font-weight: bold;
+}
+
+.home-footer .siteimage_description a.siteimage_imagelink a:focus{
+    outline: none;
+}
+
+.home-footer img.siteimage_thumbnail {
+    max-width: 75px;
+    border: solid 1px #000;
+    float: left;
+    margin-right: 10px;
 }
 
 /*</editor-fold>*/
@@ -618,6 +649,7 @@ textarea.mail-body {
 #contact-twitter-message p {
     font-size: 20px;
 }
+
 /*</editor-fold>*/
 /*/<editor-fold> desc="SUBMENUS----------------------------/ "*/
 .marginBottom-0 {
@@ -818,6 +850,7 @@ span.tag.label {
     #leftCol {
         display: none;
     }
+
     span.taglink {
         margin-bottom: 4px;
         display: inline-block;
@@ -1003,6 +1036,7 @@ span.taglink .label-default {
 .link-source {
     margin-top: 20px;
 }
+
 .link-source a.remote-link {
     font-size: 26px;
     line-height: .9;
@@ -1170,6 +1204,7 @@ h1.post-title {
         text-align: right;
         margin-right: -10px;
     }
+
     #post .post-tags {
         margin-top: 30px;
         margin-bottom: 20px;
@@ -1742,19 +1777,6 @@ span.mashupimage {
     margin-top: 35px;
 }
 
-p.mashupphotoinfo {
-    background-image: url(/x/pics/creativecommons.png);
-    background-position: 0;
-    background-repeat: no-repeat;
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 0.7em;
-    line-height: 1.8;
-    margin-bottom: 30px;
-    margin-top: 20px;
-    padding-left: 32px;
-    text-transform: uppercase;
-}
-
 p.mashupfeedinfo {
     padding: 14px;
     font-size: .9em;
@@ -1782,7 +1804,6 @@ div.mashup p.hashtags a {
 }
 
 /*</editor-fold>*/
-
 /*<editor-fold desc="SERVICES AND CONTENT PAGES">*/
 .services-block {
     min-height: 600px;
@@ -1793,6 +1814,7 @@ div.mashup p.hashtags a {
 .services-block a {
     font-weight: bold;
 }
+
 .services-block p {
     font-size: 20px;
     margin-bottom: 20px;
@@ -1801,6 +1823,7 @@ div.mashup p.hashtags a {
 .services-block p.link-image-text {
     margin-top: 35px;
 }
+
 .services-block p.text-after-link-image {
     clear: left;
 }
@@ -1829,12 +1852,12 @@ div.mashup p.hashtags a {
         max-width: 100%;
         margin-bottom: 30px;
     }
+
     .services-block img.spring-side-logo {
         max-width: 100%;
         margin-bottom: 40px;
         margin-top: 20px;
     }
 }
-
 
 /*</editor-fold>*/

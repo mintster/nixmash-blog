@@ -43,10 +43,7 @@
 <div class="home-footer">
     <div class="container">
 
-        <!--/*@thymesVar id="siteImage" type="com.nixmash.blog.jpa.model.SiteImage"*/-->
-        <div th:unless="${siteImage.isOwned()}" th:remove="tag">
-            <p class="mashupphotoinfo" th:utext="${siteImage.imageMessage}"></p>
-        </div>
+        <div th:replace="fragments/about :: home_image">[Site Image Description]</div>
 
         <nav th:replace="fragments/secinfo :: [id='secInfo']">User Info</nav>
 
