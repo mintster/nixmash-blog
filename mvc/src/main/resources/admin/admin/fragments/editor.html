@@ -32,7 +32,6 @@
             exec: function(edt) {
                 var selected_text = edt.getSelection().getSelectedText();
                 var newElement = new CKEDITOR.dom.element("samp");
-//                newElement.setAttributes({style: 'myclass'});  // Set Attributes (Optional)
                 newElement.setText(selected_text);
                 edt.insertElement(newElement);
             }

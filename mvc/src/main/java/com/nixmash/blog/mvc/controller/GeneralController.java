@@ -21,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,7 +78,6 @@ public class GeneralController {
 
         if (webUI.isNixMash()) {
             SiteImage siteImage = siteService.getHomeBanner();
-            siteImage.setImageMessage(getBannerMessage(siteImage));
             model.addAttribute("siteImage", siteImage);
         }
 
@@ -95,7 +93,6 @@ public class GeneralController {
         String springVersion = webUI.parameterizedMessage("home.spring.version", SpringBootVersion.getVersion());
         model.addAttribute("springVersion", springVersion);
             SiteImage siteImage = siteService.getHomeBanner(siteImageId);
-            siteImage.setImageMessage(getBannerMessage(siteImage));
             model.addAttribute("siteImage", siteImage);
 
         Slice<Post> posts = postService.getPublishedPosts(0, 10);
@@ -167,13 +164,5 @@ public class GeneralController {
         return selectOptionDTOs;
     }
 
-    private String getBannerMessage(SiteImage siteImage) {
-        String bannerMessage = null;
-        if (!siteImage.isOwned()) {
-            bannerMessage = MessageFormat.format("The banner photo of {0} was <a href=''{1}''>created by {2}</a>, " +
-                    "made available under a <a href=\"http://creativecommons.org/licenses/by-nc/3.0/us/\">Creative Commons Attribution-Noncommercial license.</a>", siteImage.getImageDescription(), siteImage.getSourceUrl(), siteImage.getImageAuthor());
-        }
-        return bannerMessage;
-    }
     // endregion
 }
