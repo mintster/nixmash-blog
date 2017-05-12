@@ -8,6 +8,7 @@ public interface IPostDoc {
 	String POST_NAME = "postname";
 	String POST_LINK = "postlink";
 	String POST_DATE = "postdate";
+	String RANGE_DATE = "rangedate";
 	String POST_TYPE = "posttype";
 	String HTML = "html";
 	String POST_TEXT = "body";

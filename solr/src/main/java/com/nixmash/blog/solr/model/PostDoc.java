@@ -53,6 +53,9 @@ public class PostDoc implements Serializable, IPostDoc {
     @Field(POST_DATE)
     private Date postDate;
 
+    @Field(RANGE_DATE)
+    private String rangeDate;
+
     @Field(POST_TYPE)
     private String postType;
 
@@ -179,8 +182,15 @@ public class PostDoc implements Serializable, IPostDoc {
         this.docType = docType;
     }
 
+    public String getRangeDate() {
+        return rangeDate;
+    }
 
-    // endregion
+    public void setRangeDate(String rangeDate) {
+        this.rangeDate = rangeDate;
+    }
+
+// endregion
 
     // region toString
 
@@ -246,6 +256,10 @@ public class PostDoc implements Serializable, IPostDoc {
             return this;
         }
 
+        public Builder rangeDate(ZonedDateTime postDate) {
+            built.rangeDate = postDate.toInstant().toString();
+            return this;
+        }
 
         public PostDoc build() {
             return built;

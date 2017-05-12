@@ -16,7 +16,6 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -118,10 +117,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return bean;
     }
 
-    @Override
-    public Validator getValidator() {
-        return validator();
-    }
+//    @Override
+//    public Validator getValidator() {
+//        return validator();
+//    }
 
     // endregion
 

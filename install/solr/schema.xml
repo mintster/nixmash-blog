@@ -178,13 +178,12 @@
 
     <!--Primary Post Search Fields .........................................-->
 
-    <field name="body" type="text_general" indexed="true" stored="true"
-           termVectors="true" />
+    <field name="body" type="text_general" indexed="true" stored="true" termVectors="true" />
     <field name="posttype" type="string" indexed="true" stored="true" />
     <field name="source" type="text_general" indexed="true" stored="true"  />
-    <field name="tag" type="text_general" indexed="true" stored="true" multiValued="true"
-           termVectors="true" />
+    <field name="tag" type="text_general" indexed="true" stored="true" multiValued="true" termVectors="true" />
     <field name="postdate" type="date" indexed="true" stored="true"/>
+    <field name="rangedate" type="date_range" indexed="true" stored="true"/>
 
     <!--Stored Post Fields .........................................-->
 
@@ -362,6 +361,9 @@
 
     <!-- boolean type: "true" or "false" -->
     <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
+
+
+    <fieldType name="date_range" class="solr.DateRangeField"  multiValued="true" />
 
     <!-- sortMissingLast and sortMissingFirst attributes are optional attributes are
          currently supported on types that are sorted internally as strings
