@@ -84,6 +84,7 @@ public class SolrUtils {
                 post.getPostSource(),
                 post.getPostType().name())
                 .postDate(post.getPostDate())
+                .rangeDate(post.getPostDate())
                 .tags(post.tags).build();
         return postDoc;
     }
