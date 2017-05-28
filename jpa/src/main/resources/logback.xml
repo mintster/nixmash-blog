@@ -13,9 +13,10 @@
         </encoder>
     </appender>
 
-    <logger name="com.nixmash.blog.jpa" level="debug"/>
+    <logger name="com.nixmash.blog.jpa" level="info"/>
     <logger name="com.nixmash.blog" level="off"/>
     <logger name="org.thymeleaf" level="off"/>
+    <logger name="org.springframework.boot" level="info"/>
     <logger name="org.hibernate" level="off"/>
 
     <!--<include resource="logJpaToFile.xml" />-->

@@ -363,7 +363,7 @@
     <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
 
 
-    <fieldType name="date_range" class="solr.DateRangeField"  multiValued="true" />
+    <fieldType name="date_range" class="solr.DateRangeField" />
 
     <!-- sortMissingLast and sortMissingFirst attributes are optional attributes are
          currently supported on types that are sorted internally as strings
