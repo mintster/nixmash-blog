@@ -32,7 +32,7 @@
     <img th:src="|/x/pics/home/thumbnails/${siteImage.imageFilename}|" th:alt="${siteImage.imageDescription}" class="siteimage_thumbnail"/>
     </a>
     <p class="siteimage_info" th:inline="text">
-        The banner photo of [[${siteImage.imageDescription}]] was <a th:href="${siteImage.sourceUrl}" class="siteimage_authorlink">created by
+        Today's banner <strong>"[[${siteImage.imageDescription}]]"</strong> was <a th:href="${siteImage.sourceUrl}" class="siteimage_authorlink">created by
         [[${siteImage.imageAuthor}]]</a> and made available under a <a
             href="http://creativecommons.org/licenses/by-nc/3.0/us/">Creative Commons Attribution-Noncommercial
         license.</a>
