@@ -48,6 +48,13 @@ public class PermaPostsControllerTests extends AbstractContext {
     }
 
     @Test
+    public void oldFeedRedirects() throws Exception {
+        mockMvc.perform(get("/feed"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/posts/feed"));
+    }
+
+    @Test
     public void goodCategoryPermaload() throws Exception {
         mockMvc.perform(get("/java/javascript-bootstrap"))
                 .andExpect(status().is3xxRedirection())

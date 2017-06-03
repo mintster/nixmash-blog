@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootVersion;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -87,6 +88,13 @@ public class GeneralController {
 
         return HOME_VIEW;
     }
+
+    @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
+    @GetMapping(value = "/feed")
+    public String categoryPost() {
+        return "redirect:/posts/feed";
+    }
+
 
     @RequestMapping(value = "/dev/banner", method = GET)
     public String homeBannerDisplay(Model model, @RequestParam(value = "id") long siteImageId) {
