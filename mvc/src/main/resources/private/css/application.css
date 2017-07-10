@@ -1860,4 +1860,31 @@ div.mashup p.hashtags a {
     }
 }
 
+.service-sections {
+    margin: 50px 0;
+}
+.service-section {
+    margin-bottom: 30px;
+}
+.service-section .service-image {
+    float: left;
+    min-height: 160px;
+}
+
+.service-section .service-posts {
+    margin-left: 170px;
+}
+.service-section .service-posts a {
+    font-weight: normal;
+}
+.service-section .service-posts ul {
+    margin-bottom: 15px;
+    padding-left: 0px;
+}
+.service-section .service-posts li {
+    list-style-type: none;
+}
+.service-section .service-posts-more a {
+    font-style: italic;
+}
 /*</editor-fold>*/
