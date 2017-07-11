@@ -1820,23 +1820,6 @@ div.mashup p.hashtags a {
     margin-bottom: 20px;
 }
 
-.services-block p.link-image-text {
-    margin-top: 35px;
-}
-
-.services-block p.text-after-link-image {
-    clear: left;
-}
-
-.services-block a img.services-parasites {
-    max-width: 200px;
-    border: solid 2px;
-    float: left;
-    margin-right: 20px;
-    margin-top: 8px;
-    margin-bottom: 12px;
-}
-
 .services-block ul {
     font-size: 20px;
     margin-bottom: 35px;
@@ -1845,6 +1828,10 @@ div.mashup p.hashtags a {
 .services-block img.spring-side-logo {
     float: right;
     max-width: 350px;
+}
+
+.services-block h3 {
+    margin-bottom: 40px;
 }
 
 @media screen and (max-width: 738px) {
