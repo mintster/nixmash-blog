@@ -193,7 +193,7 @@
             var data = {}
             data["postId"] = parseInt($('#postId').val());
             data["postTitle"] = $('#postTitle').val();
-            data["postContent"] = $('#editor').val();
+            data["postContent"] = CKEDITOR.instances.editor.getData();
             data["displayType"] = $('#displayType').val();
             data["twitterCardType"] = $('#twitterCardType').val();
             data["isPublished"] = $('#isPublished').val();
