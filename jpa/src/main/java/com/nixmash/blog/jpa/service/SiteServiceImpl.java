@@ -51,7 +51,7 @@ public class SiteServiceImpl implements SiteService {
         int activeBannerCount = siteImages.size();
         int siteImageIndex = 1;
 
-        if (dayOfMonth <= activeBannerCount) {
+        if (dayOfMonth < activeBannerCount) {
             siteImageIndex = dayOfMonth;
         } else {
             siteImageIndex = dayOfMonth - activeBannerCount;
