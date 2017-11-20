@@ -993,6 +993,7 @@ pre code {
 #posts .title h2 {
     margin-bottom: 3px;
     font-size: 24px;
+    font-weight: normal;
 }
 
 #posts .alert.alert-dismissible.alert-danger {
