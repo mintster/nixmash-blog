@@ -8,8 +8,8 @@ import java.util.Collection;
 public interface SiteImageRepository extends CrudRepository<SiteImage, Long> {
 
     SiteImage findBySiteImageId(Long id);
+    SiteImage findByIsCurrentTrueAndDayOfYear(Integer dayOfYear);
     Collection<SiteImage> findAll();
     Collection<SiteImage> findByBannerImageTrueAndIsActiveTrue();
     Collection<SiteImage> findByBannerImageTrue();
-
 }

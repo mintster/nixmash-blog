@@ -16,6 +16,8 @@ public class SiteImage {
     private Boolean commonLicense;
     private Boolean bannerImage;
     private Boolean isActive;
+    private Boolean isCurrent;
+    private Integer dayOfYear;
 
     private String imageMessage;
 
@@ -99,6 +101,26 @@ public class SiteImage {
         this.isActive = isActive;
     }
 
+    @Basic
+    @Column(name = "is_current", nullable = false)
+    public Boolean getIsCurrent() {
+        return isCurrent;
+    }
+
+    public void setIsCurrent(Boolean current) {
+        isCurrent = current;
+    }
+
+    @Basic
+    @Column(name="day_of_year")
+    public Integer getDayOfYear() {
+        return dayOfYear;
+    }
+
+    public void setDayOfYear(Integer dayOfYear) {
+        this.dayOfYear = dayOfYear;
+    }
+
     @Transient
     public Boolean isOwned() {
         return getImageAuthor().equals("SITE");
@@ -111,5 +133,22 @@ public class SiteImage {
 
     public void setImageMessage(String imageMessage) {
         this.imageMessage = imageMessage;
+    }
+
+    @Override
+    public String toString() {
+        return "SiteImage{" +
+                "siteImageId=" + siteImageId +
+                ", imageFilename='" + imageFilename + '\'' +
+                ", imageDescription='" + imageDescription + '\'' +
+                ", imageAuthor='" + imageAuthor + '\'' +
+                ", sourceUrl='" + sourceUrl + '\'' +
+                ", commonLicense=" + commonLicense +
+                ", bannerImage=" + bannerImage +
+                ", isActive=" + isActive +
+                ", isCurrent=" + isCurrent +
+                ", dayOfYear=" + dayOfYear +
+                ", imageMessage='" + imageMessage + '\'' +
+                '}';
     }
 }
