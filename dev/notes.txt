@@ -19,3 +19,14 @@ gradle mvc:bootRepackage
 
 from .bashrc:
 alias packageit='gradle mvc:clean mail:nixClean mvc:nixClean mvc:bootRepackage'
+
+UPDATING PUBLIC BRANCH ON GITHUB ------------------------------------------- */
+
+$ git-public (checkout public branch)
+$ git-mrrb (see .bashrc for details)
+$ git mergecheck
+# if conflicts found:
+$ git-meld-merge (in .bashrc) OR $ git conflicts (in .gitconfig)
+$ git ac -m 'commit message...'
+$ git push-public (see .gitconfig)
+
