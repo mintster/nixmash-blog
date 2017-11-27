@@ -134,19 +134,20 @@ CREATE UNIQUE INDEX SiteOptionsOptionId ON site_options (option_id);
 -- Table structure for site_options
 -- ----------------------------
 DROP TABLE IF EXISTS `site_images`;
-CREATE TABLE site_images
-(
-  site_image_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  image_filename VARCHAR(50) NOT NULL,
-  image_description VARCHAR(100) NOT NULL,
-  image_author VARCHAR(50) NULL,
-  source_url VARCHAR(100) NULL,
-  common_license TINYINT(1) DEFAULT '1' NOT NULL,
-  banner_image TINYINT(1) DEFAULT '0' NOT NULL,
-  is_active TINYINT(1) DEFAULT '1' NOT NULL,
-  CONSTRAINT site_images_site_image_id_uindex UNIQUE (site_image_id)
-);
-
+CREATE TABLE `site_images` (
+  `site_image_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `image_filename` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image_description` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image_author` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `source_url` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `common_license` tinyint(1) NOT NULL DEFAULT '1',
+  `banner_image` tinyint(1) NOT NULL DEFAULT '0',
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `is_current` tinyint(1) NOT NULL DEFAULT '0',
+  `day_of_year` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`site_image_id`),
+  UNIQUE KEY `site_images_site_image_id_uindex` (`site_image_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for posts
