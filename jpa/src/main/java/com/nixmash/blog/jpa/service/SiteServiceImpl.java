@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  *
@@ -42,7 +42,53 @@ public class SiteServiceImpl implements SiteService {
 
     // region SiteImages
 
+    /**
+     * <p>Retrieves Home Page Banner based on random selection from Active Banners
+     * in table <strong>site_images</strong>.</p>
+     *
+     * <p>Used when number of active banners is greater than the number of days in the month.</p>
+     *
+     * @return SiteImage object
+     */
     @Transactional
+    @Override
+    public SiteImage getHomeBanner() {
+        int dayOfYear = DateTime.now().dayOfYear().get();
+
+        SiteImage siteImage = siteImageRepository.findByIsCurrentTrueAndDayOfYear(dayOfYear);
+        if (siteImage == null) {
+            resetCurrentSiteImage(dayOfYear);
+            siteImage = getNewCurrentSiteImage();
+        }
+        return siteImage;
+    }
+
+    private SiteImage getNewCurrentSiteImage() {
+        Collection<SiteImage> siteImages = siteImageRepository.findByBannerImageTrueAndIsActiveTrue();
+        int activeBannerCount = siteImages.size();
+        int randomNum = ThreadLocalRandom.current().nextInt(0, activeBannerCount);
+        SiteImage siteImage = (SiteImage) siteImages.toArray()[randomNum];
+        siteImage.setIsCurrent(true);
+        siteImageRepository.save(siteImage);
+        return siteImage;
+    }
+
+    private void resetCurrentSiteImage(int dayOfYear) {
+        Collection<SiteImage> all = siteImageRepository.findAll();
+        all.forEach(a -> {
+            a.setDayOfYear(dayOfYear);
+            a.setIsCurrent(false);
+        });
+        siteImageRepository.save(all);
+    }
+
+    /**
+     * Displays Home Page  Banner based on Day of the Month
+     * Valid when the number of available banners is less than the days in the month
+     *
+     * @return SiteImage
+     */
+/*    @Transactional
     @Override
     public SiteImage getHomeBanner() {
         int dayOfMonth = DateTime.now().dayOfMonth().get() - 1;
@@ -51,40 +97,13 @@ public class SiteServiceImpl implements SiteService {
         int activeBannerCount = siteImages.size();
         int siteImageIndex = 1;
 
-        if (dayOfMonth <= activeBannerCount) {
+        if (dayOfMonth < activeBannerCount) {
             siteImageIndex = dayOfMonth;
         } else {
             siteImageIndex = dayOfMonth - activeBannerCount;
         }
         return new ArrayList<>(siteImages).get(siteImageIndex);
-    }
-
-//    @Transactional
-//    @Override
-//    public SiteImage getHomeBanner() {
-//        int dayOfMonth = DateTime.now().dayOfMonth().get() - 1;
-//
-//        Collection<SiteImage> siteImages = siteImageRepository.findByBannerImageTrueAndIsActiveTrue();
-//        logger.debug("All Banners Count: " + siteImageRepository.findByBannerImageTrue().size());
-//
-//        int activeBannerCount = siteImages.size();
-//        logger.debug("Active Banners Count: " + activeBannerCount);
-//
-//        int siteImageIndex;
-//
-//        logger.debug("Day of Month: " + dayOfMonth);
-//        if (dayOfMonth < activeBannerCount) {
-//            siteImageIndex = dayOfMonth;
-//        } else {
-//            siteImageIndex = dayOfMonth - activeBannerCount;
-//        }
-//        logger.debug("SiteImageIndex: " + siteImageIndex);
-//        SiteImage bannerImage = new ArrayList<>(siteImages).get(siteImageIndex);
-//        logger.debug("SiteImage ID and filename: " + bannerImage.getSiteImageId() + " | " + bannerImage.getImageFilename());
-//        logger.debug("-------------------");
-//        return bannerImage;
-//    }
-//
+    }*/
 
 
     /**

@@ -54,6 +54,8 @@ CREATE TABLE site_images
   common_license TINYINT(1) DEFAULT '1' NOT NULL,
   banner_image TINYINT(1) DEFAULT '0' NOT NULL,
   is_active TINYINT(1) DEFAULT '1' NOT NULL,
+  is_current TINYINT(1) DEFAULT '0' NOT NULL,
+  day_of_year INT DEFAULT '1' NOT NULL,
   PRIMARY KEY (site_image_id)
 );
 
