@@ -42,6 +42,14 @@ public class SiteServiceImpl implements SiteService {
 
     // region SiteImages
 
+    /**
+     * <p>Retrieves Home Page Banner based on random selection from Active Banners
+     * in table <strong>site_images</strong>.</p>
+     *
+     * <p>Used when number of active banners is greater than the number of days in the month.</p>
+     *
+     * @return SiteImage object
+     */
     @Transactional
     @Override
     public SiteImage getHomeBanner() {
@@ -60,8 +68,6 @@ public class SiteServiceImpl implements SiteService {
         int activeBannerCount = siteImages.size();
         int randomNum = ThreadLocalRandom.current().nextInt(0, activeBannerCount);
         SiteImage siteImage = (SiteImage) siteImages.toArray()[randomNum];
-
-        // set random siteImage as current and save to database
         siteImage.setIsCurrent(true);
         siteImageRepository.save(siteImage);
         return siteImage;
@@ -76,8 +82,13 @@ public class SiteServiceImpl implements SiteService {
         siteImageRepository.save(all);
     }
 
-    /*
-    @Transactional
+    /**
+     * Displays Home Page  Banner based on Day of the Month
+     * Valid when the number of available banners is less than the days in the month
+     *
+     * @return SiteImage
+     */
+/*    @Transactional
     @Override
     public SiteImage getHomeBanner() {
         int dayOfMonth = DateTime.now().dayOfMonth().get() - 1;
@@ -92,8 +103,7 @@ public class SiteServiceImpl implements SiteService {
             siteImageIndex = dayOfMonth - activeBannerCount;
         }
         return new ArrayList<>(siteImages).get(siteImageIndex);
-    }
-*/
+    }*/
 
 
     /**

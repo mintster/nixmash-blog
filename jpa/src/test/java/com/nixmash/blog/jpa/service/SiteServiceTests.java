@@ -87,7 +87,7 @@ public class SiteServiceTests extends SpringDataTests {
     public void completeBannerOfTheDayTest() {
         for (int i = 1; i <= 365; i++) {
 
-            // clear all and save
+            // clear all currentImage and dayOfYear data and save
             Collection<SiteImage> all = siteImageRepository.findAll();
             int finalI = i;
             all.forEach(a -> {
@@ -96,17 +96,21 @@ public class SiteServiceTests extends SpringDataTests {
             });
             siteImageRepository.save(all);
 
-            // filter active banners and select a random SiteImage from array
+            SiteImage currentSiteImage = siteImageRepository.findByIsCurrentTrueAndDayOfYear(i);
+            Assert.assertNull(currentSiteImage);
+
+            // retrieve active banners and select a random SiteImage from the array
             Collection<SiteImage> siteImages = siteImageRepository.findByBannerImageTrueAndIsActiveTrue();
             int activeBannerCount = siteImages.size();
             int randomNum = ThreadLocalRandom.current().nextInt(0, activeBannerCount);
             SiteImage siteImage = (SiteImage) siteImages.toArray()[randomNum];
 
-            // set random siteImage as current and save to database
+            // set random siteImage as current and save
             siteImage.setIsCurrent(true);
             siteImageRepository.save(siteImage);
 
-            SiteImage currentSiteImage = siteImageRepository.findByIsCurrentTrueAndDayOfYear(i);
+            // now we can retrieve a currentSiteImage and confirm its isCurrent property is true
+            currentSiteImage = siteImageRepository.findByIsCurrentTrueAndDayOfYear(i);
             Assert.assertTrue(currentSiteImage.getIsCurrent());
 
         }
