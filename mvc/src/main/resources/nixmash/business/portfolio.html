@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:include="fragments/head :: head" th:remove="tag">Global Header</div>
+    <title th:text="#{portfolio.page.title}"></title>
+</head>
+<body>
+
+<nav th:replace="fragments/navbar :: navbar('portfolio')">Navbar</nav>
+
+<!--/*@thymesVar id="currentUser" type="com.nixmash.blog.jpa.model.CurrentUser"*/-->
+<!--/*@thymesVar id="currentUserConnection" type="com.nixmash.blog.jpa.model.UserConnection"*/-->
+
+<div class="container">
+    <div class="page-header" id="banner">
+        <div class="row">
+            <div class="col-lg-8 col-md-7 col-sm-6">
+                <h1 th:text="#{portfolio.page.header}">[Portfolio]</h1>
+                <p class="lead" th:text="#{portfolio.page.subheader}">[My Applications]</p>
+            </div>
+            <div th:replace="fragments/sponsor :: [id='sponsor']">Sponsor Image</div>
+        </div>
+    </div>
+
+</div>
+<div class="container bs-container big-font-container">
+    <div class="row row-centered">
+        <div class="container services-block">
+            <p>Here are some of my recent applications and web sites.</p>
+
+            <div class="service-sections">
+                <div class="service-section">
+                    <h3>Listreme</h3>
+                    <div class="portfolio-image">
+                        <img src="/x/pics/portfolio/mint.png" alt=""/>
+                    </div>
+                    <div class="service-posts">
+                        <p>Listreme displays the most popular tweets of User Lists based on their number of likes and
+                            retweets. Built in Java with the Bootique Framework, Listreme is a distributed application
+                            consisting of Microservices, Batch and Web Modules.</p>
+                        <div class="service-posts-footer">
+                            <div class="service-posts-more"><a href="https://listreme.com" target="_blank">Listreme.com</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-section">
+                    <h3>NixMash Spring</h3>
+                    <div class="portfolio-image">
+                        <img src="/x/pics/portfolio/mint.png" alt=""/>
+                    </div>
+                    <div class="service-posts">
+                        <p>NixMash Spring, as the name implies, is a Java Spring application used to demo various
+                            features of Spring. On GitHub with over 200 stars and forked over 100 times. </p>
+                        <div class="service-posts-footer">
+                            <div class="service-posts-more"><a href="http://nixmashspring.daveburkevt.com" target="_blank">nixmashspring.daveburkevt.com</a>
+                            </div>
+                            <div class="service-posts-asterisk">*</div>
+                            <div class="service-posts-github"><a href="https://github.com/mintster/nixmash-spring" target="_blank">GitHub
+                                Repo</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-section">
+                    <h3>Parasite Wonders</h3>
+                    <div class="portfolio-image">
+                        <img src="/x/pics/portfolio/mint.png" alt=""/>
+                    </div>
+                    <div class="service-posts">
+                        <p>Parasite Wonders was built in Java with the Spring Framework. It is the site of Dr. Bobbi Pritt of the Mayo Clinic.</p>
+                        <div class="service-posts-footer">
+                            <div class="service-posts-more"><a href="http://parasitewonders.com/" target="_blank">ParasiteWonders.com</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-section">
+                    <h3>Jangles</h3>
+                    <div class="portfolio-image">
+                        <img src="/x/pics/portfolio/mint.png" alt=""/>
+                    </div>
+                    <div class="service-posts">
+                        <p>Jangles is a small Java starter application which also serves as a shared module for distributed applications. Includes Guice Injection, User Authentication with Apache Shiro, Caching with Apache JCS, logging, Tomcat JDBC Connection Pooling and external configuration properties with JAXB Marshalling.</p>
+                        <div class="service-posts-footer">
+                            <div class="service-posts-more"><a href="https://github.com/mintster/jangles" target="_blank">On GitHub</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-section">
+                    <h3>CodeJohnny</h3>
+                    <div class="portfolio-image">
+                        <img src="/x/pics/portfolio/mint.png" alt=""/>
+                    </div>
+                    <div class="service-posts">
+                        <p>CodeJohnny is an XML template-based Code Generation application for creating code in pure Java. Built-in MySQL-to-Java datatype conversion, mustache-like parsing, centralized template library location support, and more.</p>
+                        <div class="service-posts-footer">
+                            <div class="service-posts-more"><a href="http://codejohnny.com" target="_blank">CodeJohnny.com</a></div>
+                            <div class="service-posts-asterisk">*</div>
+                            <div class="service-posts-github"><a href="https://github.com/mintster/codejohnny" target="_blank">On GitHub</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-section">
+                    <h3>NixMash Blog</h3>
+                    <div class="portfolio-image">
+                        <img src="/x/pics/portfolio/mint.png" alt=""/>
+                    </div>
+                    <div class="service-posts">
+                        <p>I built this blog in Java with the Spring Framework. Solr search, RSS, WSYWIG Editing, multiple post formats and more. Source code on code on GitHub. I wrote a WordPress-to-NixMash Blog conversion program which is also available on GitHub.</p>
+                        <div class="service-posts-footer">
+                            <div class="service-posts-more"><a href="https://github.com/mintster/nixmash-blog" target="_blank">On GitHub</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="service-back-to-top"><a href="portfolio.html">Back to Top</a></div>
+        </div>
+    </div>
+    <nav th:replace="fragments/secinfo :: [id='secInfo']">User Info</nav>
+</div>
+<div th:include=" fragments/scripts :: [id='scripts']" th:remove="tag">Scripts</div>
+<div th:include="fragments/alerts :: [id='alerts']" th:remove="tag">Alerts</div>
+
+</body>
+</html>

@@ -10,6 +10,8 @@ update post_meta set twitter_image='/x/pics/twitter120x120.png', twitter_descrip
 TRUNCATE TABLE tags;
 
 INSERT INTO site_images
-  (image_filename, image_description, image_author, source_url, common_license, banner_image)
+  (image_filename, image_description, image_author, source_url, common_license, banner_image, is_active)
   VALUES
-    ('churchstreet', 'Church Street', 'BostonTx', 'https://flic.kr/p/RW27MT', 1, 1);
+    ('yellowleaves', 'Maple Sunset', 'Nicholas Erwin', 'https://flic.kr/p/214P6Rz', 1, 1,1);
+
+INSERT INTO nixmashdb.site_images (site_image_id, image_filename, image_description, image_author, source_url, common_license, banner_image, is_active, is_current, day_of_year) VALUES (39, 'brattlemarket', 'Brattleboro Farmers Market', 'Putneypics', 'https://flic.kr/p/Zg6U4o', 1, 1, 1, 0, 341);

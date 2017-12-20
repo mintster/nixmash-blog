@@ -40,7 +40,7 @@ public class GeneralController {
     public static final String REDIRECT_HOME_VIEW = "redirect:/";
     public static final String ERROR_403_VIEW = "errors/custom";
     public static final String ERROR_404_VIEW = "errors/404";
-    private static final String SERVICES_VIEW = "business/services";
+    private static final String PORTFOLIO_VIEW = "business/portfolio";
 
     // endregion
 
@@ -108,6 +108,11 @@ public class GeneralController {
             model.addAttribute("posts", posts);
 
         return HOME_VIEW;
+    }
+
+    @RequestMapping(value = "/portfolio", method = GET)
+    public String portfolioPage() {
+        return PORTFOLIO_VIEW;
     }
 
     @RequestMapping(value = "/robots.txt", method = RequestMethod.GET)

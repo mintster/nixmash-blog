@@ -4,8 +4,9 @@
     color: inherit;
     min-height: 400px;
     background-position: bottom center;
-    background-size: 100%;
     margin-bottom: -2px;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 @media screen and (max-width: 640px) {
@@ -49,7 +50,7 @@ blockquote small {
 }
 
 .home-posts {
-    background-color: #f4f4f4;
+    background-color: #fff;
 }
 
 .home-posts-link {
@@ -84,6 +85,7 @@ blockquote small {
 
 .home_about {
     margin-top: 40px;
+    background-color: #f4f4f4;
 }
 
 .home_about a {
@@ -1832,7 +1834,8 @@ div.mashup p.hashtags a {
 }
 
 .services-block h3 {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
+    color: #56ae7a;
 }
 
 @media screen and (max-width: 738px) {
@@ -1849,10 +1852,11 @@ div.mashup p.hashtags a {
 }
 
 .service-sections {
-    margin: 50px 0;
+    margin: 20px 0 50px 0;
 }
 .service-section {
     margin-bottom: 30px;
+    display: inline-block;
 }
 .service-section .service-image {
     float: left;
@@ -1860,7 +1864,7 @@ div.mashup p.hashtags a {
 }
 
 .service-section .service-posts {
-    margin-left: 170px;
+    margin-left: 120px;
 }
 .service-section .service-posts a {
     font-weight: normal;
@@ -1874,5 +1878,34 @@ div.mashup p.hashtags a {
 }
 .service-section .service-posts-more a {
     font-style: italic;
+}
+
+.service-posts-footer {
+    display: inline-block;
+    width: 100%;
+}
+.service-posts-asterisk {
+    margin-right: 12px;
+    float: left;
+    color: #56ae7a;
+    margin-top: 3px;
+}
+.service-section .service-posts-more {
+    float: left;
+    margin-right: 12px;
+}
+.service-section .service-posts-github {
+    font-style: italic;
+}
+
+.portfolio-image img {
+    float: left;
+    max-width: 100px;
+    opacity: .6;
+}
+.service-back-to-top {
+    font-size: 21px;
+    font-style: italic;
+    font-weight: normal;
 }
 /*</editor-fold>*/

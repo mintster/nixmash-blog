@@ -30,3 +30,8 @@ $ git-meld-merge (in .bashrc) OR $ git conflicts (in .gitconfig)
 $ git ac -m 'commit message...'
 $ git push-public (see .gitconfig)
 
+GRADLE BUILD ALL ---------------------------------------- */
+
+project/root> $ install/sh/buildAll.sh
+
+
