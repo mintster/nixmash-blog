@@ -61,4 +61,3 @@ $ gradle mvc:clean mvc:bootRepackage
 NixMash Blog is Open Source. We only require that you abide by the terms of the GNU GPL v3 License.
 
 
-
