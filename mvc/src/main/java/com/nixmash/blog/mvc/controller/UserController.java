@@ -53,6 +53,7 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.nixmash.blog.mvc.controller.GeneralController.HOME_VIEW;
 import static com.nixmash.blog.mvc.controller.GeneralController.REDIRECT_HOME_VIEW;
 import static com.nixmash.blog.mvc.controller.GlobalController.*;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -128,15 +129,24 @@ public class UserController {
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registrationForm(@ModelAttribute UserDTO userDTO, HttpServletRequest request) {
+        if (webUI.isNixMash()) {
+            return "redirect:/";
+        }
+
         if (request.getUserPrincipal() != null)
             return "redirect:/";
         else
-            return REGISTER_VIEW;
+            return HOME_VIEW;
     }
 
     @RequestMapping(value = "/register", method = POST)
     public String register(@Valid @ModelAttribute("userDTO") UserDTO userDTO, BindingResult result, WebRequest request,
                            RedirectAttributes redirectAttributes) {
+
+        if (webUI.isNixMash()) {
+            return "redirect:/";
+        }
+
         if (result.hasErrors()) {
             return REGISTER_VIEW;
         }
@@ -198,6 +208,11 @@ public class UserController {
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String signupForm(@ModelAttribute SocialUserDTO socialUserDTO, WebRequest request, Model model) {
+
+        if (webUI.isNixMash()) {
+            return "redirect:/";
+        }
+
         if (request.getUserPrincipal() != null)
             return "redirect:/";
         else {
@@ -220,6 +235,11 @@ public class UserController {
     @RequestMapping(value = "/signup", method = POST)
     public String signup(@Valid @ModelAttribute("socialUserDTO") SocialUserDTO socialUserDTO, BindingResult result,
                          WebRequest request, RedirectAttributes redirectAttributes) {
+
+        if (webUI.isNixMash()) {
+            return "redirect:/";
+        }
+
         if (result.hasErrors()) {
             return SIGNUP_VIEW;
         }

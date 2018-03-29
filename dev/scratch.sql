@@ -15,3 +15,9 @@ INSERT INTO site_images
     ('yellowleaves', 'Maple Sunset', 'Nicholas Erwin', 'https://flic.kr/p/214P6Rz', 1, 1,1);
 
 INSERT INTO nixmashdb.site_images (site_image_id, image_filename, image_description, image_author, source_url, common_license, banner_image, is_active, is_current, day_of_year) VALUES (39, 'brattlemarket', 'Brattleboro Farmers Market', 'Putneypics', 'https://flic.kr/p/Zg6U4o', 1, 1, 1, 0, 341);
+
+-- REMOVE USERS
+
+DELETE from user_data where user_id > 1;
+DELETE from user_authorities where user_id > 1;
+DELETE from users where user_id > 1;
