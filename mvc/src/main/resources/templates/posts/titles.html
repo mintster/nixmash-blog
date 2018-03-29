@@ -20,7 +20,7 @@
     <div class="row">
         <div class="bs-section">
             <div th:include="fragments/alerts :: [id='feedback']" th:remove="tag">Feedback</div>
-            <div th:include="fragments/posts/sidebar :: sidebar('titles')" th:remove="tag">Sidebar Menu</div>
+            <div th:include="fragments/posts/sidebar :: sidebar('posts')" th:remove="tag">Sidebar Menu</div>
             <div th:include="fragments/posts/postlist :: postlist" th:remove="tag">Post Title List</div>
         </div>
     </div>

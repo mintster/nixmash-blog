@@ -1,3 +1,0 @@
-Currently working in PRIVATE mode.
-
-ORIGIN of MASTER branch: https://daveburkevt@bitbucket.org/daveburkevt/nixmash-blog.git

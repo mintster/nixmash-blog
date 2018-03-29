@@ -125,6 +125,7 @@ public class PostsRestControllerTests extends AbstractContext {
 
         MvcResult mvcResult = mockMvc.perform(get("/json/posts/post/mlt/" + MLT_POSTID))
                 .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andReturn();
 

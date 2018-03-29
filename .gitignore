@@ -28,7 +28,11 @@ out
 bin
 .externalToolBuilders
 
-
+/dev
 /.nb-gradle/private/
 testdb.*
 *.log
+/mvc/src/main/resources/private/
+/mvc/src/main/resources/nixmash/
+/mvc/src/main/resources/nixmash-messages.properties
+/mail/src/main/resources/nixmarker/

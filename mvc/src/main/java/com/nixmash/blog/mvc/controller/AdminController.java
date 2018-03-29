@@ -356,13 +356,6 @@ public class AdminController {
         siteService.update(SiteOptionDTO.with(
                 ISiteOption.GOOGLE_ANALYTICS_TRACKING_ID, siteOptionMapDTO.getGoogleAnalyticsTrackingId())
                 .build());
-
-        // TODO: Add Multiple User Registration Options Logic
-
-//        siteService.update(SiteOptionDTO.with(
-//                ISiteOption.USER_REGISTRATION, UserRegistration.CLOSED)
-//                .build());
-
         siteService.update(SiteOptionDTO.with(
                 ISiteOption.USER_REGISTRATION, siteOptionMapDTO.getUserRegistration())
                 .build());
