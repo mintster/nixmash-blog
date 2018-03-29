@@ -29,7 +29,7 @@ Other setup steps *BEFORE BUILDING THE APPLICATION THE FIRST TIME* are:
 
 1. Install Solr Server. There are several posts on [NixMash.com](http://nixmash.com) on how to do this with points specific to this app or **NixMash Spring**. To run Solr tests, populate the HTTP Solr Server AND Embedded Solr server with the `/install/solr/refreshSolr.sh` script. This will also confirm that Solr is property configured.
 2. Run the MySQL Setup script in `/install/sql/mysqlsetup.sql.`  Then run `/install/sql/initialize.sql.` *IF YOU ARE MIGRATING A WORDPRESS BLOG, FOLLOW THE MIGRATOR APP SQL SETUP INSTRUCTIONS.* If you decide to setup **NixMash Blog** and THEN decide to migrate a WordPress Blog the sequence would be (1) `mysqlsetup.sql` (2) Migrate the WordPress Blog data, then (3) run `initialize.sql.`
-3. Configure `JPA/src/main/resources/application.properties` property `blog.properties.file.path.` This determines the path to your external `blog.properties` file. 
+3. Configure `jpa/src/main/resources/application.properties` property `blog.properties.file.path.` This determines the path to your external `blog.properties` file. 
 4. Update appropriate properties in the external `blog.properties` file.
 
 
