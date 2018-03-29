@@ -94,11 +94,6 @@ allprojects {
 		}
 	}
 
-	task wrapper(type: Wrapper) {
-		gradleVersion = '3.1'
-		distributionType = 'all'
-	}
-
 	eclipse {
 		classpath {
 			containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
@@ -108,3 +103,7 @@ allprojects {
 
 }
 
+task wrapper(type: Wrapper) {
+	gradleVersion = '3.1'
+	distributionType = 'all'
+}
