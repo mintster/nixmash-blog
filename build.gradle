@@ -63,7 +63,7 @@ allprojects {
 		compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.1'
 		compile 'net.coobird:thumbnailator:0.4.8'
 		compile 'joda-time:joda-time:2.9.4'
-        compile group: 'commons-io', name: 'commons-io', version: '2.4'
+        	compile group: 'commons-io', name: 'commons-io', version: '2.4'
 
 		compile 'javax.el:javax.el-api:2.2.4'
 		compile 'org.glassfish.web:javax.el:2.2.4'
